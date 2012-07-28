@@ -30,6 +30,7 @@
 @interface DemoMovieController : UIViewController <SwiffViewDelegate> {
 @private
     NSURL       *m_movieURL;
+    NSString    *m_classname;
     NSData      *m_movieData;
     SwiffMovie  *m_movie;
     SwiffView   *m_movieView;
@@ -39,7 +40,7 @@
     NSInteger    m_frameNumber;
 }
 
-- (id) initWithURL:(NSURL *)url;
+- (id) initWithURL:(NSURL *)url andSymbol:(NSString *)classname;
 
 - (void) gotoFrameNumber:(NSInteger)frameNumber;
 

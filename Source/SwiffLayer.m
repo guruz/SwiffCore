@@ -74,29 +74,40 @@ static NSString * const SwiffRenderTranslationYKey = @"SwiffRenderTranslationY";
     return [self initWithMovie:nil];
 }
 
-
-- (id) initWithMovie:(SwiffMovie *)movie
+- (id) initWithMovie:(SwiffMovie *)movie andSymbol:(NSString *)classname
 {
+    //cribbed liberally from initWithMovie, at some point i should delete initWithMovie
+    //and have it simplyc all this method with a null classname
+    
     if ((self = [super init])) {
         if (!movie) {
             SwiffWarn(@"View", @"-[SwiffLayer initWithMovie:] called with nil movie)");
         }
-
+        
         _movie = movie;
-
+        
         _renderer = movie ? [[SwiffRenderer alloc] initWithMovie:movie] : nil;
         
         _contentLayer = [[CALayer alloc] init];
         [_contentLayer setDelegate:self];
         [self addSublayer:_contentLayer];
-
-        _playhead = movie ? [[SwiffPlayhead alloc] initWithMovie:movie delegate:self] : nil;
+        
+        if(classname) {
+            _playhead = movie ? [[SwiffPlayhead alloc] initWithMovie:movie andSymbol:classname delegate:self] : nil;
+        } else {
+            _playhead = movie ? [[SwiffPlayhead alloc] initWithMovie:movie delegate:self] : nil;    
+        }
         [_playhead gotoFrameWithIndex:0 play:NO];
         
         [_contentLayer setNeedsDisplay];
     }
     
-    return self;
+    return self; 
+}
+
+- (id) initWithMovie:(SwiffMovie *)movie
+{
+    return [self initWithMovie:movie andSymbol:NULL];
 }
 
 

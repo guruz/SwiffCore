@@ -49,6 +49,7 @@
 
 @interface SwiffView : SwiffViewSuperclass
 
+- (id) initWithFrame:(CGRect)frame movie:(SwiffMovie *)movie andSymbol:(NSString *)classname;
 - (id) initWithFrame:(SwiffViewRect)frame movie:(SwiffMovie *)movie;
 
 - (void) redisplay;

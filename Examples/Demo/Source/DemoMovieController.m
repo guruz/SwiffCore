@@ -63,10 +63,11 @@ static NSData *sGetCachedData(NSURL *url)
 
 @implementation DemoMovieController
 
-- (id) initWithURL:(NSURL *)url
+- (id) initWithURL:(NSURL *)url andSymbol:(NSString *)classname
 {
     if ((self = [super init])) {
         m_movieURL = url;
+        m_classname = classname;
     }
     
     return self;

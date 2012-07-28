@@ -29,6 +29,7 @@
 #import "DemoMovieController.h"
 
 static NSString *sCurrentMovieKey = @"CurrentMovie";
+static NSString *sCurrentClassnameKey = @"CurrentKey";
 
 @interface DemoTableViewController ()
 - (void) _pushMovieWithURLString:(NSString *)inURLString animated:(BOOL)animated;
@@ -59,6 +60,7 @@ static NSString *sCurrentMovieKey = @"CurrentMovie";
 - (void) viewDidAppear:(BOOL)animated
 {
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:sCurrentMovieKey];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:sCurrentClassnameKey];
 }
 
 
@@ -87,8 +89,9 @@ static NSString *sCurrentMovieKey = @"CurrentMovie";
         if ([urlString isEqualToString:inURLString]) {
             NSURL    *url   = [NSURL URLWithString:urlString];
             NSString *title = [dictionary objectForKey:@"name"];
+            NSString *classname = [dictionary objectForKey:@"classname"];
 
-            DemoMovieController *vc = [[DemoMovieController alloc] initWithURL:url];
+            DemoMovieController *vc = [[DemoMovieController alloc] initWithURL:url andSymbol:classname];
             [vc setTitle:title];
             
             [[self navigationController] pushViewController:vc animated:animated];
@@ -117,6 +120,14 @@ static NSString *sCurrentMovieKey = @"CurrentMovie";
 
     NSString *urlString = [dictionary objectForKey:@"url"];
     [[NSUserDefaults standardUserDefaults] setObject:urlString forKey:sCurrentMovieKey];
+
+    NSString *classname = [dictionary objectForKey:@"classname"];
+    if(classname) {
+        [[NSUserDefaults standardUserDefaults] setObject:classname forKey:sCurrentClassnameKey];
+    }else{
+        [[NSUserDefaults standardUserDefaults] setValue:NULL forKey:sCurrentClassnameKey];
+    }
+     
     [self _pushMovieWithURLString:urlString animated:YES];
 }
 

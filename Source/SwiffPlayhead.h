@@ -35,6 +35,7 @@
 
 @interface SwiffPlayhead : NSObject
 
+- (id) initWithMovie:(SwiffMovie *)movie andSymbol:(NSString *)classname delegate:(id<SwiffPlayheadDelegate>)delegate;
 - (id) initWithMovie:(SwiffMovie *)movie delegate:(id<SwiffPlayheadDelegate>)delegate;
 
 - (void) gotoScene:(SwiffScene *)scene frameLabel: (NSString *)frameLabel  play:(BOOL)play;

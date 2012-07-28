@@ -68,21 +68,25 @@
     return [self initWithFrame:frame movie:nil];
 }
 
-
-- (id) initWithFrame:(CGRect)frame movie:(SwiffMovie *)movie
+- (id) initWithFrame:(CGRect)frame movie:(SwiffMovie *)movie andSymbol:(NSString *)classname
 {
     if (!movie) {
         SwiffWarn(@"View", @"-[SwiffView initWithFrame:movie:] called with nil movie");
     }
-
+    
     if ((self = [super initWithFrame:frame])) {
-        _layer = [[SwiffLayer alloc] initWithMovie:movie];
+        _layer = [[SwiffLayer alloc] initWithMovie:movie andSymbol:classname];
         [_layer setContentsScale:[[UIScreen mainScreen] scale]];
         [[self layer] addSublayer:_layer];
         [self _layoutMovieLayer];
     }
     
-    return self;
+    return self; 
+}
+
+- (id) initWithFrame:(CGRect)frame movie:(SwiffMovie *)movie
+{
+    return [self initWithFrame:frame movie:movie andSymbol:NULL];
 }
 
 

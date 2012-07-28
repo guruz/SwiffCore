@@ -36,7 +36,9 @@
 
 @interface SwiffLayer : CALayer
 
+- (id) initWithMovie:(SwiffMovie *)movie andSymbol:(NSString *)classname;
 - (id) initWithMovie:(SwiffMovie *)movie;
+
 
 - (void) clearWeakReferences;
 - (void) redisplay;
