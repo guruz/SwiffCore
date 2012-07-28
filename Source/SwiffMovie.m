@@ -62,6 +62,7 @@ static NSString * const SwiffMovieNeedsJPEGTablesDataKey = @"SwiffMovieNeedsJPEG
 
 @implementation SwiffMovie {
     SwiffSparseArray *_definitions;
+    NSMutableDictionary *_classnames;
 }
 
 @synthesize version         = _version,
@@ -82,6 +83,7 @@ static NSString * const SwiffMovieNeedsJPEGTablesDataKey = @"SwiffMovieNeedsJPEG
 
         _backgroundColor = white;
         _definitions = [[SwiffSparseArray alloc] init];
+        _classnames = [[NSMutableDictionary alloc] init];
 
         [self _decodeData:data];
     }
@@ -118,6 +120,7 @@ static NSString * const SwiffMovieNeedsJPEGTablesDataKey = @"SwiffMovieNeedsJPEG
             SwiffParserAdvanceToNextTag(parser);
             
             SwiffTag  tag     = SwiffParserGetCurrentTag(parser);
+            
             NSInteger version = SwiffParserGetCurrentTagVersion(parser);
 
             if (tag == SwiffTagEnd) break;
@@ -146,8 +149,22 @@ static NSString * const SwiffMovieNeedsJPEGTablesDataKey = @"SwiffMovieNeedsJPEG
 - (void) _parser:(SwiffParser *)parser didFindTag:(SwiffTag)tag version:(NSInteger)version
 {
     id<SwiffDefinition> definitionToAdd = nil;
-
-    if (tag == SwiffTagDefineShape) {
+    
+    if (tag == SwiffTagExportAssets) {
+        NSLog(@"TODO: read export name (AS2)");
+    } else if (tag == SwiffTagSymbolClass) {
+        UInt16 numSymbols;
+        SwiffParserReadUInt16(parser, &numSymbols);
+        
+        for(int i = 0; i < numSymbols; i++)
+        {
+            UInt16 symbolID;
+            SwiffParserReadUInt16(parser, &symbolID);
+            NSString* classname;
+            SwiffParserReadString(parser, &classname);
+            [_classnames setValue:[[NSNumber alloc] initWithInteger:symbolID] forKey:classname];
+        }       
+    } else if (tag == SwiffTagDefineShape) {
         definitionToAdd = [[SwiffShapeDefinition alloc] initWithParser:parser movie:self];
 
     } else if (tag == SwiffTagDefineButton) {
@@ -244,6 +261,13 @@ id<SwiffDefinition> SwiffMovieGetDefinition(SwiffMovie *movie, UInt16 libraryID)
 }
 
 
+-(id<SwiffDefinition>) definitionWithLibraryName:(NSString*)classname
+{
+    int symbolID = [[_classnames objectForKey:classname] intValue];
+
+    return [self definitionWithLibraryID:symbolID];
+}
+
 - (id<SwiffDefinition>) definitionWithLibraryID:(UInt16)libraryID
 {
     return SwiffMovieGetDefinition(self, libraryID);
@@ -255,7 +279,6 @@ id<SwiffDefinition> SwiffMovieGetDefinition(SwiffMovie *movie, UInt16 libraryID)
     id<SwiffDefinition> definition = [self definitionWithLibraryID:libraryID];
     return [definition isKindOfClass:cls] ? definition : nil;
 }
-
 
 - (SwiffBitmapDefinition *) bitmapDefinitionWithLibraryID:(UInt16)libraryID
     { return [self _definitionWithLibraryID:libraryID ofClass:[SwiffBitmapDefinition class]]; }

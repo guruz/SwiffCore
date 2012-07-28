@@ -43,7 +43,7 @@
     UIViewController *m_viewController;
 }
 
-@property (nonatomic) UIWindow *window;
-@property (nonatomic) UIViewController *viewController;
+@property (nonatomic, retain) UIWindow *window;
+@property (nonatomic, retain) UIViewController *viewController;
 
 @end
