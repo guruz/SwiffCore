@@ -92,11 +92,7 @@ static NSString * const SwiffRenderTranslationYKey = @"SwiffRenderTranslationY";
         [_contentLayer setDelegate:self];
         [self addSublayer:_contentLayer];
         
-        if(classname) {
-            _playhead = movie ? [[SwiffPlayhead alloc] initWithMovie:movie andSymbol:classname delegate:self] : nil;
-        } else {
-            _playhead = movie ? [[SwiffPlayhead alloc] initWithMovie:movie delegate:self] : nil;    
-        }
+        _playhead = movie ? [[SwiffPlayhead alloc] initWithMovie:movie andSymbol:classname delegate:self] : nil;
         [_playhead gotoFrameWithIndex:0 play:NO];
         
         [_contentLayer setNeedsDisplay];

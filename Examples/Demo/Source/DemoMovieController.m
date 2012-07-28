@@ -161,7 +161,7 @@ static NSData *sGetCachedData(NSURL *url)
     }
 #endif
 
-    m_movieView = [[SwiffView alloc] initWithFrame:movieFrame movie:m_movie];
+    m_movieView = [[SwiffView alloc] initWithFrame:movieFrame movie:m_movie andSymbol:m_classname];
     [m_movieView setDelegate:self];
     [m_movieView setBackgroundColor:[UIColor whiteColor]];   
     [m_movieView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
