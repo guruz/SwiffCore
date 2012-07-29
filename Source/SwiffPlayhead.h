@@ -28,15 +28,15 @@
 #import <SwiffImport.h>
 #import <SwiffTypes.h>
 
-@class SwiffScene, SwiffFrame, SwiffMovie;
+@class SwiffScene, SwiffFrame, SwiffMovie, SwiffSpriteDefinition;
 @class CADisplayLink;
 @protocol SwiffPlayheadDelegate;
 
 
 @interface SwiffPlayhead : NSObject
 
-- (id) initWithMovie:(SwiffMovie *)movie andSymbol:(NSString *)classname delegate:(id<SwiffPlayheadDelegate>)delegate;
-- (id) initWithMovie:(SwiffMovie *)movie delegate:(id<SwiffPlayheadDelegate>)delegate;
+- (id) initWithMovie:(SwiffSpriteDefinition *)movie andSymbol:(NSString *)classname delegate:(id<SwiffPlayheadDelegate>)delegate;
+- (id) initWithMovie:(SwiffSpriteDefinition *)movie delegate:(id<SwiffPlayheadDelegate>)delegate;
 
 - (void) gotoScene:(SwiffScene *)scene frameLabel: (NSString *)frameLabel  play:(BOOL)play;
 - (void) gotoScene:(SwiffScene *)scene frameIndex1:(NSUInteger)frameIndex1 play:(BOOL)play;
@@ -64,7 +64,7 @@
 @property (nonatomic, assign) BOOL loopsMovie;
 @property (nonatomic, assign) BOOL loopsScene;
 
-@property (nonatomic, readonly, strong) SwiffMovie *movie;
+@property (nonatomic, readonly, strong) SwiffSpriteDefinition *movie;
 @property (nonatomic, readonly, getter=isPlaying) BOOL playing;
 
 @end

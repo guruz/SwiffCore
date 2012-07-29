@@ -74,11 +74,9 @@ static NSString * const SwiffRenderTranslationYKey = @"SwiffRenderTranslationY";
     return [self initWithMovie:nil];
 }
 
-- (id) initWithMovie:(SwiffMovie *)movie andSymbol:(NSString *)classname
+- (id) initWithMovie:(SwiffSpriteDefinition *)movie
 {
-    //cribbed liberally from initWithMovie, at some point i should delete initWithMovie
-    //and have it simplyc all this method with a null classname
-    
+   
     if ((self = [super init])) {
         if (!movie) {
             SwiffWarn(@"View", @"-[SwiffLayer initWithMovie:] called with nil movie)");
@@ -86,13 +84,13 @@ static NSString * const SwiffRenderTranslationYKey = @"SwiffRenderTranslationY";
         
         _movie = movie;
         
-        _renderer = movie ? [[SwiffRenderer alloc] initWithMovie:movie] : nil;
+        _renderer = movie ? [[SwiffRenderer alloc] initWithMovie:[movie movie]] : nil;
         
         _contentLayer = [[CALayer alloc] init];
         [_contentLayer setDelegate:self];
         [self addSublayer:_contentLayer];
         
-        _playhead = movie ? [[SwiffPlayhead alloc] initWithMovie:movie andSymbol:classname delegate:self] : nil;
+        _playhead = movie ? [[SwiffPlayhead alloc] initWithMovie:movie delegate:self] : nil;
         [_playhead gotoFrameWithIndex:0 play:NO];
         
         [_contentLayer setNeedsDisplay];
@@ -101,15 +99,9 @@ static NSString * const SwiffRenderTranslationYKey = @"SwiffRenderTranslationY";
     return self; 
 }
 
-- (id) initWithMovie:(SwiffMovie *)movie
-{
-    return [self initWithMovie:movie andSymbol:NULL];
-}
-
-
 - (void) dealloc
 {
-    [[SwiffSoundPlayer sharedInstance] stopAllSoundsForMovie:_movie];
+    [[SwiffSoundPlayer sharedInstance] stopAllSoundsForMovie:[_movie movie]];
 
     [_playhead invalidateTimers];
     [_playhead setDelegate:nil];
@@ -166,7 +158,7 @@ static BOOL sShouldUseSameLayer(SwiffPlacedObject *a, SwiffPlacedObject *b)
                               outTransform: (CGAffineTransform *) outTransform
                               outTranslate: (CGPoint *) outTranslate
 {
-    id<SwiffDefinition> definition = [_movie definitionWithLibraryID:[placedObject libraryID]];
+    id<SwiffDefinition> definition = [[_movie movie] definitionWithLibraryID:[placedObject libraryID]];
 
     CGAffineTransform transform = CGAffineTransformIdentity;
     transform = CGAffineTransformConcat(transform, [placedObject affineTransform]);
@@ -355,7 +347,7 @@ static BOOL sShouldUseSameLayer(SwiffPlacedObject *a, SwiffPlacedObject *b)
 
     [CATransaction begin];
     if (_interpolateCurrentFrame || existingAnimation) {
-        [CATransaction setAnimationDuration:existingAnimation ? [existingAnimation duration] : (1.0 / [_movie frameRate])];
+        [CATransaction setAnimationDuration:existingAnimation ? [existingAnimation duration] : (1.0 / [[_movie movie] frameRate])];
         [CATransaction setAnimationTimingFunction:existingAnimation ? [existingAnimation timingFunction] : [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear]];
     } else {
         [CATransaction setDisableActions:YES];
@@ -387,7 +379,7 @@ static BOOL sShouldUseSameLayer(SwiffPlacedObject *a, SwiffPlacedObject *b)
         UInt16 depth = [placedObject depth];
         UInt16 libraryID = [placedObject libraryID];
         
-        id<SwiffDefinition> definition = [_movie definitionWithLibraryID:libraryID];
+        id<SwiffDefinition> definition = [[_movie movie] definitionWithLibraryID:libraryID];
         CALayer *sublayer = [CALayer layer];
 
         CGRect bounds = [definition renderBounds];
@@ -458,7 +450,7 @@ static BOOL sShouldUseSameLayer(SwiffPlacedObject *a, SwiffPlacedObject *b)
 
     for (SwiffPlacedObject *placedObject in placedObjects) {
         UInt16 libraryID = [placedObject libraryID];
-        id<SwiffDefinition> definition = [_movie definitionWithLibraryID:libraryID];
+        id<SwiffDefinition> definition = [[_movie movie] definitionWithLibraryID:libraryID];
         
         CGRect bounds = [definition renderBounds];
         bounds = CGRectApplyAffineTransform(bounds, [placedObject affineTransform]);
@@ -589,7 +581,7 @@ static BOOL sShouldUseSameLayer(SwiffPlacedObject *a, SwiffPlacedObject *b)
 
     [super setBounds:bounds];
 
-    CGSize movieSize = [_movie stageRect].size;
+    CGSize movieSize = [[_movie movie] stageRect].size;
 
     CGFloat sx = bounds.size.width /  movieSize.width;
     CGFloat sy = bounds.size.height / movieSize.height;
@@ -668,7 +660,7 @@ static BOOL sShouldUseSameLayer(SwiffPlacedObject *a, SwiffPlacedObject *b)
     } else {
         SwiffPlacedObject *layerPlacedObject = [layer valueForKey:SwiffPlacedObjectKey];
 
-        SwiffPlacedObject *rendererPlacedObject = SwiffPlacedObjectCreate(_movie, [layerPlacedObject libraryID], layerPlacedObject);
+        SwiffPlacedObject *rendererPlacedObject = SwiffPlacedObjectCreate([_movie movie], [layerPlacedObject libraryID], layerPlacedObject);
 
         [rendererPlacedObject setAffineTransform:CGAffineTransformIdentity];
         
@@ -772,7 +764,7 @@ static BOOL sShouldUseSameLayer(SwiffPlacedObject *a, SwiffPlacedObject *b)
             [basicAnimation setTimingFunction:[existingAnimation timingFunction]];
 
         } else {
-            [basicAnimation setDuration:(1.0 / [_movie frameRate])];
+            [basicAnimation setDuration:(1.0 / [[_movie movie] frameRate])];
         }
 
         return basicAnimation;
@@ -795,7 +787,8 @@ static BOOL sShouldUseSameLayer(SwiffPlacedObject *a, SwiffPlacedObject *b)
     }
 
     if ([playhead isPlaying]) {
-        [[SwiffSoundPlayer sharedInstance] processMovie:_movie frame:frame];
+        //TODO: figure out how to work classname into here as well
+        [[SwiffSoundPlayer sharedInstance] processMovie:[_movie movie] frame:frame];
     }
 
     if (frame != _currentFrame) {
@@ -855,7 +848,7 @@ static BOOL sShouldUseSameLayer(SwiffPlacedObject *a, SwiffPlacedObject *b)
 {
     if (_drawsBackground != drawsBackground) {
         if (drawsBackground) {
-            SwiffColor *backgroundColorPointer = [[self movie] backgroundColorPointer];
+            SwiffColor *backgroundColorPointer = [[[self movie] movie] backgroundColorPointer];
 
             CGColorSpaceRef rgb = CGColorSpaceCreateDeviceRGB();
             CGColorRef color = CGColorCreate(rgb, (CGFloat *)backgroundColorPointer); 

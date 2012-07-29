@@ -43,20 +43,19 @@
 #endif
 
 
-@class SwiffLayer, SwiffMovie, SwiffFrame, SwiffPlayhead;
+@class SwiffLayer, SwiffMovie, SwiffFrame, SwiffPlayhead, SwiffSpriteDefinition;
 
 @protocol SwiffViewDelegate;
 
 @interface SwiffView : SwiffViewSuperclass
 
-- (id) initWithFrame:(CGRect)frame movie:(SwiffMovie *)movie andSymbol:(NSString *)classname;
-- (id) initWithFrame:(SwiffViewRect)frame movie:(SwiffMovie *)movie;
+- (id) initWithFrame:(SwiffViewRect)frame movie:(SwiffSpriteDefinition *)movie;
 
 - (void) redisplay;
 
 @property (nonatomic, swiff_weak) id<SwiffViewDelegate> delegate;
 
-@property (nonatomic, strong, readonly) SwiffMovie *movie;
+@property (nonatomic, strong, readonly) SwiffSpriteDefinition *movie;
 @property (nonatomic, strong, readonly) SwiffPlayhead *playhead;
 
 @property (nonatomic, assign) BOOL drawsBackground;

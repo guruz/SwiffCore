@@ -100,6 +100,10 @@ static NSString * const SwiffSpriteDefinitionStreamBlockKey = @"SwiffSpriteDefin
     return self;
 }
 
+- (SwiffMovie *)movie
+{
+    return _movie;
+}
 
 - (id) initWithParser:(SwiffParser *)parser movie:(SwiffMovie *)movie
 {

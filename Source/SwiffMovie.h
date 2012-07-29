@@ -51,6 +51,8 @@
 - (SwiffSpriteDefinition      *) spriteDefinitionWithLibraryID:(UInt16)libraryID;
 - (SwiffStaticTextDefinition  *) staticTextDefinitionWithLibraryID:(UInt16)libraryID;
 
+- (SwiffMovie                 *) movie;
+
 @property (nonatomic, assign) NSInteger version;
 @property (nonatomic, assign) CGRect stageRect;
 

@@ -68,25 +68,20 @@
     return [self initWithFrame:frame movie:nil];
 }
 
-- (id) initWithFrame:(CGRect)frame movie:(SwiffMovie *)movie andSymbol:(NSString *)classname
+- (id) initWithFrame:(CGRect)frame movie:(SwiffSpriteDefinition *)movie
 {
     if (!movie) {
         SwiffWarn(@"View", @"-[SwiffView initWithFrame:movie:] called with nil movie");
     }
     
     if ((self = [super initWithFrame:frame])) {
-        _layer = [[SwiffLayer alloc] initWithMovie:movie andSymbol:classname];
+        _layer = [[SwiffLayer alloc] initWithMovie:movie];
         [_layer setContentsScale:[[UIScreen mainScreen] scale]];
         [[self layer] addSublayer:_layer];
         [self _layoutMovieLayer];
     }
     
     return self; 
-}
-
-- (id) initWithFrame:(CGRect)frame movie:(SwiffMovie *)movie
-{
-    return [self initWithFrame:frame movie:movie andSymbol:NULL];
 }
 
 
@@ -162,7 +157,7 @@
 
 - (void) _layoutMovieLayer
 {
-    SwiffMovie *movie = [self movie];
+    SwiffMovie *movie = [[self movie] movie];
     if (!movie) return;
 
     CGFloat w = [self bounds].size.width;
@@ -246,7 +241,7 @@
 - (void) setShouldFlattenSublayers:(BOOL)yn           { [_layer setShouldFlattenSublayers:yn];       }
 - (void) setShouldDrawDebugColors:(BOOL)yn            { [_layer setShouldDrawDebugColors:yn];        }
 
-- (SwiffMovie    *) movie                             { return [_layer movie];                       }
+- (SwiffSpriteDefinition *) movie                             { return [_layer movie];                       }
 - (SwiffPlayhead *) playhead                          { return [_layer playhead];                    }
 - (BOOL)            drawsBackground                   { return [_layer drawsBackground];             }
 - (SwiffColor    *) multiplyColor                     { return [_layer multiplyColor];               }

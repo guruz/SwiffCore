@@ -30,14 +30,13 @@
 #import <QuartzCore/QuartzCore.h>
 
 
-@class SwiffMovie, SwiffFrame, SwiffPlacedObject, SwiffPlayhead, SwiffRenderer, SwiffSparseArray;
+@class SwiffMovie, SwiffFrame, SwiffPlacedObject, SwiffPlayhead, SwiffRenderer, SwiffSparseArray, SwiffSpriteDefinition;
 @protocol SwiffLayerDelegate;
 
 
 @interface SwiffLayer : CALayer
 
-- (id) initWithMovie:(SwiffMovie *)movie andSymbol:(NSString *)classname;
-- (id) initWithMovie:(SwiffMovie *)movie;
+- (id) initWithMovie:(SwiffSpriteDefinition *)movie;
 
 
 - (void) clearWeakReferences;
@@ -45,7 +44,7 @@
 
 @property (nonatomic, swiff_weak) id<SwiffLayerDelegate> swiffLayerDelegate;
 
-@property (nonatomic, strong, readonly) SwiffMovie *movie;
+@property (nonatomic, strong, readonly) SwiffSpriteDefinition *movie;
 @property (nonatomic, strong, readonly) SwiffPlayhead *playhead;
 
 @property (nonatomic, strong, readonly) SwiffFrame *currentFrame;

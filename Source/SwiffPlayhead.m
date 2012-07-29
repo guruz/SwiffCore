@@ -65,23 +65,26 @@ void SwiffPlayheadWarnForInvalidGotoArguments()
             loopsScene    = _loopsScene;
 
 
-- (id) initWithMovie:(SwiffMovie *)movie andSymbol:(NSString *)classname delegate:(id<SwiffPlayheadDelegate>)delegate
-{
-    if ((self = [self initWithMovie:movie delegate:delegate])) {
-        NSLog(@"TODO: ONLY RETURN OBJECT %@", classname);
-    }
-    return self;
-}
-
-- (id) initWithMovie:(SwiffMovie *)movie delegate:(id<SwiffPlayheadDelegate>)delegate
+- (id) initWithMovie:(SwiffSpriteDefinition *)movie andSymbol:(NSString *)classname delegate:(id<SwiffPlayheadDelegate>)delegate
 {
     if ((self = [super init])) {
         _frameIndex = -1;
         _movie = movie;
         _delegate = delegate;
+    
+    
+        if(classname != NULL)
+        {
+            NSLog(@"TODO: ONLY RETURN OBJECT %@", classname);    
+        }
     }
     
     return self;
+}
+
+- (id) initWithMovie:(SwiffSpriteDefinition *)movie delegate:(id<SwiffPlayheadDelegate>)delegate
+{
+    return [self initWithMovie:movie andSymbol:NULL delegate:delegate];
 }
 
 
@@ -103,7 +106,7 @@ void SwiffPlayheadWarnForInvalidGotoArguments()
 
 - (void) handleTimerTick:(id)sender
 {
-    long currentIndex = (long)((CACurrentMediaTime() - _timerPlayStart) * [_movie frameRate]);
+    long currentIndex = (long)((CACurrentMediaTime() - _timerPlayStart) * [[_movie movie] frameRate]);
 
     if (_timerPlayIndex != currentIndex) {
         [self step];
@@ -121,7 +124,7 @@ void SwiffPlayheadWarnForInvalidGotoArguments()
     BOOL needsUpdate = NO;
     
     if (isPlaying) {
-        [[SwiffSoundPlayer sharedInstance] stopAllSoundsForMovie:_movie];
+        [[SwiffSoundPlayer sharedInstance] stopAllSoundsForMovie:[_movie movie]];
     }
 
     if (play && isPlaying) {

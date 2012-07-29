@@ -91,6 +91,13 @@ static NSString * const SwiffMovieNeedsJPEGTablesDataKey = @"SwiffMovieNeedsJPEG
     return self;
 }
 
+//because we cannot assign _movie, we just override the getter for it so that
+//a "movie" which is actually the main timeline can reference itself
+- (SwiffMovie *) movie 
+{
+    return self;
+}
+
 
 #pragma mark -
 #pragma mark Private Methods

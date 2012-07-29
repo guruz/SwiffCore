@@ -46,6 +46,8 @@
 
 - (SwiffScene *) sceneWithName:(NSString *)name;
 
+- (SwiffMovie *) movie;
+
 @property (nonatomic, strong, readonly) NSArray *scenes;
 @property (nonatomic, strong, readonly) NSArray *frames;
 
