@@ -65,26 +65,16 @@ void SwiffPlayheadWarnForInvalidGotoArguments()
             loopsScene    = _loopsScene;
 
 
-- (id) initWithMovie:(SwiffSpriteDefinition *)movie andSymbol:(NSString *)classname delegate:(id<SwiffPlayheadDelegate>)delegate
+- (id) initWithMovie:(SwiffSpriteDefinition *)movie delegate:(id<SwiffPlayheadDelegate>)delegate
 {
     if ((self = [super init])) {
         _frameIndex = -1;
         _movie = movie;
         _delegate = delegate;
-    
-    
-        if(classname != NULL)
-        {
-            NSLog(@"TODO: ONLY RETURN OBJECT %@", classname);    
-        }
+        
     }
     
     return self;
-}
-
-- (id) initWithMovie:(SwiffSpriteDefinition *)movie delegate:(id<SwiffPlayheadDelegate>)delegate
-{
-    return [self initWithMovie:movie andSymbol:NULL delegate:delegate];
 }
 
 
