@@ -157,9 +157,7 @@ static NSString * const SwiffMovieNeedsJPEGTablesDataKey = @"SwiffMovieNeedsJPEG
 {
     id<SwiffDefinition> definitionToAdd = nil;
     
-    if (tag == SwiffTagExportAssets) {
-        NSLog(@"TODO: read export name (AS2)");
-    } else if (tag == SwiffTagSymbolClass) {
+    if (tag == SwiffTagExportAssets || tag == SwiffTagSymbolClass) {
         UInt16 numSymbols;
         SwiffParserReadUInt16(parser, &numSymbols);
         
