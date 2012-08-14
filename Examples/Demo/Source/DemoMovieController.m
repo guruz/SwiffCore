@@ -155,7 +155,7 @@ static NSData *sGetCachedData(NSURL *url)
     
     if(m_classname != NULL)
     {
-        clip = [m_movie definitionWithLibraryName:m_classname];  
+        clip = [m_movie definitionWithExportedName:m_classname];  
     } 
 
     [m_timelineSlider setMaximumValue:([[clip frames] count] - 1)];

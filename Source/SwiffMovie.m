@@ -266,7 +266,7 @@ id<SwiffDefinition> SwiffMovieGetDefinition(SwiffMovie *movie, UInt16 libraryID)
 }
 
 
--(id<SwiffDefinition>) definitionWithLibraryName:(NSString*)classname
+-(id<SwiffDefinition>) definitionWithExportedName:(NSString*)classname
 {
     int symbolID = [[_classnames objectForKey:classname] intValue];
 
