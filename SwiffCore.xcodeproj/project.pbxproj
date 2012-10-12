@@ -112,7 +112,6 @@
 		5574A0A0145D1BB300DA4FB7 /* SwiffDefinition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SwiffDefinition.h; path = Source/SwiffDefinition.h; sourceTree = "<group>"; };
 		5574A0A1145D238700DA4FB7 /* SwiffWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SwiffWriter.h; path = Source/SwiffWriter.h; sourceTree = "<group>"; };
 		5574A0A2145D238700DA4FB7 /* SwiffWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SwiffWriter.m; path = Source/SwiffWriter.m; sourceTree = "<group>"; };
-		557A58AB15A274910063591B /* SwiffView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SwiffView.h; path = Source/SwiffView.h; sourceTree = "<group>"; };
 		5580F4D7146DE35E005F2AC0 /* SwiffLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SwiffLayer.h; path = Source/SwiffLayer.h; sourceTree = "<group>"; };
 		5580F4D8146DE35E005F2AC0 /* SwiffLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SwiffLayer.m; path = Source/SwiffLayer.m; sourceTree = "<group>"; };
 		55955E0B147089BC00BAB75E /* SwiffCore_Profile.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = SwiffCore_Profile.xcconfig; path = Config/SwiffCore_Profile.xcconfig; sourceTree = SOURCE_ROOT; };
@@ -335,8 +334,6 @@
 				55F65A7014429C9E00E12C27 /* SwiffRenderer.m */,
 				5580F4D7146DE35E005F2AC0 /* SwiffLayer.h */,
 				5580F4D8146DE35E005F2AC0 /* SwiffLayer.m */,
-				55B34CA014934E8900C67849 /* SwiffView.h */,
-				55B34CA114934E8900C67849 /* SwiffView.m */,
 				BE678E9316161BEB006F827C /* SwiffGraphics.h */,
 				BE678E9416161BEB006F827C /* SwiffGraphics.m */,
 			);
@@ -458,7 +455,7 @@
 		55F65A3014429BCB00E12C27 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0430;
+				LastUpgradeCheck = 0450;
 			};
 			buildConfigurationList = 55F65A3314429BCB00E12C27 /* Build configuration list for PBXProject "SwiffCore" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -566,6 +563,7 @@
 		5516B4D11446D0EA00231D67 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SDKROOT)/usr/include/libxml2",
@@ -581,6 +579,7 @@
 		5516B4D21446D0EA00231D67 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SDKROOT)/usr/include/libxml2",
@@ -624,7 +623,6 @@
 					"$(inherited)",
 					"$(SDKROOT)/usr/include/libxml2",
 				);
-<<<<<<< HEAD
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/build\"",
@@ -637,8 +635,6 @@
 				);
 				PRODUCT_NAME = SwiffCore;
 				PROVISIONING_PROFILE = "";
-=======
->>>>>>> 4a2d5d5cbff5e263b6e691196ac9387548106a1d
 				SDKROOT = iphoneos;
 			};
 			name = Profile;
@@ -646,6 +642,7 @@
 		55955E1114708A0A00BAB75E /* Profile */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SDKROOT)/usr/include/libxml2",
@@ -684,7 +681,6 @@
 					"$(inherited)",
 					"$(SDKROOT)/usr/include/libxml2",
 				);
-<<<<<<< HEAD
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/build\"",
@@ -694,8 +690,6 @@
 				"OTHER_CFLAGS[arch=*]" = "-Wshadow";
 				PRODUCT_NAME = SwiffCore;
 				PROVISIONING_PROFILE = "";
-=======
->>>>>>> 4a2d5d5cbff5e263b6e691196ac9387548106a1d
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -725,7 +719,6 @@
 					"$(inherited)",
 					"$(SDKROOT)/usr/include/libxml2",
 				);
-<<<<<<< HEAD
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/build\"",
@@ -740,9 +733,6 @@
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
-=======
-				SDKROOT = iphoneos;
->>>>>>> 4a2d5d5cbff5e263b6e691196ac9387548106a1d
 			};
 			name = Release;
 		};
