@@ -30,7 +30,7 @@
 #import <QuartzCore/QuartzCore.h>
 
 
-@class SwiffMovie, SwiffFrame, SwiffPlacedObject, SwiffPlayhead, SwiffRenderer, SwiffSparseArray, SwiffSpriteDefinition;
+@class SwiffMovie, SwiffFrame, SwiffPlacedObject, SwiffPlayhead, SwiffRenderer, SwiffSparseArray, SwiffSpriteDefinition, SwiffGraphics;
 @protocol SwiffLayerDelegate;
 
 
@@ -46,6 +46,7 @@
 
 @property (nonatomic, strong, readonly) SwiffSpriteDefinition *movie;
 @property (nonatomic, strong, readonly) SwiffPlayhead *playhead;
+@property (nonatomic, strong, readonly) SwiffGraphics *graphics;
 
 @property (nonatomic, strong, readonly) SwiffFrame *currentFrame;
 

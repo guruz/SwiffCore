@@ -27,6 +27,7 @@
 
 #import "DemoApp.h"
 #import "DemoMovieController.h"
+#import "DemoGraphicsController.h"
 
 static NSString *sCurrentMovieKey = @"CurrentMovie";
 static NSString *sCurrentClassnameKey = @"CurrentKey";
@@ -110,12 +111,22 @@ static NSString *sCurrentClassnameKey = @"CurrentKey";
 
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [[self _movieDictionaries] count];
+    return [[self _movieDictionaries] count] + 1;
 }
 
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    int index = [indexPath row];
+    if(index >= [[self _movieDictionaries] count])
+    {
+        DemoGraphicsController *gc = [[DemoGraphicsController alloc] init];
+        [gc setTitle:@"Graphics Test"];
+        [[self navigationController] pushViewController:gc animated:YES];
+        return;
+    }
+    
+    
     NSDictionary *dictionary = [[self _movieDictionaries] objectAtIndex:[indexPath row]];
 
     NSString *urlString = [dictionary objectForKey:@"url"];
@@ -141,10 +152,16 @@ static NSString *sCurrentClassnameKey = @"CurrentKey";
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:identifier];
     }
 
-    NSDictionary *dictionary = [[self _movieDictionaries] objectAtIndex:[indexPath row]];
-
-    [[cell textLabel] setText:[dictionary objectForKey:@"name"]];
-    [[cell detailTextLabel] setText:[dictionary objectForKey:@"author"]];
+    int index = [indexPath row];
+    if(index < [[self _movieDictionaries] count])
+    {
+        NSDictionary *dictionary = [[self _movieDictionaries] objectAtIndex:index];
+        [[cell textLabel] setText:[dictionary objectForKey:@"name"]];
+        [[cell detailTextLabel] setText:[dictionary objectForKey:@"author"]];
+    }else{
+        [[cell textLabel] setText:@"Graphics Test"];
+        [[cell detailTextLabel] setText:@"compiled"];
+    }
 
     return cell;
 }

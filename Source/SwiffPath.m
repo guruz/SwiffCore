@@ -46,23 +46,63 @@ static const NSUInteger sGrowthForFloats     = 256;
             usesFillHairlineWidth = _usesFillHairlineWidth;
 
 
-static void SwiffPathAddTwipsToFloats(SwiffPath *path, const SwiffTwips twips)
+static void growPath(SwiffPath *path)
 {
+    //check the float size
     if ((path->_floatsCount % sGrowthForFloats) == 0) {
         NSUInteger capacity = (path->_floatsCount + sGrowthForFloats);
         path->_floats = realloc(path->_floats, sizeof(CGFloat) * capacity);
     }
-
-    path->_floats[path->_floatsCount++] = SwiffGetCGFloatFromTwips(twips);
-}
-
-
-void SwiffPathAddOperationAndTwips(SwiffPath *path, SwiffPathOperation operation, ...)
-{
+    
+    //check the operation size
     if ((path->_operationsCount % sGrowthForOperations) == 0) {
         NSUInteger capacity = (path->_operationsCount + sGrowthForOperations);
         path->_operations = realloc(path->_operations, sizeof(UInt8) * capacity);
     }
+}
+
+static void SwiffPathAddFloatsToFloats(SwiffPath *path, float floats)
+{
+    growPath(path);
+    path->_floats[path->_floatsCount++] = floats;
+}
+
+static void SwiffPathAddTwipsToFloats(SwiffPath *path, const SwiffTwips twips)
+{
+    growPath(path);
+    path->_floats[path->_floatsCount++] = SwiffGetCGFloatFromTwips(twips);
+}
+
+void SwiffPathAddOperationAndFloats(SwiffPath *path, SwiffPathOperation operation, ...)
+{
+    growPath(path);
+    
+    va_list v;
+    va_start(v, operation);
+    
+    path->_operations[path->_operationsCount++] = operation;
+    
+    if (operation == SwiffPathOperationCurve) {
+
+        SwiffPathAddFloatsToFloats(path, (float)va_arg(v, double));
+        SwiffPathAddFloatsToFloats(path, (float)va_arg(v, double));
+        SwiffPathAddFloatsToFloats(path, (float)va_arg(v, double));
+        SwiffPathAddFloatsToFloats(path, (float)va_arg(v, double));
+        
+    } else if (operation == SwiffPathOperationMove || operation == SwiffPathOperationLine) {
+        SwiffPathAddFloatsToFloats(path, (float)va_arg(v, double));
+        SwiffPathAddFloatsToFloats(path, (float)va_arg(v, double));
+        
+    } else if (operation == SwiffPathOperationHorizontalLine || operation == SwiffPathOperationVerticalLine) {
+        SwiffPathAddFloatsToFloats(path, (float)va_arg(v, double));
+    }
+    
+    va_end(v);
+}
+
+void SwiffPathAddOperationAndTwips(SwiffPath *path, SwiffPathOperation operation, ...)
+{
+    growPath(path);
 
     va_list v;
     va_start(v, operation);

@@ -253,3 +253,48 @@ typedef struct SwiffMPEGHeader {
     UInt32               frameSize;
 } SwiffMPEGHeader;
 
+
+
+//WCH: these are contained in the various SwiffLineStyle/SwiffGradient/SwiffFillStyle classes...
+//maybe SwiffGraphics should just import those, even though it doesn't use them directly?
+enum {
+    SwiffLineScaleModeNormal    = 0,
+    SwiffLineScaleModeNone      = 1,
+    SwiffLineScaleModeVertical  = 2
+};
+typedef NSInteger SwiffLineScaleMode;
+
+enum {
+    SwiffCapsStyleNone      = 0,
+    SwiffCapsStyleRound     = 1,
+    SwiffCapsStyleSquare    = 2
+};
+typedef NSInteger SwiffCapsStyle;
+
+enum {
+    SwiffJointStyleBevel    = 0,
+    SwiffJointStyleMiter    = 1,
+    SwiffJointStyleRound    = 2
+};
+typedef NSInteger SwiffJointStyle;
+
+enum {
+    SwiffGradientTypeLinear    = 0,
+    SwiffGradientTypeRadial    = 1
+};
+typedef NSInteger SwiffGradientType;
+
+enum {
+    SwiffSpreadMethodPad        = 0,
+    SwiffSpreadMethodReflect    = 1,
+    SwiffSpreadMethodRepeat     = 2
+};
+typedef NSInteger SwiffSpreadMethod;
+
+enum {
+    SwiffInterpolationMethodLinearRGB   = 0,
+    SwiffInterpolationMethodRGB         = 1
+};
+typedef NSInteger SwiffInterpolationMethod;
+
+

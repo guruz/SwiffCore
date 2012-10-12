@@ -23,6 +23,7 @@
 		558CE76F14B123FE001C8669 /* libSwiffCore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 558CE76E14B123FE001C8669 /* libSwiffCore.a */; };
 		55BA68E9144B9C4B00D83AA8 /* DemoMovies.plist in Resources */ = {isa = PBXBuildFile; fileRef = 55BA68E8144B9C4B00D83AA8 /* DemoMovies.plist */; };
 		55BA68EC144BA50100D83AA8 /* DemoMovieController.m in Sources */ = {isa = PBXBuildFile; fileRef = 55BA68EB144BA50100D83AA8 /* DemoMovieController.m */; };
+		BE8553BC161A2E600094471B /* DemoGraphicsController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE8553BB161A2E600094471B /* DemoGraphicsController.m */; };
 		CE08F28C15C37E0B006CBA4B /* TestSuiteAS3.swf in Resources */ = {isa = PBXBuildFile; fileRef = CE08F28B15C37E0B006CBA4B /* TestSuiteAS3.swf */; };
 /* End PBXBuildFile section */
 
@@ -54,7 +55,7 @@
 		55038DE8144E5C5C00EA5841 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		55038DEA144E5C6400EA5841 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		55038DF3144ECBD300EA5841 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
-		550B60171446B35600F8C138 /* Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Demo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		550B60171446B35600F8C138 /* Demo App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Demo App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		550B601B1446B35600F8C138 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		550B601D1446B35600F8C138 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		550B601F1446B35600F8C138 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -74,6 +75,8 @@
 		55BA68E8144B9C4B00D83AA8 /* DemoMovies.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = DemoMovies.plist; path = Resources/DemoMovies.plist; sourceTree = SOURCE_ROOT; };
 		55BA68EA144BA50100D83AA8 /* DemoMovieController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DemoMovieController.h; path = Source/DemoMovieController.h; sourceTree = SOURCE_ROOT; };
 		55BA68EB144BA50100D83AA8 /* DemoMovieController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DemoMovieController.m; path = Source/DemoMovieController.m; sourceTree = SOURCE_ROOT; };
+		BE8553BA161A2E600094471B /* DemoGraphicsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DemoGraphicsController.h; path = Source/DemoGraphicsController.h; sourceTree = SOURCE_ROOT; };
+		BE8553BB161A2E600094471B /* DemoGraphicsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DemoGraphicsController.m; path = Source/DemoGraphicsController.m; sourceTree = SOURCE_ROOT; };
 		CE08F28B15C37E0B006CBA4B /* TestSuiteAS3.swf */ = {isa = PBXFileReference; lastKnownFileType = file; name = TestSuiteAS3.swf; path = ../../Tests/TestSuiteAS3.swf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -111,7 +114,7 @@
 		550B60181446B35600F8C138 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				550B60171446B35600F8C138 /* Demo.app */,
+				550B60171446B35600F8C138 /* Demo App.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -142,6 +145,8 @@
 				550B60461446B5C200F8C138 /* DemoApp.m */,
 				550B60411446B4B500F8C138 /* DemoMain.m */,
 				558B13DE1446BB230054AF76 /* DemoPrefix.pch */,
+				BE8553BA161A2E600094471B /* DemoGraphicsController.h */,
+				BE8553BB161A2E600094471B /* DemoGraphicsController.m */,
 			);
 			path = Demo;
 			sourceTree = "<group>";
@@ -150,7 +155,7 @@
 			isa = PBXGroup;
 			children = (
 				558CE77C14B125BB001C8669 /* libSwiffCore.a */,
-				558CE77E14B125BB001C8669 /* libSwiffCoreMac.a */,
+				558CE77E14B125BB001C8669 /* lib.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -186,7 +191,7 @@
 			);
 			name = Demo;
 			productName = Demo;
-			productReference = 550B60171446B35600F8C138 /* Demo.app */;
+			productReference = 550B60171446B35600F8C138 /* Demo App.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -195,7 +200,7 @@
 		550B600E1446B35600F8C138 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0420;
+				LastUpgradeCheck = 0450;
 			};
 			buildConfigurationList = 550B60111446B35600F8C138 /* Build configuration list for PBXProject "Demo" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -228,10 +233,10 @@
 			remoteRef = 558CE77B14B125BB001C8669 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		558CE77E14B125BB001C8669 /* libSwiffCoreMac.a */ = {
+		558CE77E14B125BB001C8669 /* lib.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
-			path = libSwiffCoreMac.a;
+			path = lib.a;
 			remoteRef = 558CE77D14B125BB001C8669 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -260,6 +265,7 @@
 				550B60421446B4B500F8C138 /* DemoMain.m in Sources */,
 				550B60471446B5C200F8C138 /* DemoApp.m in Sources */,
 				55BA68EC144BA50100D83AA8 /* DemoMovieController.m in Sources */,
+				BE8553BC161A2E600094471B /* DemoGraphicsController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -326,7 +332,7 @@
 				GCC_PREFIX_HEADER = Source/DemoPrefix.pch;
 				INFOPLIST_FILE = Resources/DemoInfo.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
-				PRODUCT_NAME = Demo;
+				PRODUCT_NAME = "Demo App";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
@@ -339,7 +345,7 @@
 				GCC_PREFIX_HEADER = Source/DemoPrefix.pch;
 				INFOPLIST_FILE = Resources/DemoInfo.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
-				PRODUCT_NAME = Demo;
+				PRODUCT_NAME = "Demo App";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};

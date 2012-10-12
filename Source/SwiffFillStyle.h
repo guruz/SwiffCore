@@ -52,6 +52,9 @@ typedef UInt8 SwiffFillStyleType;
 // Reads a FILLSTYLEARRAY from the parser
 + (NSArray *) fillStyleArrayWithParser:(SwiffParser *)parser;
 
+//initialize a fill with a color
+- (id) initWithColor:(SwiffColor*)fill_color;
+
 // Reads a FILLSTYLE from the parser
 - (id) initWithParser:(SwiffParser *)parser;
 

@@ -28,14 +28,15 @@
 #import <SwiffImport.h>
 #import <SwiffTypes.h>
 
-@class SwiffMovie;
+@class SwiffMovie, SwiffGraphics;
 
 
 @interface SwiffRenderer : NSObject
 
 - (id) initWithMovie:(SwiffMovie *)movie;
 
-- (void) renderPlacedObjects:(NSArray *)placedObjects inContext:(CGContextRef)context;
+- (void) renderPlacedObjects:(NSArray *)placedObjects withGraphics:(SwiffGraphics*) graphics inContext:(CGContextRef)context;
+//- (void) renderGraphics:(SwiffGraphics *)graphics inContext:(CGContextRef)context;
 
 @property (nonatomic, strong, readonly) SwiffMovie *movie;
 

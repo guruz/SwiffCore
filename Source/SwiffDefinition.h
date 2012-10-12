@@ -43,4 +43,5 @@
 
 @optional
 + (Class) placedObjectClass; // If not present, defaults to SwiffPlacedObject
+- (BOOL) wantsLayerDefault;
 @end

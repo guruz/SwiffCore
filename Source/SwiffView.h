@@ -43,7 +43,7 @@
 #endif
 
 
-@class SwiffLayer, SwiffMovie, SwiffFrame, SwiffPlayhead, SwiffSpriteDefinition;
+@class SwiffLayer, SwiffMovie, SwiffFrame, SwiffPlayhead, SwiffSpriteDefinition, SwiffGraphics;
 
 @protocol SwiffViewDelegate;
 
@@ -57,6 +57,7 @@
 
 @property (nonatomic, strong, readonly) SwiffSpriteDefinition *movie;
 @property (nonatomic, strong, readonly) SwiffPlayhead *playhead;
+@property (nonatomic, strong, readonly) SwiffGraphics *graphics;
 
 @property (nonatomic, assign) BOOL drawsBackground;
 

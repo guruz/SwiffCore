@@ -50,6 +50,9 @@ typedef struct SwiffPlacedObjectAdditionalStorage
 #define ADDITIONAL ((SwiffPlacedObjectAdditionalStorage *)_additional)
 #define MAKE_ADDITIONAL { if (!_additional) _additional = calloc(1, sizeof(SwiffPlacedObjectAdditionalStorage)); }
 
+
+//helper method, creates a placedobject given a parent SwiffMovie and a libraryID
+//not sure exactly what existingPlaceObject does yet... seems to be a way to not create a new object?
 SwiffPlacedObject *SwiffPlacedObjectCreate(SwiffMovie *movie, UInt16 libraryID, SwiffPlacedObject *existingPlacedObject)
 {
     id<SwiffDefinition> definition = nil;
@@ -77,6 +80,13 @@ SwiffPlacedObject *SwiffPlacedObjectCreate(SwiffMovie *movie, UInt16 libraryID, 
         [result setLibraryID:libraryID];
         [result setupWithDefinition:definition];
     }
+    
+    if([definition respondsToSelector:@selector(wantsLayerDefault)]) {
+        if([definition wantsLayerDefault]) {
+            [result setWantsLayer:YES];
+        }
+    }
+
     
     return result;
 }

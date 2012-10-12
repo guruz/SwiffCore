@@ -70,11 +70,12 @@
 
 - (id) initWithFrame:(CGRect)frame movie:(SwiffSpriteDefinition *)movie
 {
-    if (!movie) {
-        SwiffWarn(@"View", @"-[SwiffView initWithFrame:movie:] called with nil movie");
-    }
+//    if (!movie) {
+//        SwiffWarn(@"View", @"-[SwiffView initWithFrame:movie:] called with nil movie");
+//    }
     
     if ((self = [super initWithFrame:frame])) {
+        
         _layer = [[SwiffLayer alloc] initWithMovie:movie];
         [_layer setContentsScale:[[UIScreen mainScreen] scale]];
         [[self layer] addSublayer:_layer];
@@ -120,7 +121,7 @@
 - (id) initWithFrame:(NSRect)frame movie:(SwiffMovie *)movie
 {
     if (!movie) {
-        SwiffWarn(@"View", @"-[SwiffView initWithFrame:movie:] called with nil movie");
+        SwiffWarn(@"View", @"-[SwiffView initWithFrame:movie:] called with NIL movie");
     }
 
 
@@ -158,10 +159,16 @@
 - (void) _layoutMovieLayer
 {
     SwiffMovie *movie = [[self movie] movie];
-    if (!movie) return;
-
+    
     CGFloat w = [self bounds].size.width;
     CGFloat h = [self bounds].size.height;
+    
+    if (!movie){
+        CGRect fullFrame = CGRectMake(0,0,w,h);
+        [_layer setFrame:fullFrame];
+        return;
+    }
+    
     CGSize  stageSize   = [movie stageRect].size;
     CGFloat aspectRatio = stageSize.width / stageSize.height;
     
@@ -241,7 +248,8 @@
 - (void) setShouldFlattenSublayers:(BOOL)yn           { [_layer setShouldFlattenSublayers:yn];       }
 - (void) setShouldDrawDebugColors:(BOOL)yn            { [_layer setShouldDrawDebugColors:yn];        }
 
-- (SwiffSpriteDefinition *) movie                             { return [_layer movie];                       }
+- (SwiffSpriteDefinition *) movie                             { return [_layer movie];               }
+- (SwiffGraphics *) graphics                          { return [_layer graphics];                    }
 - (SwiffPlayhead *) playhead                          { return [_layer playhead];                    }
 - (BOOL)            drawsBackground                   { return [_layer drawsBackground];             }
 - (SwiffColor    *) multiplyColor                     { return [_layer multiplyColor];               }

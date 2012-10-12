@@ -77,6 +77,9 @@
 		55F9C75814464B1300FE8E4F /* SwiffSceneAndFrameLabelData.m in Sources */ = {isa = PBXBuildFile; fileRef = 55F9C75714464B1300FE8E4F /* SwiffSceneAndFrameLabelData.m */; };
 		55FE9B5614D40CBA00CF505B /* SwiffSparseArray.m in Sources */ = {isa = PBXBuildFile; fileRef = 55FE9B5514D40CBA00CF505B /* SwiffSparseArray.m */; };
 		55FE9B5814D413B600CF505B /* SwiffSparseArray.m in Sources */ = {isa = PBXBuildFile; fileRef = 55FE9B5514D40CBA00CF505B /* SwiffSparseArray.m */; };
+		BE678E9516161BEB006F827C /* SwiffGraphics.h in Headers */ = {isa = PBXBuildFile; fileRef = BE678E9316161BEB006F827C /* SwiffGraphics.h */; };
+		BE678E9616161BEB006F827C /* SwiffGraphics.m in Sources */ = {isa = PBXBuildFile; fileRef = BE678E9416161BEB006F827C /* SwiffGraphics.m */; };
+		BE678E9716161BEB006F827C /* SwiffGraphics.m in Sources */ = {isa = PBXBuildFile; fileRef = BE678E9416161BEB006F827C /* SwiffGraphics.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -88,7 +91,7 @@
 		550C99B5145A03F200836C62 /* SwiffSoundPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SwiffSoundPlayer.m; path = Source/SwiffSoundPlayer.m; sourceTree = "<group>"; };
 		550C99B8145A04FD00836C62 /* SwiffSoundEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SwiffSoundEvent.h; path = Source/SwiffSoundEvent.h; sourceTree = "<group>"; };
 		550C99B9145A04FD00836C62 /* SwiffSoundEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SwiffSoundEvent.m; path = Source/SwiffSoundEvent.m; sourceTree = "<group>"; };
-		5516B4C41446D0EA00231D67 /* libSwiffCoreMac.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSwiffCoreMac.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		5516B4C41446D0EA00231D67 /* lib.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = lib.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		5516B4C51446D0EA00231D67 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		5516B4C81446D0EA00231D67 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		5516B4CA1446D0EA00231D67 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -168,6 +171,8 @@
 		55F9C75714464B1300FE8E4F /* SwiffSceneAndFrameLabelData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SwiffSceneAndFrameLabelData.m; path = Source/SwiffSceneAndFrameLabelData.m; sourceTree = "<group>"; };
 		55FE9B5414D40CBA00CF505B /* SwiffSparseArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SwiffSparseArray.h; path = Source/SwiffSparseArray.h; sourceTree = "<group>"; };
 		55FE9B5514D40CBA00CF505B /* SwiffSparseArray.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SwiffSparseArray.m; path = Source/SwiffSparseArray.m; sourceTree = "<group>"; };
+		BE678E9316161BEB006F827C /* SwiffGraphics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SwiffGraphics.h; path = Source/SwiffGraphics.h; sourceTree = "<group>"; };
+		BE678E9416161BEB006F827C /* SwiffGraphics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SwiffGraphics.m; path = Source/SwiffGraphics.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -326,6 +331,8 @@
 				5580F4D8146DE35E005F2AC0 /* SwiffLayer.m */,
 				55B34CA014934E8900C67849 /* SwiffView.h */,
 				55B34CA114934E8900C67849 /* SwiffView.m */,
+				BE678E9316161BEB006F827C /* SwiffGraphics.h */,
+				BE678E9416161BEB006F827C /* SwiffGraphics.m */,
 			);
 			name = Rendering;
 			sourceTree = "<group>";
@@ -372,7 +379,7 @@
 			isa = PBXGroup;
 			children = (
 				5595A5E91442BFFA00DECD41 /* libSwiffCore.a */,
-				5516B4C41446D0EA00231D67 /* libSwiffCoreMac.a */,
+				5516B4C41446D0EA00231D67 /* lib.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -398,6 +405,7 @@
 				55F3158E148A072100E6E625 /* SwiffPlacedDynamicText.h in Headers */,
 				55F65C8A14AFC61B00DA2DDB /* SwiffFilter.h in Headers */,
 				557082DF14B7B3410072C19A /* SwiffUtils.h in Headers */,
+				BE678E9516161BEB006F827C /* SwiffGraphics.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -418,7 +426,7 @@
 			);
 			name = SwiffCoreMac;
 			productName = SwiffCoreMac;
-			productReference = 5516B4C41446D0EA00231D67 /* libSwiffCoreMac.a */;
+			productReference = 5516B4C41446D0EA00231D67 /* lib.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		5595A5E81442BFFA00DECD41 /* SwiffCore */ = {
@@ -501,6 +509,7 @@
 				557082E114B7B3410072C19A /* SwiffUtils.m in Sources */,
 				557082E214B7B67D0072C19A /* SwiffTypes.m in Sources */,
 				55FE9B5814D413B600CF505B /* SwiffSparseArray.m in Sources */,
+				BE678E9716161BEB006F827C /* SwiffGraphics.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -541,6 +550,7 @@
 				557082E014B7B3410072C19A /* SwiffUtils.m in Sources */,
 				557082E314B7B67E0072C19A /* SwiffTypes.m in Sources */,
 				55FE9B5614D40CBA00CF505B /* SwiffSparseArray.m in Sources */,
+				BE678E9616161BEB006F827C /* SwiffGraphics.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -549,22 +559,30 @@
 /* Begin XCBuildConfiguration section */
 		5516B4D11446D0EA00231D67 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 55C1B1F014688E5B0010CB82 /* SwiffCore_Mac_Debug.xcconfig */;
 			buildSettings = {
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SDKROOT)/usr/include/libxml2",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/build\"",
+					"\"$(SRCROOT)/build-iPhoneSimulator\"",
 				);
 			};
 			name = Debug;
 		};
 		5516B4D21446D0EA00231D67 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 55C1B1F114688E5B0010CB82 /* SwiffCore_Mac_Release.xcconfig */;
 			buildSettings = {
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SDKROOT)/usr/include/libxml2",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/build\"",
+					"\"$(SRCROOT)/build-iPhoneSimulator\"",
 				);
 			};
 			name = Release;
@@ -577,45 +595,138 @@
 		};
 		55955E1014708A0A00BAB75E /* Profile */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 55955E0D147089F000BAB75E /* SwiffCore_iOS_Profile.xcconfig */;
 			buildSettings = {
+				ARCHS = (
+					armv7s,
+					armv7,
+				);
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_OBJC_IMPLICIT_ATOMIC_PROPERTIES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_SHADOW = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SDKROOT)/usr/include/libxml2",
 				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/build\"",
+					"\"$(SRCROOT)/build-iPhoneSimulator\"",
+				);
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = (
+					"-DNS_BLOCK_ASSERTIONS=1",
+					"-Wshadow",
+				);
+				PRODUCT_NAME = SwiffCore;
+				PROVISIONING_PROFILE = "";
+				SDKROOT = iphoneos;
 			};
 			name = Profile;
 		};
 		55955E1114708A0A00BAB75E /* Profile */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 55955E0E147089F000BAB75E /* SwiffCore_Mac_Profile.xcconfig */;
 			buildSettings = {
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SDKROOT)/usr/include/libxml2",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/build\"",
+					"\"$(SRCROOT)/build-iPhoneSimulator\"",
 				);
 			};
 			name = Profile;
 		};
 		5595A5F11442BFFA00DECD41 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 55C1B1EE14688E5B0010CB82 /* SwiffCore_iOS_Debug.xcconfig */;
 			buildSettings = {
+				ARCHS = (
+					armv7s,
+					armv7,
+				);
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_OBJC_IMPLICIT_ATOMIC_PROPERTIES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				"GCC_PREPROCESSOR_DEFINITIONS[arch=*]" = DEBUG;
+				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_SHADOW = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SDKROOT)/usr/include/libxml2",
 				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/build\"",
+					"\"$(SRCROOT)/build-iPhoneSimulator\"",
+				);
+				ONLY_ACTIVE_ARCH = YES;
+				"OTHER_CFLAGS[arch=*]" = "-Wshadow";
+				PRODUCT_NAME = SwiffCore;
+				PROVISIONING_PROFILE = "";
+				SDKROOT = iphoneos;
 			};
 			name = Debug;
 		};
 		5595A5F21442BFFA00DECD41 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 55C1B1EF14688E5B0010CB82 /* SwiffCore_iOS_Release.xcconfig */;
 			buildSettings = {
+				ARCHS = (
+					armv7s,
+					armv7,
+				);
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_OBJC_IMPLICIT_ATOMIC_PROPERTIES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_SHADOW = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SDKROOT)/usr/include/libxml2",
 				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/build\"",
+					"\"$(SRCROOT)/build-iPhoneSimulator\"",
+				);
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CFLAGS = (
+					"-DNS_BLOCK_ASSERTIONS=1",
+					"-Wshadow",
+				);
+				PRODUCT_NAME = SwiffCore;
+				PROVISIONING_PROFILE = "";
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};

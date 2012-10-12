@@ -34,6 +34,7 @@
 #import "SwiffFontDefinition.h"
 #import "SwiffFrame.h"
 #import "SwiffMovie.h"
+#import "SwiffGraphics.h"
 #import "SwiffGradient.h"
 #import "SwiffLineStyle.h"
 #import "SwiffFillStyle.h"
@@ -392,7 +393,6 @@ nextOperation:
         CGContextClosePath(context);
     }
 }
-
 
 static void sStrokePath(SwiffRenderState *state, SwiffPath *path)
 {
@@ -867,7 +867,8 @@ static void sDrawPlacedObject(SwiffRenderState *state, SwiffPlacedObject *placed
 }
 
 
-- (void) renderPlacedObjects:(NSArray *)placedObjects inContext:(CGContextRef)context
+//TODO: temp hack, eitehr there needs to be a renderGraphics method or the graphics object should live on SwiffRenderer instead of SwiffLayer
+- (void) renderPlacedObjects:(NSArray *)placedObjects withGraphics:(SwiffGraphics *)graphics inContext:(CGContextRef)context
 {
     SwiffRenderState state;
     memset(&state, 0, sizeof(SwiffRenderState));
@@ -910,6 +911,31 @@ static void sDrawPlacedObject(SwiffRenderState *state, SwiffPlacedObject *placed
     CGContextSetStrokeColorSpace(context, colorSpace);
 
     CGColorSpaceRelease(colorSpace);
+    
+    //START GRAPHICS
+    if(graphics)
+    {
+        NSMutableArray *graphicsPaths = [graphics pathsToRender];
+        
+        if([graphicsPaths count] > 0) NSLog(@"GOT GRAPHICS TO DRAW!");
+        
+        for (SwiffPath *path in graphicsPaths) {
+            SwiffLineStyle *lineStyle = [path lineStyle];
+            
+            if (state.isBuildingClippingPath) {
+                if (lineStyle) continue;
+            } else {
+                CGContextBeginPath(context);
+            }
+            
+            if (lineStyle) {
+                sStrokePath(&state, path);
+            } else {
+                sFillPath(&state, path);
+            }
+        }
+    }
+    //END GRAPHICS
 
     for (SwiffPlacedObject *object in placedObjects) {
         sDrawPlacedObject(&state, object);

@@ -41,6 +41,7 @@ typedef UInt8 SwiffPathOperation;
 
 
 @class SwiffPath;
+extern void SwiffPathAddOperationAndFloats(SwiffPath *path, SwiffPathOperation operation, /*Floats*/ ...);
 extern void SwiffPathAddOperationAndTwips(SwiffPath *path, SwiffPathOperation operation, /*SwiffTwips*/ ...);
 extern void SwiffPathAddOperationEnd(SwiffPath *path);
 
