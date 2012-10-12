@@ -48,6 +48,8 @@
 - (void) gotoFrameWithIndex1:(NSUInteger)frameIndex1 play:(BOOL)play;
 - (void) gotoFrameWithIndex: (NSUInteger)frameIndex  play:(BOOL)play;
 
+- (void) gotoFrameWithName:(NSString *)frameLabel play:(BOOL)play;
+
 - (void) gotoFrame:(SwiffFrame *)frame play:(BOOL)play;
 
 - (void) play;

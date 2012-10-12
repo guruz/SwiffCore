@@ -259,6 +259,21 @@ void SwiffPlayheadWarnForInvalidGotoArguments()
     }
 }
 
+- (void) gotoFrameWithName:(NSString *)frameLabel play:(BOOL)play
+{
+    for(SwiffFrame *frame in [_movie frames])
+    {
+        if([frameLabel isEqualToString:frame.label])
+        {
+            [self _gotoFrameWithIndex:frame.indexInMovie play:play];
+            return;
+        }
+    }
+    
+    SwiffPlayheadWarnForInvalidGotoArguments();
+    NSLog(@"UNABLE TO GO TO FRAME %s", [frameLabel UTF8String]);
+}
+
 
 - (void) gotoFrame:(SwiffFrame *)frame play:(BOOL)play
 {
