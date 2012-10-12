@@ -32,18 +32,12 @@
 
 
 @interface SwiffView () <SwiffLayerDelegate>
-- (void) _layoutMovieLayer;
 @end
 
 
 @implementation SwiffView {
     SwiffLayer *_layer;
-    BOOL _delegate_swiffView_willUpdateCurrentFrame;
-    BOOL _delegate_swiffView_didUpdateCurrentFrame;
-    BOOL _delegate_swiffView_shouldInterpolateFromFrame_toFrame;
 }
-
-@synthesize delegate = _delegate;
 
 
 - (void) dealloc
@@ -187,14 +181,15 @@
 
 - (void) layer:(SwiffLayer *)layer willUpdateCurrentFrame:(SwiffFrame *)frame
 {
-    if (_delegate_swiffView_willUpdateCurrentFrame) {
+    if ([_delegate respondsToSelector:@selector(swiffView:willUpdateCurrentFrame:)]) {
         [_delegate swiffView:self willUpdateCurrentFrame:frame];
     }
 }
 
+
 - (void) layer:(SwiffLayer *)layer didUpdateCurrentFrame:(SwiffFrame *)frame
 {
-    if (_delegate_swiffView_didUpdateCurrentFrame) {
+    if ([_delegate respondsToSelector:@selector(swiffView:didUpdateCurrentFrame:)]) {
         [_delegate swiffView:self didUpdateCurrentFrame:frame];
     }
 }
@@ -202,7 +197,7 @@
 
 - (BOOL) layer:(SwiffLayer *)layer shouldInterpolateFromFrame:(SwiffFrame *)fromFrame toFrame:(SwiffFrame *)toFrame
 {
-    if (_delegate_swiffView_shouldInterpolateFromFrame_toFrame) {
+    if ([_delegate respondsToSelector:@selector(swiffView:shouldInterpolateFromFrame:toFrame:)]) {
         return [_delegate swiffView:self shouldInterpolateFromFrame:fromFrame toFrame:toFrame];
     }
         
@@ -217,12 +212,7 @@
 {
     if (_delegate != delegate) {
         [_layer setSwiffLayerDelegate:(delegate ? self : nil)];
-
         _delegate = delegate;
-
-        _delegate_swiffView_willUpdateCurrentFrame = [_delegate respondsToSelector:@selector(swiffView:willUpdateCurrentFrame:)];
-        _delegate_swiffView_didUpdateCurrentFrame  = [_delegate respondsToSelector:@selector(swiffView:didUpdateCurrentFrame:)];
-        _delegate_swiffView_shouldInterpolateFromFrame_toFrame = [_delegate respondsToSelector:@selector(swiffView:shouldInterpolateFromFrame:toFrame:)];
     }
 }
 

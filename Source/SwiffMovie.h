@@ -40,7 +40,7 @@
 
 - (id) initWithData:(NSData *)data;
 
-- (id<SwiffDefinition>) definitionWithLibraryName:(NSString*)classname;
+- (id<SwiffDefinition>) definitionWithExportedName:(NSString*)classname;
 - (id<SwiffDefinition>) definitionWithLibraryID:(UInt16)libraryID;
 
 - (SwiffBitmapDefinition      *) bitmapDefinitionWithLibraryID:(UInt16)libraryID;

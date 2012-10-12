@@ -35,7 +35,6 @@
 
 @interface SwiffPlayhead : NSObject
 
-- (id) initWithMovie:(SwiffSpriteDefinition *)movie andSymbol:(NSString *)classname delegate:(id<SwiffPlayheadDelegate>)delegate;
 - (id) initWithMovie:(SwiffSpriteDefinition *)movie delegate:(id<SwiffPlayheadDelegate>)delegate;
 
 - (void) gotoScene:(SwiffScene *)scene frameLabel: (NSString *)frameLabel  play:(BOOL)play;
@@ -60,7 +59,7 @@
 - (SwiffScene *) scene;
 - (SwiffFrame *) frame;
 
-@property (nonatomic, swiff_weak) id<SwiffPlayheadDelegate> delegate;
+@property (nonatomic, weak) id<SwiffPlayheadDelegate> delegate;
 @property (nonatomic, assign) BOOL loopsMovie;
 @property (nonatomic, assign) BOOL loopsScene;
 

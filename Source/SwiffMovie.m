@@ -52,7 +52,7 @@ static NSString * const SwiffMovieNeedsJPEGTablesDataKey = @"SwiffMovieNeedsJPEG
 @end
 
 @interface SwiffSpriteDefinition (Protected)
-@property (nonatomic, swiff_weak) SwiffMovie *movie;
+@property (nonatomic, weak) SwiffMovie *movie;
 
 - (void) _decodeData:(NSData *)data;
 - (void) _parser:(SwiffParser *)parser didFindTag:(SwiffTag)tag version:(NSInteger)version;
@@ -65,10 +65,6 @@ static NSString * const SwiffMovieNeedsJPEGTablesDataKey = @"SwiffMovieNeedsJPEG
     NSMutableDictionary *_classnames;
 }
 
-@synthesize version         = _version,
-            frameRate       = _frameRate,
-            stageRect       = _stageRect,
-            backgroundColor = _backgroundColor;
 
 - (id) init
 {
@@ -157,9 +153,7 @@ static NSString * const SwiffMovieNeedsJPEGTablesDataKey = @"SwiffMovieNeedsJPEG
 {
     id<SwiffDefinition> definitionToAdd = nil;
     
-    if (tag == SwiffTagExportAssets) {
-        NSLog(@"TODO: read export name (AS2)");
-    } else if (tag == SwiffTagSymbolClass) {
+    if (tag == SwiffTagExportAssets || tag == SwiffTagSymbolClass) {
         UInt16 numSymbols;
         SwiffParserReadUInt16(parser, &numSymbols);
         
@@ -268,7 +262,7 @@ id<SwiffDefinition> SwiffMovieGetDefinition(SwiffMovie *movie, UInt16 libraryID)
 }
 
 
--(id<SwiffDefinition>) definitionWithLibraryName:(NSString*)classname
+-(id<SwiffDefinition>) definitionWithExportedName:(NSString*)classname
 {
     int symbolID = [[_classnames objectForKey:classname] intValue];
 

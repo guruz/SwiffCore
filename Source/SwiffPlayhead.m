@@ -45,7 +45,6 @@ void SwiffPlayheadWarnForInvalidGotoArguments()
 
 
 @interface SwiffPlayhead ()
-- (void) handleTimerTick:(NSTimer *)timer;
 @end
 
 
@@ -59,32 +58,17 @@ void SwiffPlayheadWarnForInvalidGotoArguments()
     BOOL           _hasFrameIndexForNextStep;
 }
 
-@synthesize delegate      = _delegate,
-            movie         = _movie,
-            loopsMovie    = _loopsMovie,
-            loopsScene    = _loopsScene;
 
-
-- (id) initWithMovie:(SwiffSpriteDefinition *)movie andSymbol:(NSString *)classname delegate:(id<SwiffPlayheadDelegate>)delegate
+- (id) initWithMovie:(SwiffSpriteDefinition *)movie delegate:(id<SwiffPlayheadDelegate>)delegate
 {
     if ((self = [super init])) {
         _frameIndex = -1;
         _movie = movie;
         _delegate = delegate;
-    
-    
-        if(classname != NULL)
-        {
-            NSLog(@"TODO: ONLY RETURN OBJECT %@", classname);    
-        }
+        
     }
     
     return self;
-}
-
-- (id) initWithMovie:(SwiffSpriteDefinition *)movie delegate:(id<SwiffPlayheadDelegate>)delegate
-{
-    return [self initWithMovie:movie andSymbol:NULL delegate:delegate];
 }
 
 

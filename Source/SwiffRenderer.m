@@ -249,6 +249,9 @@ nextOperation:
 
             goto nextOperation;
         }
+
+    case SwiffPathOperationEnd:
+        break;
     }
 
     if (shouldClose && (x == moveX) && (y == moveY)) {
@@ -301,6 +304,9 @@ nextOperation:
         CGContextAddLineToPoint(context, toX, toY);
 
         goto nextOperation;
+
+    case SwiffPathOperationEnd:
+        break;
     }
 
     if ((toX == moveX) && (toY == moveY)) {
@@ -387,6 +393,9 @@ nextOperation:
         CGContextAddLineToPoint(context, p.x, p.y);
 
         goto nextOperation;
+
+    case SwiffPathOperationEnd:
+        break;
     }
 
     if ((toX == moveX) && (toY == moveY)) {
@@ -844,15 +853,6 @@ static void sDrawPlacedObject(SwiffRenderState *state, SwiffPlacedObject *placed
     BOOL              _hasBaseAffineTransform;
     BOOL              _hasMultiplyColor;
 }
-
-@synthesize movie                       = _movie,
-            scaleFactorHint             = _scaleFactorHint,
-            hairlineWidth               = _hairlineWidth,
-            fillHairlineWidth           = _fillHairlineWidth,
-            shouldAntialias             = _shouldAntialias,
-            shouldSmoothFonts           = _shouldSmoothFonts,
-            shouldSubpixelPositionFonts = _shouldSubpixelPositionFonts,
-            shouldSubpixelQuantizeFonts = _shouldSubpixelQuantizeFonts;
 
 
 - (id) initWithMovie:(SwiffMovie *)movie
