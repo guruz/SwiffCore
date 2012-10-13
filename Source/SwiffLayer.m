@@ -179,6 +179,11 @@ static BOOL sShouldUseSameLayer(SwiffPlacedObject *a, SwiffPlacedObject *b)
                               outTransform: (CGAffineTransform *) outTransform
                               outTranslate: (CGPoint *) outTranslate
 {
+    //WCH: trying to track down why text doesn't display... it seems like this is called sometimes
+    //before the view calls for layout and sets the bounds, which just results in nothing. bailing
+    //out with scaleFactor==0 seems to make sense (0 width, 0 height) and doesn't seem to break anything
+    if(scaleFactor == 0) return;
+    
     id<SwiffDefinition> definition = [[_movie movie] definitionWithLibraryID:[placedObject libraryID]];
 
     CGAffineTransform transform = CGAffineTransformIdentity;
@@ -721,7 +726,7 @@ static BOOL sShouldUseSameLayer(SwiffPlacedObject *a, SwiffPlacedObject *b)
         CGAffineTransform orig = base;
 
 //      CGContextSetCTM() is private, so immitate it with concatenation
-        CGContextConcatCTM(context, CGAffineTransformInvert(base)); // CGContextSetCTM(context, CGAffineTransformIdentity)
+        CGContextConcatCTM(context, CGAffineTransformInvert(base)); // CGContextSetCTM(context, CGAffineTransformIdentity)       
         
         CGFloat renderTranslationX = [[layer valueForKey:SwiffRenderTranslationXKey] doubleValue];
         CGFloat renderTranslationY = [[layer valueForKey:SwiffRenderTranslationYKey] doubleValue];
