@@ -24,6 +24,7 @@
 		55BA68E9144B9C4B00D83AA8 /* DemoMovies.plist in Resources */ = {isa = PBXBuildFile; fileRef = 55BA68E8144B9C4B00D83AA8 /* DemoMovies.plist */; };
 		55BA68EC144BA50100D83AA8 /* DemoMovieController.m in Sources */ = {isa = PBXBuildFile; fileRef = 55BA68EB144BA50100D83AA8 /* DemoMovieController.m */; };
 		BE8553BC161A2E600094471B /* DemoGraphicsController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE8553BB161A2E600094471B /* DemoGraphicsController.m */; };
+		BEEF80B21628F2830049A93D /* tiles.swf in Resources */ = {isa = PBXBuildFile; fileRef = BEEF80B11628F2830049A93D /* tiles.swf */; };
 		CE08F28C15C37E0B006CBA4B /* TestSuiteAS3.swf in Resources */ = {isa = PBXBuildFile; fileRef = CE08F28B15C37E0B006CBA4B /* TestSuiteAS3.swf */; };
 /* End PBXBuildFile section */
 
@@ -77,6 +78,7 @@
 		55BA68EB144BA50100D83AA8 /* DemoMovieController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DemoMovieController.m; path = Source/DemoMovieController.m; sourceTree = SOURCE_ROOT; };
 		BE8553BA161A2E600094471B /* DemoGraphicsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DemoGraphicsController.h; path = Source/DemoGraphicsController.h; sourceTree = SOURCE_ROOT; };
 		BE8553BB161A2E600094471B /* DemoGraphicsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DemoGraphicsController.m; path = Source/DemoGraphicsController.m; sourceTree = SOURCE_ROOT; };
+		BEEF80B11628F2830049A93D /* tiles.swf */ = {isa = PBXFileReference; lastKnownFileType = file; name = tiles.swf; path = ../../Tests/tiles.swf; sourceTree = "<group>"; };
 		CE08F28B15C37E0B006CBA4B /* TestSuiteAS3.swf */ = {isa = PBXFileReference; lastKnownFileType = file; name = TestSuiteAS3.swf; path = ../../Tests/TestSuiteAS3.swf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -163,6 +165,7 @@
 		55BA68ED144BAC8A00D83AA8 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				BEEF80B11628F2830049A93D /* tiles.swf */,
 				CE08F28B15C37E0B006CBA4B /* TestSuiteAS3.swf */,
 				558B13DF1446BB2C0054AF76 /* DemoInfo.plist */,
 				55BA68E8144B9C4B00D83AA8 /* DemoMovies.plist */,
@@ -252,6 +255,7 @@
 				553135B7153ED1C00028EFF7 /* TestSuite.swf in Resources */,
 				55BA68E9144B9C4B00D83AA8 /* DemoMovies.plist in Resources */,
 				CE08F28C15C37E0B006CBA4B /* TestSuiteAS3.swf in Resources */,
+				BEEF80B21628F2830049A93D /* tiles.swf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
