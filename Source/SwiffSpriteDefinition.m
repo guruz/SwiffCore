@@ -71,6 +71,7 @@ static NSString * const SwiffSpriteDefinitionStreamBlockKey = @"SwiffSpriteDefin
 @implementation SwiffSpriteDefinition {
     NSDictionary     *_labelToFrameMap;
     SwiffFrame       *_lastFrame;
+    NSString         *_lastFrameLabel;
     NSDictionary     *_sceneNameToSceneMap;
     SwiffSparseArray *_placedObjects;
     NSMutableArray   *_frames;
@@ -366,7 +367,10 @@ static NSString * const SwiffSpriteDefinitionStreamBlockKey = @"SwiffSpriteDefin
                                                              soundEvents: soundEvents
                                                              streamSound: streamSound
                                                              streamBlock: streamBlock];
-
+    
+    if(_lastFrameLabel != nil) [frame updateLabel:_lastFrameLabel];
+    _lastFrameLabel = nil;
+    
     [_frames addObject:frame];
     _lastFrame = frame;
 
@@ -380,7 +384,7 @@ static NSString * const SwiffSpriteDefinitionStreamBlockKey = @"SwiffSpriteDefin
     NSString *label = nil;
     SwiffParserReadString(parser, &label);
 
-//    [_workingFrame setLabel:label];
+    _lastFrameLabel = label;
 }
 
 

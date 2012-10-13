@@ -33,7 +33,6 @@
 #import "SwiffSoundStreamBlock.h"
 
 @interface SwiffFrame (FriendMethods)
-- (void) _updateLabel:(NSString *)label;
 - (void) _updateScene:(SwiffScene *)scene indexInScene:(NSUInteger)index1InScene;
 @end
 
@@ -83,7 +82,7 @@
 }
 
 
-- (void) _updateLabel:(NSString *)label 
+- (void) updateLabel:(NSString *)label
 {
     _label = [label copy];
 }
