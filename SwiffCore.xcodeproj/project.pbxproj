@@ -79,7 +79,6 @@
 		BE678E9516161BEB006F827C /* SwiffGraphics.h in Headers */ = {isa = PBXBuildFile; fileRef = BE678E9316161BEB006F827C /* SwiffGraphics.h */; };
 		BE678E9616161BEB006F827C /* SwiffGraphics.m in Sources */ = {isa = PBXBuildFile; fileRef = BE678E9416161BEB006F827C /* SwiffGraphics.m */; };
 		BE678E9716161BEB006F827C /* SwiffGraphics.m in Sources */ = {isa = PBXBuildFile; fileRef = BE678E9416161BEB006F827C /* SwiffGraphics.m */; };
-		BEEF80AF1628EBA40049A93D /* SwiffView.m in Sources */ = {isa = PBXBuildFile; fileRef = BEEF80AE1628EBA40049A93D /* SwiffView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -172,7 +171,6 @@
 		55FE9B5514D40CBA00CF505B /* SwiffSparseArray.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SwiffSparseArray.m; path = Source/SwiffSparseArray.m; sourceTree = "<group>"; };
 		BE678E9316161BEB006F827C /* SwiffGraphics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SwiffGraphics.h; path = Source/SwiffGraphics.h; sourceTree = "<group>"; };
 		BE678E9416161BEB006F827C /* SwiffGraphics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SwiffGraphics.m; path = Source/SwiffGraphics.m; sourceTree = "<group>"; };
-		BE7B60C71628E1FF007C99D2 /* SwiffView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SwiffView.h; path = Source/SwiffView.h; sourceTree = "<group>"; };
 		BEEF80AE1628EBA40049A93D /* SwiffView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SwiffView.m; path = Source/SwiffView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -283,7 +281,6 @@
 			isa = PBXGroup;
 			children = (
 				BEEF80AE1628EBA40049A93D /* SwiffView.m */,
-				BE7B60C71628E1FF007C99D2 /* SwiffView.h */,
 			);
 			name = "View Wrapper";
 			sourceTree = "<group>";
