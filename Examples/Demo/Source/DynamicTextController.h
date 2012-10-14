@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface DynamicTextController : UIViewController
+@interface DynamicTextController : UIViewController {
 
+@private
+    SwiffView   *movieView;
+
+}
 @end

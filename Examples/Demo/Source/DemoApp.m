@@ -31,10 +31,11 @@
 #import "DynamicTextController.h"
 
 static NSString *sCurrentMovieKey = @"CurrentMovie";
-static NSString *sCurrentClassnameKey = @"CurrentKey";
+static NSString *sCurrentClassnameKey = @"CurrentClassnameKey";
 
 @interface DemoTableViewController ()
 - (void) _pushMovieWithURLString:(NSString *)inURLString animated:(BOOL)animated;
+- (void) handleURL:(NSString*)urlString andClassname:(NSString *)classname animated:(Boolean)animated;
 @end
 
 
@@ -123,6 +124,14 @@ static NSString *sCurrentClassnameKey = @"CurrentKey";
     NSString *urlString = [dictionary objectForKey:@"url"];
     [[NSUserDefaults standardUserDefaults] setObject:urlString forKey:sCurrentMovieKey];
     
+    NSString *classname = [dictionary objectForKey:@"classname"];
+    [[NSUserDefaults standardUserDefaults] setObject:classname forKey:sCurrentClassnameKey];
+    
+    [self handleURL:urlString andClassname:classname animated:YES];
+}
+
+- (void) handleURL:(NSString*)urlString andClassname:(NSString *)classname animated:(Boolean)animated
+{
     NSURL* url = [NSURL URLWithString:urlString];
     if ([[url scheme] isEqualToString:@"controller"])
     {
@@ -130,28 +139,25 @@ static NSString *sCurrentClassnameKey = @"CurrentKey";
         {
             DemoGraphicsController *gc = [[DemoGraphicsController alloc] init];
             [gc setTitle:@"Graphics Test"];
-            [[self navigationController] pushViewController:gc animated:YES];
+            [[self navigationController] pushViewController:gc animated:animated];
         }else if([urlString isEqualToString:@"controller:DynamicTextController"]){
             DynamicTextController *tc = [[DynamicTextController alloc] init];
             [tc setTitle:@"Dynamic Text Test"];
-            [[self navigationController] pushViewController:tc animated:YES];
+            [[self navigationController] pushViewController:tc animated:animated];
         }else{
             NSLog(@"UNRECOGNIZED CONTROLLER: %@", urlString);
         }
         return;
     }
-        
-
-    NSString *classname = [dictionary objectForKey:@"classname"];
+    
     if(classname) {
         [[NSUserDefaults standardUserDefaults] setObject:classname forKey:sCurrentClassnameKey];
     }else{
         [[NSUserDefaults standardUserDefaults] setValue:NULL forKey:sCurrentClassnameKey];
     }
-     
-    [self _pushMovieWithURLString:urlString animated:YES];
+    
+    [self _pushMovieWithURLString:urlString animated:animated];
 }
-
 
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -190,8 +196,10 @@ static NSString *sCurrentClassnameKey = @"CurrentKey";
     [m_window makeKeyAndVisible];
 
     NSString *currentURLString = [[NSUserDefaults standardUserDefaults] objectForKey:sCurrentMovieKey];
+    NSString *currentClassString = [[NSUserDefaults standardUserDefaults] objectForKey:sCurrentClassnameKey];
+
     if (currentURLString) {
-        [vc _pushMovieWithURLString:currentURLString animated:NO];
+        [vc handleURL:currentURLString andClassname:currentClassString animated:NO];
     }
 
     return YES;

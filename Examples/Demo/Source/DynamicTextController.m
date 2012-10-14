@@ -6,6 +6,7 @@
 //
 //
 
+#import "SwiffMovie.h"
 #import "DynamicTextController.h"
 
 @interface DynamicTextController ()
@@ -14,25 +15,39 @@
 
 @implementation DynamicTextController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
+
+    NSString *resourcePath = [[NSBundle mainBundle] pathForResource:@"DynamicTextPlacement" ofType:@"swf"];
+    
+    if (!resourcePath) {
+        NSLog(@"Unable to find DynamicTextPlacement.swf");
+        return;
+    }
+    
+    //Item 1 - Load the main swf and display it.
+    NSData *movieData = [[NSData alloc] initWithContentsOfFile:resourcePath];
+    SwiffMovie *movie = [[SwiffMovie alloc] initWithData:movieData];
+    
+    CGRect movieFrame = [[self view] bounds];
+    
+    movieView = [[SwiffView alloc] initWithFrame:movieFrame movie:movie];
+    
+    [movieView setBackgroundColor:[UIColor whiteColor]];
+    [movieView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
+    [[self view] addSubview:movieView];
+    
+    //SwiffSpriteDefinition *clip = [m_movie definitionWithExportedName:m_classname];
+    
+    
 }
 
-- (void)didReceiveMemoryWarning
+- (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
 {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    return UIInterfaceOrientationIsLandscape(toInterfaceOrientation);
 }
+
 
 @end

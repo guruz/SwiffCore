@@ -25,6 +25,7 @@
 		55BA68EC144BA50100D83AA8 /* DemoMovieController.m in Sources */ = {isa = PBXBuildFile; fileRef = 55BA68EB144BA50100D83AA8 /* DemoMovieController.m */; };
 		BE8553BC161A2E600094471B /* DemoGraphicsController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE8553BB161A2E600094471B /* DemoGraphicsController.m */; };
 		BEEF80BD162A41FF0049A93D /* DynamicTextController.m in Sources */ = {isa = PBXBuildFile; fileRef = BEEF80BC162A41FF0049A93D /* DynamicTextController.m */; };
+		BEEF80BF162A611B0049A93D /* DynamicTextPlacement.swf in Resources */ = {isa = PBXBuildFile; fileRef = BEEF80BE162A611B0049A93D /* DynamicTextPlacement.swf */; };
 		CE08F28C15C37E0B006CBA4B /* TestSuiteAS3.swf in Resources */ = {isa = PBXBuildFile; fileRef = CE08F28B15C37E0B006CBA4B /* TestSuiteAS3.swf */; };
 /* End PBXBuildFile section */
 
@@ -80,6 +81,7 @@
 		BE8553BB161A2E600094471B /* DemoGraphicsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DemoGraphicsController.m; path = Source/DemoGraphicsController.m; sourceTree = SOURCE_ROOT; };
 		BEEF80BB162A41FF0049A93D /* DynamicTextController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DynamicTextController.h; path = Source/DynamicTextController.h; sourceTree = SOURCE_ROOT; };
 		BEEF80BC162A41FF0049A93D /* DynamicTextController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DynamicTextController.m; path = Source/DynamicTextController.m; sourceTree = SOURCE_ROOT; };
+		BEEF80BE162A611B0049A93D /* DynamicTextPlacement.swf */ = {isa = PBXFileReference; lastKnownFileType = file; name = DynamicTextPlacement.swf; path = ../../Tests/DynamicTextPlacement.swf; sourceTree = "<group>"; };
 		CE08F28B15C37E0B006CBA4B /* TestSuiteAS3.swf */ = {isa = PBXFileReference; lastKnownFileType = file; name = TestSuiteAS3.swf; path = ../../Tests/TestSuiteAS3.swf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -168,6 +170,7 @@
 		55BA68ED144BAC8A00D83AA8 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				BEEF80BE162A611B0049A93D /* DynamicTextPlacement.swf */,
 				CE08F28B15C37E0B006CBA4B /* TestSuiteAS3.swf */,
 				558B13DF1446BB2C0054AF76 /* DemoInfo.plist */,
 				55BA68E8144B9C4B00D83AA8 /* DemoMovies.plist */,
@@ -257,6 +260,7 @@
 				553135B7153ED1C00028EFF7 /* TestSuite.swf in Resources */,
 				55BA68E9144B9C4B00D83AA8 /* DemoMovies.plist in Resources */,
 				CE08F28C15C37E0B006CBA4B /* TestSuiteAS3.swf in Resources */,
+				BEEF80BF162A611B0049A93D /* DynamicTextPlacement.swf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
