@@ -87,6 +87,22 @@
 			<key>author</key>
 			<string>musictheory.net</string>
 		</dict>
+		<dict>
+			<key>url</key>
+			<string>controller:DynamicTextController</string>
+			<key>name</key>
+			<string>Dynamic Text Controller</string>
+			<key>author</key>
+			<string>Will H</string>
+		</dict>
+		<dict>
+			<key>url</key>
+			<string>controller:DemoGraphicsController</string>
+			<key>name</key>
+			<string>Demo Graphics Controller</string>
+			<key>author</key>
+			<string>Will H</string>
+		</dict>
 	</array>
 </dict>
 </plist>
