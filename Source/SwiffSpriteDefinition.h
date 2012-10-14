@@ -29,7 +29,7 @@
 #import <SwiffParser.h>
 #import <SwiffDefinition.h>
 
-@class SwiffFrame, SwiffScene, SwiffMovie, SwiffSceneAndFrameLabelData, SwiffSparseArray, SwiffSoundDefinition, SwiffSoundStreamData;
+@class SwiffFrame, SwiffScene, SwiffMovie, SwiffSceneAndFrameLabelData, SwiffSparseArray, SwiffSoundDefinition, SwiffSoundStreamData, SwiffPlacedObject;
 
 
 @interface SwiffSpriteDefinition : NSObject <SwiffDefinition>
@@ -47,6 +47,9 @@
 - (SwiffScene *) sceneWithName:(NSString *)name;
 
 - (SwiffMovie *) movie;
+
+- (SwiffPlacedObject*) getChildByName:(NSString *)name;
+- (SwiffPlacedObject*) getChildByDotString:(NSString *)dotString;
 
 @property (nonatomic, strong, readonly) NSArray *scenes;
 @property (nonatomic, strong, readonly) NSArray *frames;

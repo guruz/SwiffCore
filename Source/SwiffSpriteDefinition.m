@@ -510,6 +510,49 @@ static NSString * const SwiffSpriteDefinitionStreamBlockKey = @"SwiffSpriteDefin
 }
 
 
+- (SwiffPlacedObject*) getChildByName:(NSString *)name
+{
+    for(SwiffPlacedObject* child in _placedObjects)
+    {
+        NSLog(@"COMPARING %@ to %@", child.name, name);
+        if([name isEqualToString:child.name])
+        {
+            return child;
+        }
+    }
+    return NULL;
+}
+
+- (SwiffPlacedObject*) getChildByDotString:(NSString *)dotString
+{
+    NSArray *pieces = [dotString componentsSeparatedByString:@"."];
+    if([pieces count] == 0)
+    {
+        return NULL;
+    }else if([pieces count] == 1)
+    {
+        return [self getChildByName:dotString];
+    }
+    
+    //when passing [self movie] from within the for loop I was getting null...
+    //assume it's an ObjC scope thing.
+    SwiffMovie *selfMovie = [self movie];
+    SwiffPlacedObject* placedObject = [self getChildByName:pieces[0]];
+    for(int i = 1; i < [pieces count]; i++)
+    {
+        id<SwiffDefinition> definition = SwiffMovieGetDefinition(selfMovie, placedObject->_libraryID);
+
+        //for now only SwiffSpriteDefinitions can be containers, so this will be deterministic enough
+        if ([definition isKindOfClass:[SwiffSpriteDefinition class]]) {
+            placedObject = [(SwiffSpriteDefinition *)definition getChildByName:pieces[i]];
+        }else{
+            return NULL;
+        }
+    }
+    return placedObject;
+}
+
+
 #pragma mark -
 #pragma mark Accessors
 

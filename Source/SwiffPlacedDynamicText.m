@@ -38,6 +38,10 @@
     CFAttributedStringRef  _attributedText;
 }
 
+- (id) init
+{
+    return [super init];
+}
 
 - (id) initWithPlacedObject:(SwiffPlacedObject *)placedObject
 {

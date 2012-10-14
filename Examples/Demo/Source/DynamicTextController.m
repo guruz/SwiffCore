@@ -39,6 +39,20 @@
     [movieView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
     [[self view] addSubview:movieView];
     
+    SwiffPlacedDynamicText *item_1 = (SwiffPlacedDynamicText*)[movie getChildByDotString:@"item_1.tf"];
+    SwiffPlacedDynamicText *item_2 = (SwiffPlacedDynamicText*)[movie getChildByDotString:@"item_2.tf"];
+    
+    if(item_1 == item_2)
+    {
+        NSLog(@"SAME PLACEDOBJECT!");
+    }
+    
+    NSLog(@"item_2.tf.text = %@", item_2.text);
+    //Replicating all the HTML gobbledygook isn't optimal, but necessary in this particular case because of the multi-line text
+    //If multiline text with line breaks needs to be edited, could probably write some helpers to ease this...
+    [item_2 setText:@"<p align=\"center\"><font face=\"Futura Medium\" size=\"20\" color=\"#000000\" letterSpacing=\"0.000000\" kerning=\"1\">Item 2</font></p><p align=\"center\"><font face=\"Futura Medium\" size=\"20\" color=\"#000000\" letterSpacing=\"0.000000\" kerning=\"1\">This text was placed on the main timeline and later altered with code.</font></p>" HTML:YES];
+
+    
     //SwiffSpriteDefinition *clip = [m_movie definitionWithExportedName:m_classname];
     
     
