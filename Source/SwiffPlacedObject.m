@@ -81,13 +81,6 @@ SwiffPlacedObject *SwiffPlacedObjectCreate(SwiffMovie *movie, UInt16 libraryID, 
         [result setupWithDefinition:definition];
     }
     
-    if([definition respondsToSelector:@selector(wantsLayerDefault)]) {
-        if([definition wantsLayerDefault]) {
-            [result setWantsLayer:YES];
-        }
-    }
-
-    
     return result;
 }
 

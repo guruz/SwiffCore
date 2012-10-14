@@ -6,16 +6,6 @@
 	<array>
 		<dict>
 			<key>url</key>
-			<string>bundle:tiles.swf</string>
-			<key>name</key>
-			<string>Tile Test</string>
-			<key>author</key>
-			<string>Will H</string>
-			<key>classname</key>
-			<string>LetterTile</string>
-		</dict>
-		<dict>
-			<key>url</key>
 			<string>http://www.potterpuppetpals.com/Potter.swf</string>
 			<key>name</key>
 			<string>Potter Puppet Pals - Bothering Snape</string>

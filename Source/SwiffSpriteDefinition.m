@@ -101,11 +101,6 @@ static NSString * const SwiffSpriteDefinitionStreamBlockKey = @"SwiffSpriteDefin
     return _movie;
 }
 
-- (BOOL) wantsLayerDefault
-{
-    return YES;
-}
-
 - (id) initWithParser:(SwiffParser *)parser movie:(SwiffMovie *)movie
 {
     if ((self = [self init])) {
