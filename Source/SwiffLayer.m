@@ -406,7 +406,23 @@ static BOOL sShouldUseSameLayer(SwiffPlacedObject *a, SwiffPlacedObject *b)
         UInt16 libraryID = [placedObject libraryID];
         
         id<SwiffDefinition> definition = [[_movie movie] definitionWithLibraryID:libraryID];
-        CALayer *sublayer = [CALayer layer];
+        CALayer *sublayer;
+        
+        if(_shouldPlayChildren && [definition isKindOfClass:[SwiffSpriteDefinition class]])
+        {
+            SwiffSpriteDefinition* sprite = (SwiffSpriteDefinition*) definition;
+            if([[sprite frames] count] > 1)
+            {
+                SwiffLayer* spriteLayer = [[SwiffLayer alloc] initWithMovie:definition];
+                [[spriteLayer playhead] play];
+                
+                sublayer = spriteLayer;
+            }else{
+                sublayer = [CALayer layer];
+            }
+        }else{
+            sublayer = [CALayer layer];
+        }
 
         CGRect bounds = [definition renderBounds];
 
@@ -960,13 +976,17 @@ static BOOL sShouldUseSameLayer(SwiffPlacedObject *a, SwiffPlacedObject *b)
     }
 }
 
-
 - (void) setShouldFlattenSublayers:(BOOL)shouldFlattenSublayers
 {
     if (shouldFlattenSublayers != _shouldFlattenSublayers) {
         _shouldFlattenSublayers  = shouldFlattenSublayers;
         [self _setNeedsRedisplay];
     }
+}
+
+- (void) setShouldPlayChildren:(BOOL)yn
+{
+    _shouldPlayChildren = yn;
 }
 
 

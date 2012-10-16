@@ -237,6 +237,7 @@
 - (void) setShouldSubpixelQuantizeFonts:(BOOL)yn      { [_layer setShouldSubpixelQuantizeFonts:yn];  }
 - (void) setShouldFlattenSublayers:(BOOL)yn           { [_layer setShouldFlattenSublayers:yn];       }
 - (void) setShouldDrawDebugColors:(BOOL)yn            { [_layer setShouldDrawDebugColors:yn];        }
+- (void) setShouldPlayChildren:(BOOL)yn               { [_layer setShouldPlayChildren:yn];           }
 
 - (SwiffSpriteDefinition *) movie                             { return [_layer movie];               }
 - (SwiffGraphics *) graphics                          { return [_layer graphics];                    }
@@ -251,5 +252,6 @@
 - (BOOL)            shouldSubpixelQuantizeFonts       { return [_layer shouldSubpixelQuantizeFonts]; }
 - (BOOL)            shouldFlattenSublayers            { return [_layer shouldFlattenSublayers];      }
 - (BOOL)            shouldDrawDebugColors             { return [_layer shouldDrawDebugColors];       }
+- (BOOL)            setShouldPlayChildren             { return [_layer shouldPlayChildren];          }
 
 @end

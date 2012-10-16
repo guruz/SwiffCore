@@ -71,6 +71,7 @@
 @property (nonatomic, assign) BOOL shouldSubpixelQuantizeFonts;
 @property (nonatomic, assign) BOOL shouldFlattenSublayers;
 @property (nonatomic, assign) BOOL shouldDrawDebugColors;
+@property (nonatomic, assign) BOOL shouldPlayChildren;
 
 @end
 
