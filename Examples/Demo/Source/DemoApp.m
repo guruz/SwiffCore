@@ -29,6 +29,7 @@
 #import "DemoMovieController.h"
 #import "DemoGraphicsController.h"
 #import "DynamicTextController.h"
+#import "SubAnimatedController.h"
 
 static NSString *sCurrentMovieKey = @"CurrentMovie";
 static NSString *sCurrentClassnameKey = @"CurrentClassnameKey";
@@ -144,6 +145,10 @@ static NSString *sCurrentClassnameKey = @"CurrentClassnameKey";
             DynamicTextController *tc = [[DynamicTextController alloc] init];
             [tc setTitle:@"Dynamic Text Test"];
             [[self navigationController] pushViewController:tc animated:animated];
+        }else if([urlString isEqualToString:@"controller:SubAnimatedController"]){
+            SubAnimatedController *ac = [[SubAnimatedController alloc] init];
+            [ac setTitle:@"Sub Animation Test"];
+            [[self navigationController] pushViewController:ac animated:animated];
         }else{
             NSLog(@"UNRECOGNIZED CONTROLLER: %@", urlString);
         }

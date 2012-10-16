@@ -103,6 +103,14 @@
 			<key>author</key>
 			<string>Will H</string>
 		</dict>
+		<dict>
+			<key>url</key>
+			<string>controller:SubAnimatedController</string>
+			<key>name</key>
+			<string>Sub Animation Controller</string>
+			<key>author</key>
+			<string>Will H</string>
+		</dict>
 	</array>
 </dict>
 </plist>

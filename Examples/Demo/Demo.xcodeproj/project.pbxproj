@@ -23,6 +23,8 @@
 		558CE76F14B123FE001C8669 /* libSwiffCore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 558CE76E14B123FE001C8669 /* libSwiffCore.a */; };
 		55BA68E9144B9C4B00D83AA8 /* DemoMovies.plist in Resources */ = {isa = PBXBuildFile; fileRef = 55BA68E8144B9C4B00D83AA8 /* DemoMovies.plist */; };
 		55BA68EC144BA50100D83AA8 /* DemoMovieController.m in Sources */ = {isa = PBXBuildFile; fileRef = 55BA68EB144BA50100D83AA8 /* DemoMovieController.m */; };
+		BE027E4D162E03770011BF6C /* SubAnimatedController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE027E4C162E03770011BF6C /* SubAnimatedController.m */; };
+		BE027E4F162E0A830011BF6C /* BounceTest.swf in Resources */ = {isa = PBXBuildFile; fileRef = BE027E4E162E0A830011BF6C /* BounceTest.swf */; };
 		BE8553BC161A2E600094471B /* DemoGraphicsController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE8553BB161A2E600094471B /* DemoGraphicsController.m */; };
 		BEEF80BD162A41FF0049A93D /* DynamicTextController.m in Sources */ = {isa = PBXBuildFile; fileRef = BEEF80BC162A41FF0049A93D /* DynamicTextController.m */; };
 		BEEF80BF162A611B0049A93D /* DynamicTextPlacement.swf in Resources */ = {isa = PBXBuildFile; fileRef = BEEF80BE162A611B0049A93D /* DynamicTextPlacement.swf */; };
@@ -77,6 +79,9 @@
 		55BA68E8144B9C4B00D83AA8 /* DemoMovies.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = DemoMovies.plist; path = Resources/DemoMovies.plist; sourceTree = SOURCE_ROOT; };
 		55BA68EA144BA50100D83AA8 /* DemoMovieController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DemoMovieController.h; path = Source/DemoMovieController.h; sourceTree = SOURCE_ROOT; };
 		55BA68EB144BA50100D83AA8 /* DemoMovieController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DemoMovieController.m; path = Source/DemoMovieController.m; sourceTree = SOURCE_ROOT; };
+		BE027E4B162E03770011BF6C /* SubAnimatedController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SubAnimatedController.h; path = Source/SubAnimatedController.h; sourceTree = SOURCE_ROOT; };
+		BE027E4C162E03770011BF6C /* SubAnimatedController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SubAnimatedController.m; path = Source/SubAnimatedController.m; sourceTree = SOURCE_ROOT; };
+		BE027E4E162E0A830011BF6C /* BounceTest.swf */ = {isa = PBXFileReference; lastKnownFileType = file; name = BounceTest.swf; path = ../../Tests/BounceTest.swf; sourceTree = "<group>"; };
 		BE8553BA161A2E600094471B /* DemoGraphicsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DemoGraphicsController.h; path = Source/DemoGraphicsController.h; sourceTree = SOURCE_ROOT; };
 		BE8553BB161A2E600094471B /* DemoGraphicsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DemoGraphicsController.m; path = Source/DemoGraphicsController.m; sourceTree = SOURCE_ROOT; };
 		BEEF80BB162A41FF0049A93D /* DynamicTextController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DynamicTextController.h; path = Source/DynamicTextController.h; sourceTree = SOURCE_ROOT; };
@@ -150,10 +155,7 @@
 				550B60461446B5C200F8C138 /* DemoApp.m */,
 				550B60411446B4B500F8C138 /* DemoMain.m */,
 				558B13DE1446BB230054AF76 /* DemoPrefix.pch */,
-				BE8553BA161A2E600094471B /* DemoGraphicsController.h */,
-				BE8553BB161A2E600094471B /* DemoGraphicsController.m */,
-				BEEF80BB162A41FF0049A93D /* DynamicTextController.h */,
-				BEEF80BC162A41FF0049A93D /* DynamicTextController.m */,
+				BE027E4A162E03460011BF6C /* Procedural Controllers */,
 			);
 			path = Demo;
 			sourceTree = "<group>";
@@ -170,6 +172,7 @@
 		55BA68ED144BAC8A00D83AA8 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				BE027E4E162E0A830011BF6C /* BounceTest.swf */,
 				BEEF80BE162A611B0049A93D /* DynamicTextPlacement.swf */,
 				CE08F28B15C37E0B006CBA4B /* TestSuiteAS3.swf */,
 				558B13DF1446BB2C0054AF76 /* DemoInfo.plist */,
@@ -179,6 +182,19 @@
 				553135B4153ED0D90028EFF7 /* TestSuite.swf */,
 			);
 			name = Resources;
+			sourceTree = "<group>";
+		};
+		BE027E4A162E03460011BF6C /* Procedural Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				BE8553BA161A2E600094471B /* DemoGraphicsController.h */,
+				BE8553BB161A2E600094471B /* DemoGraphicsController.m */,
+				BEEF80BB162A41FF0049A93D /* DynamicTextController.h */,
+				BEEF80BC162A41FF0049A93D /* DynamicTextController.m */,
+				BE027E4B162E03770011BF6C /* SubAnimatedController.h */,
+				BE027E4C162E03770011BF6C /* SubAnimatedController.m */,
+			);
+			name = "Procedural Controllers";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -261,6 +277,7 @@
 				55BA68E9144B9C4B00D83AA8 /* DemoMovies.plist in Resources */,
 				CE08F28C15C37E0B006CBA4B /* TestSuiteAS3.swf in Resources */,
 				BEEF80BF162A611B0049A93D /* DynamicTextPlacement.swf in Resources */,
+				BE027E4F162E0A830011BF6C /* BounceTest.swf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -276,6 +293,7 @@
 				55BA68EC144BA50100D83AA8 /* DemoMovieController.m in Sources */,
 				BE8553BC161A2E600094471B /* DemoGraphicsController.m in Sources */,
 				BEEF80BD162A41FF0049A93D /* DynamicTextController.m in Sources */,
+				BE027E4D162E03770011BF6C /* SubAnimatedController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
