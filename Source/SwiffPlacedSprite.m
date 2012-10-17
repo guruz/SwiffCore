@@ -11,8 +11,10 @@
 #import "SwiffSpriteDefinition.h"
 
 @implementation SwiffPlacedSprite {
-
+    
 }
+
+static int instanceID;
 
 - (id) init
 {
@@ -27,11 +29,15 @@
             SwiffPlacedSprite *sprite = (SwiffPlacedSprite *)sprite;
             
             _frame = sprite.frame;
+            _instanceID = instanceID++;
         }
     }
     
     return self;
 }
+
++(int)instanceID{ return instanceID; }
++(void)setInstanceID:(int)nid{ instanceID = nid; }
 
 - (void) setFrameFromParent:(NSInteger)frameIndex
 {

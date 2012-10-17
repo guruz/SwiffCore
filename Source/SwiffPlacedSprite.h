@@ -17,7 +17,11 @@
 
 -(void)setFrameFromParent:(NSInteger)frameIndex;
 
++(int)instanceID;
++(void)setInstanceID:(int)nid;
+
 @property (nonatomic, assign) BOOL playing;
+@property (nonatomic, assign) NSInteger instanceID;
 @property (nonatomic, assign) NSInteger frame;
 @property (nonatomic, assign) NSInteger placedFrame; //which frame were we placed? i.e. our frame 0
 @property (nonatomic, assign) BOOL shouldLoop;

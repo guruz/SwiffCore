@@ -274,9 +274,10 @@ static NSString * const SwiffSpriteDefinitionStreamBlockKey = @"SwiffSpriteDefin
     
     if([placedObject isKindOfClass:[SwiffPlacedSprite class]])
     {
-        NSLog(@"PlacedSprite added at frame %i", [_frames count] - 1);
         SwiffPlacedSprite* placedSprite = (SwiffPlacedSprite*)placedObject;
         placedSprite.placedFrame = [_frames count] - 1;
+        
+        NSLog(@"PlacedSprite [%i] added at frame %i", placedSprite.instanceID, [_frames count] - 1);
     }
 
     if (hasImage) {
@@ -380,7 +381,6 @@ static NSString * const SwiffSpriteDefinitionStreamBlockKey = @"SwiffSpriteDefin
     _lastFrameLabel = nil;
     
     [_frames addObject:frame];
-    NSLog(@"GOT A FRAME: %i", [_frames count]);
     _lastFrame = frame;
 
 

@@ -606,7 +606,7 @@ static void sDrawPlacedSprite(SwiffRenderState *state, SwiffPlacedSprite* placed
     
     if([placedSprite frame] > 0)
     {
-        NSLog(@"Should be on frame %i/%i",[placedSprite frame], [frames count]);
+        NSLog(@"[%i] Should be on frame %i/%i",[placedSprite instanceID], [placedSprite frame], [frames count]);
     }
     
     if([placedSprite frame] >= [frames count])
