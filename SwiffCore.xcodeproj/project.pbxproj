@@ -76,6 +76,7 @@
 		55F9C75814464B1300FE8E4F /* SwiffSceneAndFrameLabelData.m in Sources */ = {isa = PBXBuildFile; fileRef = 55F9C75714464B1300FE8E4F /* SwiffSceneAndFrameLabelData.m */; };
 		55FE9B5614D40CBA00CF505B /* SwiffSparseArray.m in Sources */ = {isa = PBXBuildFile; fileRef = 55FE9B5514D40CBA00CF505B /* SwiffSparseArray.m */; };
 		55FE9B5814D413B600CF505B /* SwiffSparseArray.m in Sources */ = {isa = PBXBuildFile; fileRef = 55FE9B5514D40CBA00CF505B /* SwiffSparseArray.m */; };
+		BE027E52162E29AD0011BF6C /* SwiffPlacedSprite.m in Sources */ = {isa = PBXBuildFile; fileRef = BE027E51162E29AD0011BF6C /* SwiffPlacedSprite.m */; };
 		BE678E9516161BEB006F827C /* SwiffGraphics.h in Headers */ = {isa = PBXBuildFile; fileRef = BE678E9316161BEB006F827C /* SwiffGraphics.h */; };
 		BE678E9616161BEB006F827C /* SwiffGraphics.m in Sources */ = {isa = PBXBuildFile; fileRef = BE678E9416161BEB006F827C /* SwiffGraphics.m */; };
 		BE678E9716161BEB006F827C /* SwiffGraphics.m in Sources */ = {isa = PBXBuildFile; fileRef = BE678E9416161BEB006F827C /* SwiffGraphics.m */; };
@@ -169,6 +170,8 @@
 		55F9C75714464B1300FE8E4F /* SwiffSceneAndFrameLabelData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SwiffSceneAndFrameLabelData.m; path = Source/SwiffSceneAndFrameLabelData.m; sourceTree = "<group>"; };
 		55FE9B5414D40CBA00CF505B /* SwiffSparseArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SwiffSparseArray.h; path = Source/SwiffSparseArray.h; sourceTree = "<group>"; };
 		55FE9B5514D40CBA00CF505B /* SwiffSparseArray.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SwiffSparseArray.m; path = Source/SwiffSparseArray.m; sourceTree = "<group>"; };
+		BE027E50162E29AD0011BF6C /* SwiffPlacedSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SwiffPlacedSprite.h; path = Source/SwiffPlacedSprite.h; sourceTree = "<group>"; };
+		BE027E51162E29AD0011BF6C /* SwiffPlacedSprite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SwiffPlacedSprite.m; path = Source/SwiffPlacedSprite.m; sourceTree = "<group>"; };
 		BE678E9316161BEB006F827C /* SwiffGraphics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SwiffGraphics.h; path = Source/SwiffGraphics.h; sourceTree = "<group>"; };
 		BE678E9416161BEB006F827C /* SwiffGraphics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SwiffGraphics.m; path = Source/SwiffGraphics.m; sourceTree = "<group>"; };
 		BEEF80AE1628EBA40049A93D /* SwiffView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SwiffView.m; path = Source/SwiffView.m; sourceTree = "<group>"; };
@@ -262,6 +265,8 @@
 				55F3158D148A072100E6E625 /* SwiffPlacedDynamicText.m */,
 				550C99B8145A04FD00836C62 /* SwiffSoundEvent.h */,
 				550C99B9145A04FD00836C62 /* SwiffSoundEvent.m */,
+				BE027E50162E29AD0011BF6C /* SwiffPlacedSprite.h */,
+				BE027E51162E29AD0011BF6C /* SwiffPlacedSprite.m */,
 			);
 			name = Placements;
 			sourceTree = "<group>";
@@ -556,7 +561,7 @@
 				55FE9B5614D40CBA00CF505B /* SwiffSparseArray.m in Sources */,
 				BE678E9616161BEB006F827C /* SwiffGraphics.m in Sources */,
 				5566707515E1BACF001E9BA7 /* SwiffView.m in Sources */,
-				BEEF80AF1628EBA40049A93D /* SwiffView.m in Sources */,
+				BE027E52162E29AD0011BF6C /* SwiffPlacedSprite.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

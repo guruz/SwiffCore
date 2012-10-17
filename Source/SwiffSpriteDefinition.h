@@ -47,6 +47,7 @@
 - (SwiffScene *) sceneWithName:(NSString *)name;
 
 - (SwiffMovie *) movie;
++ (Class) placedObjectClass;
 
 - (SwiffPlacedObject*) getChildByName:(NSString *)name;
 - (SwiffPlacedObject*) getChildByDotString:(NSString *)dotString;

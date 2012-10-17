@@ -41,6 +41,7 @@
 #import "SwiffPath.h"
 #import "SwiffPlacedObject.h"
 #import "SwiffPlacedDynamicText.h"
+#import "SwiffPlacedSprite.h"
 #import "SwiffShapeDefinition.h"
 #import "SwiffStaticTextRecord.h"
 #import "SwiffStaticTextDefinition.h"
@@ -597,17 +598,39 @@ static void sFillPath(SwiffRenderState *state, SwiffPath *path)
     CGContextRestoreGState(context);
 }
 
-
-static void sDrawSpriteDefinition(SwiffRenderState *state, SwiffSpriteDefinition *spriteDefinition)
+static void sDrawPlacedSprite(SwiffRenderState *state, SwiffPlacedSprite* placedSprite)
 {
+    SwiffSpriteDefinition *spriteDefinition = [placedSprite definition];
+
     NSArray    *frames = [spriteDefinition frames];
-    SwiffFrame *frame  = [frames count] ? [frames objectAtIndex:0] : nil;
+    
+    if([placedSprite frame] > 0)
+    {
+        NSLog(@"Should be on frame %i/%i",[placedSprite frame], [frames count]);
+    }
+    
+    if([placedSprite frame] >= [frames count])
+    {
+        NSLog(@"CALLED FOR INVALID FRAME IN PLACEDSPRITE  (%i/%i)", [placedSprite frame], [frames count]);
+        return;
+    }
+    
+    SwiffFrame *frame  = [frames objectAtIndex:[placedSprite frame]];
     
     for (SwiffPlacedObject *po in [frame placedObjects]) {
         sDrawPlacedObject(state, po);
     }
 }
 
+//static void sDrawSpriteDefinition(SwiffRenderState *state, SwiffSpriteDefinition* spriteDefinition)
+//{
+//    NSArray    *frames = [spriteDefinition frames];
+//    SwiffFrame *frame  = [frames count] ? [frames objectAtIndex:0] : nil;
+//
+//    for (SwiffPlacedObject *po in [frame placedObjects]) {
+//        sDrawPlacedObject(state, po);
+//    }
+//}
 
 static void sDrawShapeDefinition(SwiffRenderState *state, SwiffShapeDefinition *shapeDefinition)
 {
@@ -820,7 +843,9 @@ static void sDrawPlacedObject(SwiffRenderState *state, SwiffPlacedObject *placed
         sDrawShapeDefinition(state, (SwiffShapeDefinition *)definition);
 
     } else if ([definition isKindOfClass:[SwiffSpriteDefinition class]]) {
-        sDrawSpriteDefinition(state, (SwiffSpriteDefinition *)definition);
+        if ([placedObject isKindOfClass:[SwiffPlacedSprite class]]) {
+            sDrawPlacedSprite(state, (SwiffPlacedSprite *)placedObject);
+        }
 
     } else if ([definition isKindOfClass:[SwiffStaticTextDefinition class]]) {
         sDrawStaticTextDefinition(state, (SwiffStaticTextDefinition *)definition);

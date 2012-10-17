@@ -6,6 +6,8 @@
 //
 //
 
+#define USE_BOUNCING_BALL 0
+
 #import "SubAnimatedController.h"
 
 @interface SubAnimatedController ()
@@ -29,42 +31,33 @@
     NSData *movieData = [[NSData alloc] initWithContentsOfFile:resourcePath];
     movie = [[SwiffMovie alloc] initWithData:movieData];
     
+    SwiffSpriteDefinition* clip = movie;
+
+#if USE_BOUNCING_BALL
+    clip = [movie definitionWithExportedName:@"bouncingball"];
+#endif
+    
     CGRect movieFrame = [[self view] bounds];
     
-    movieView = [[SwiffView alloc] initWithFrame:movieFrame movie:movie];
+    movie.frameRate = 6;
+    
+    movieView = [[SwiffView alloc] initWithFrame:movieFrame movie:clip];
     [movieView setShouldPlayChildren:YES];
     
     [movieView setBackgroundColor:[UIColor whiteColor]];
     [movieView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
     [[self view] addSubview:movieView];
     
-    //promotes all placed objects to layers
-    for (SwiffFrame *frame in [movie frames]) {
-        for (SwiffPlacedObject *object in [frame placedObjects]) {
-            [self promote:object playOnAdded:TRUE];
-        }
-    }
+//    //promotes all placed objects to layers
+//    for (SwiffFrame *frame in [clip frames]) {
+//        for (SwiffPlacedObject *object in [frame placedObjects]) {
+//            [self promote:object playOnAdded:TRUE];
+//        }
+//    }
     
     
     [movieView playhead].loopsMovie = TRUE;
     [[movieView playhead] play];
-
-    
-//    SwiffPlacedDynamicText *item_1 = (SwiffPlacedDynamicText*)[movie getChildByDotString:@"item_1.tf"];
-//    SwiffPlacedDynamicText *item_2 = (SwiffPlacedDynamicText*)[movie getChildByDotString:@"item_2.tf"];
-//    
-//    if(item_1 == item_2)
-//    {
-//        NSLog(@"SAME PLACEDOBJECT!");
-//    }
-//    
-//    NSLog(@"item_2.tf.text = %@", item_2.text);
-//    //Replicating all the HTML gobbledygook isn't optimal, but necessary in this particular case because of the multi-line text
-//    //If multiline text with line breaks needs to be edited, could probably write some helpers to ease this...
-//    [item_2 setText:@"<p align=\"center\"><font face=\"Futura Medium\" size=\"20\" color=\"#000000\" letterSpacing=\"0.000000\" kerning=\"1\">Item 2</font></p><p align=\"center\"><font face=\"Futura Medium\" size=\"20\" color=\"#000000\" letterSpacing=\"0.000000\" kerning=\"1\">This text was placed on the main timeline and later altered with code.</font></p>" HTML:YES];
-//    
-//    
-//    //SwiffSpriteDefinition *clip = [m_movie definitionWithExportedName:m_classname];
     
     
 }

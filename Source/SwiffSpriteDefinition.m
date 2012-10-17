@@ -31,6 +31,7 @@
 #import "SwiffMovie.h"
 #import "SwiffParser.h"
 #import "SwiffPlacedObject.h"
+#import "SwiffPlacedSprite.h"
 #import "SwiffPlacedDynamicText.h"
 #import "SwiffScene.h"
 #import "SwiffSceneAndFrameLabelData.h"
@@ -94,6 +95,11 @@ static NSString * const SwiffSpriteDefinitionStreamBlockKey = @"SwiffSpriteDefin
     }
     
     return self;
+}
+
++ (Class) placedObjectClass
+{
+    return [SwiffPlacedSprite class];
 }
 
 - (SwiffMovie *)movie
@@ -265,6 +271,13 @@ static NSString * const SwiffSpriteDefinitionStreamBlockKey = @"SwiffSpriteDefin
     SwiffPlacedObject *placedObject = SwiffPlacedObjectCreate(_movie, hasLibraryID ? libraryID : 0, move ? existingPlacedObject : nil);
 
     [placedObject setDepth:depth];
+    
+    if([placedObject isKindOfClass:[SwiffPlacedSprite class]])
+    {
+        NSLog(@"PlacedSprite added at frame %i", [_frames count] - 1);
+        SwiffPlacedSprite* placedSprite = (SwiffPlacedSprite*)placedObject;
+        placedSprite.placedFrame = [_frames count] - 1;
+    }
 
     if (hasImage) {
         [placedObject setPlacesImage:YES];
@@ -367,6 +380,7 @@ static NSString * const SwiffSpriteDefinitionStreamBlockKey = @"SwiffSpriteDefin
     _lastFrameLabel = nil;
     
     [_frames addObject:frame];
+    NSLog(@"GOT A FRAME: %i", [_frames count]);
     _lastFrame = frame;
 
 
