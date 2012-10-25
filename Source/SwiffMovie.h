@@ -40,6 +40,7 @@
 
 - (id) initWithData:(NSData *)data;
 
+- (id<SwiffDefinition>) definitionWithExportedName:(NSString*)classname;
 - (id<SwiffDefinition>) definitionWithLibraryID:(UInt16)libraryID;
 
 - (SwiffBitmapDefinition      *) bitmapDefinitionWithLibraryID:(UInt16)libraryID;
@@ -49,6 +50,8 @@
 - (SwiffSoundDefinition       *) soundDefinitionWithLibraryID:(UInt16)libraryID;
 - (SwiffSpriteDefinition      *) spriteDefinitionWithLibraryID:(UInt16)libraryID;
 - (SwiffStaticTextDefinition  *) staticTextDefinitionWithLibraryID:(UInt16)libraryID;
+
+- (SwiffMovie                 *) movie;
 
 @property (nonatomic, assign) NSInteger version;
 @property (nonatomic, assign) CGRect stageRect;

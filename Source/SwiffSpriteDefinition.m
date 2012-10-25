@@ -31,6 +31,7 @@
 #import "SwiffMovie.h"
 #import "SwiffParser.h"
 #import "SwiffPlacedObject.h"
+#import "SwiffPlacedSprite.h"
 #import "SwiffPlacedDynamicText.h"
 #import "SwiffScene.h"
 #import "SwiffSceneAndFrameLabelData.h"
@@ -71,6 +72,7 @@ static NSString * const SwiffSpriteDefinitionStreamBlockKey = @"SwiffSpriteDefin
 @implementation SwiffSpriteDefinition {
     NSDictionary     *_labelToFrameMap;
     SwiffFrame       *_lastFrame;
+    NSString         *_lastFrameLabel;
     NSDictionary     *_sceneNameToSceneMap;
     SwiffSparseArray *_placedObjects;
     NSMutableArray   *_frames;
@@ -95,6 +97,15 @@ static NSString * const SwiffSpriteDefinitionStreamBlockKey = @"SwiffSpriteDefin
     return self;
 }
 
++ (Class) placedObjectClass
+{
+    return [SwiffPlacedSprite class];
+}
+
+- (SwiffMovie *)movie
+{
+    return _movie;
+}
 
 - (id) initWithParser:(SwiffParser *)parser movie:(SwiffMovie *)movie
 {
@@ -260,6 +271,14 @@ static NSString * const SwiffSpriteDefinitionStreamBlockKey = @"SwiffSpriteDefin
     SwiffPlacedObject *placedObject = SwiffPlacedObjectCreate(_movie, hasLibraryID ? libraryID : 0, move ? existingPlacedObject : nil);
 
     [placedObject setDepth:depth];
+    
+    if([placedObject isKindOfClass:[SwiffPlacedSprite class]])
+    {
+        SwiffPlacedSprite* placedSprite = (SwiffPlacedSprite*)placedObject;
+        placedSprite.placedFrame = [_frames count] - 1;
+        
+        NSLog(@"PlacedSprite [%i] added at frame %i", placedSprite.instanceID, [_frames count] - 1);
+    }
 
     if (hasImage) {
         [placedObject setPlacesImage:YES];
@@ -357,7 +376,10 @@ static NSString * const SwiffSpriteDefinitionStreamBlockKey = @"SwiffSpriteDefin
                                                              soundEvents: soundEvents
                                                              streamSound: streamSound
                                                              streamBlock: streamBlock];
-
+    
+    if(_lastFrameLabel != nil) [frame updateLabel:_lastFrameLabel];
+    _lastFrameLabel = nil;
+    
     [_frames addObject:frame];
     _lastFrame = frame;
 
@@ -371,7 +393,7 @@ static NSString * const SwiffSpriteDefinitionStreamBlockKey = @"SwiffSpriteDefin
     NSString *label = nil;
     SwiffParserReadString(parser, &label);
 
-//    [_workingFrame setLabel:label];
+    _lastFrameLabel = label;
 }
 
 
@@ -499,6 +521,49 @@ static NSString * const SwiffSpriteDefinitionStreamBlockKey = @"SwiffSpriteDefin
     }
 
     return [_sceneNameToSceneMap objectForKey:name];
+}
+
+
+- (SwiffPlacedObject*) getChildByName:(NSString *)name
+{
+    for(SwiffPlacedObject* child in _placedObjects)
+    {
+        NSLog(@"COMPARING %@ to %@", child.name, name);
+        if([name isEqualToString:child.name])
+        {
+            return child;
+        }
+    }
+    return NULL;
+}
+
+- (SwiffPlacedObject*) getChildByDotString:(NSString *)dotString
+{
+    NSArray *pieces = [dotString componentsSeparatedByString:@"."];
+    if([pieces count] == 0)
+    {
+        return NULL;
+    }else if([pieces count] == 1)
+    {
+        return [self getChildByName:dotString];
+    }
+    
+    //when passing [self movie] from within the for loop I was getting null...
+    //assume it's an ObjC scope thing.
+    SwiffMovie *selfMovie = [self movie];
+    SwiffPlacedObject* placedObject = [self getChildByName:pieces[0]];
+    for(int i = 1; i < [pieces count]; i++)
+    {
+        id<SwiffDefinition> definition = SwiffMovieGetDefinition(selfMovie, placedObject->_libraryID);
+
+        //for now only SwiffSpriteDefinitions can be containers, so this will be deterministic enough
+        if ([definition isKindOfClass:[SwiffSpriteDefinition class]]) {
+            placedObject = [(SwiffSpriteDefinition *)definition getChildByName:pieces[i]];
+        }else{
+            return NULL;
+        }
+    }
+    return placedObject;
 }
 
 

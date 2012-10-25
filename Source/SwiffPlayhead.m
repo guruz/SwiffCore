@@ -59,12 +59,13 @@ void SwiffPlayheadWarnForInvalidGotoArguments()
 }
 
 
-- (id) initWithMovie:(SwiffMovie *)movie delegate:(id<SwiffPlayheadDelegate>)delegate
+- (id) initWithMovie:(SwiffSpriteDefinition *)movie delegate:(id<SwiffPlayheadDelegate>)delegate
 {
     if ((self = [super init])) {
         _frameIndex = -1;
         _movie = movie;
         _delegate = delegate;
+        
     }
     
     return self;
@@ -89,7 +90,7 @@ void SwiffPlayheadWarnForInvalidGotoArguments()
 
 - (void) handleTimerTick:(id)sender
 {
-    long currentIndex = (long)((CACurrentMediaTime() - _timerPlayStart) * [_movie frameRate]);
+    long currentIndex = (long)((CACurrentMediaTime() - _timerPlayStart) * [[_movie movie] frameRate]);
 
     if (_timerPlayIndex != currentIndex) {
         [self step];
@@ -107,7 +108,7 @@ void SwiffPlayheadWarnForInvalidGotoArguments()
     BOOL needsUpdate = NO;
     
     if (isPlaying) {
-        [[SwiffSoundPlayer sharedInstance] stopAllSoundsForMovie:_movie];
+        [[SwiffSoundPlayer sharedInstance] stopAllSoundsForMovie:[_movie movie]];
     }
 
     if (play && isPlaying) {
@@ -256,6 +257,21 @@ void SwiffPlayheadWarnForInvalidGotoArguments()
     } else {
         SwiffPlayheadWarnForInvalidGotoArguments();
     }
+}
+
+- (void) gotoFrameWithName:(NSString *)frameLabel play:(BOOL)play
+{
+    for(SwiffFrame *frame in [_movie frames])
+    {
+        if([frameLabel isEqualToString:frame.label])
+        {
+            [self _gotoFrameWithIndex:frame.indexInMovie play:play];
+            return;
+        }
+    }
+    
+    SwiffPlayheadWarnForInvalidGotoArguments();
+    NSLog(@"UNABLE TO GO TO FRAME %s", [frameLabel UTF8String]);
 }
 
 

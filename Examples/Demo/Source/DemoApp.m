@@ -27,11 +27,16 @@
 
 #import "DemoApp.h"
 #import "DemoMovieController.h"
+#import "DemoGraphicsController.h"
+#import "DynamicTextController.h"
+#import "SubAnimatedController.h"
 
 static NSString *sCurrentMovieKey = @"CurrentMovie";
+static NSString *sCurrentClassnameKey = @"CurrentClassnameKey";
 
 @interface DemoTableViewController ()
 - (void) _pushMovieWithURLString:(NSString *)inURLString animated:(BOOL)animated;
+- (void) handleURL:(NSString*)urlString andClassname:(NSString *)classname animated:(Boolean)animated;
 @end
 
 
@@ -59,6 +64,7 @@ static NSString *sCurrentMovieKey = @"CurrentMovie";
 - (void) viewDidAppear:(BOOL)animated
 {
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:sCurrentMovieKey];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:sCurrentClassnameKey];
 }
 
 
@@ -87,8 +93,9 @@ static NSString *sCurrentMovieKey = @"CurrentMovie";
         if ([urlString isEqualToString:inURLString]) {
             NSURL    *url   = [NSURL URLWithString:urlString];
             NSString *title = [dictionary objectForKey:@"name"];
+            NSString *classname = [dictionary objectForKey:@"classname"];
 
-            DemoMovieController *vc = [[DemoMovieController alloc] initWithURL:url];
+            DemoMovieController *vc = [[DemoMovieController alloc] initWithURL:url andSymbol:classname];
             [vc setTitle:title];
             
             [[self navigationController] pushViewController:vc animated:animated];
@@ -112,14 +119,50 @@ static NSString *sCurrentMovieKey = @"CurrentMovie";
 
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
+{   
     NSDictionary *dictionary = [[self _movieDictionaries] objectAtIndex:[indexPath row]];
 
     NSString *urlString = [dictionary objectForKey:@"url"];
     [[NSUserDefaults standardUserDefaults] setObject:urlString forKey:sCurrentMovieKey];
-    [self _pushMovieWithURLString:urlString animated:YES];
+    
+    NSString *classname = [dictionary objectForKey:@"classname"];
+    [[NSUserDefaults standardUserDefaults] setObject:classname forKey:sCurrentClassnameKey];
+    
+    [self handleURL:urlString andClassname:classname animated:YES];
 }
 
+- (void) handleURL:(NSString*)urlString andClassname:(NSString *)classname animated:(Boolean)animated
+{
+    NSURL* url = [NSURL URLWithString:urlString];
+    if ([[url scheme] isEqualToString:@"controller"])
+    {
+        if([urlString isEqualToString:@"controller:DemoGraphicsController"])
+        {
+            DemoGraphicsController *gc = [[DemoGraphicsController alloc] init];
+            [gc setTitle:@"Graphics Test"];
+            [[self navigationController] pushViewController:gc animated:animated];
+        }else if([urlString isEqualToString:@"controller:DynamicTextController"]){
+            DynamicTextController *tc = [[DynamicTextController alloc] init];
+            [tc setTitle:@"Dynamic Text Test"];
+            [[self navigationController] pushViewController:tc animated:animated];
+        }else if([urlString isEqualToString:@"controller:SubAnimatedController"]){
+            SubAnimatedController *ac = [[SubAnimatedController alloc] init];
+            [ac setTitle:@"Sub Animation Test"];
+            [[self navigationController] pushViewController:ac animated:animated];
+        }else{
+            NSLog(@"UNRECOGNIZED CONTROLLER: %@", urlString);
+        }
+        return;
+    }
+    
+    if(classname) {
+        [[NSUserDefaults standardUserDefaults] setObject:classname forKey:sCurrentClassnameKey];
+    }else{
+        [[NSUserDefaults standardUserDefaults] setValue:NULL forKey:sCurrentClassnameKey];
+    }
+    
+    [self _pushMovieWithURLString:urlString animated:animated];
+}
 
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -131,10 +174,9 @@ static NSString *sCurrentMovieKey = @"CurrentMovie";
     }
 
     NSDictionary *dictionary = [[self _movieDictionaries] objectAtIndex:[indexPath row]];
-
     [[cell textLabel] setText:[dictionary objectForKey:@"name"]];
     [[cell detailTextLabel] setText:[dictionary objectForKey:@"author"]];
-
+   
     return cell;
 }
 
@@ -159,8 +201,10 @@ static NSString *sCurrentMovieKey = @"CurrentMovie";
     [m_window makeKeyAndVisible];
 
     NSString *currentURLString = [[NSUserDefaults standardUserDefaults] objectForKey:sCurrentMovieKey];
+    NSString *currentClassString = [[NSUserDefaults standardUserDefaults] objectForKey:sCurrentClassnameKey];
+
     if (currentURLString) {
-        [vc _pushMovieWithURLString:currentURLString animated:NO];
+        [vc handleURL:currentURLString andClassname:currentClassString animated:NO];
     }
 
     return YES;

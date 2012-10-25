@@ -28,8 +28,10 @@
 #import "SwiffLayer.h"
 
 #import "SwiffFrame.h"
+#import "SwiffGraphics.h"
 #import "SwiffMovie.h"
 #import "SwiffPlacedObject.h"
+#import "SwiffPlacedSprite.h"
 #import "SwiffPlayhead.h"
 #import "SwiffRenderer.h"
 #import "SwiffSoundPlayer.h"
@@ -60,7 +62,8 @@ static NSString * const SwiffRenderTranslationYKey = @"SwiffRenderTranslationY";
     BOOL               _interpolateCurrentFrame;
 }
 
-@synthesize swiffLayerDelegate = _delegate;
+@synthesize swiffLayerDelegate     = _delegate,
+            graphics               = _graphics;
 
 
 - (id) init
@@ -68,38 +71,57 @@ static NSString * const SwiffRenderTranslationYKey = @"SwiffRenderTranslationY";
     return [self initWithMovie:nil];
 }
 
+//says initWithMovie, but is really initWithSpriteDefinition, which includes the subclass of SwiffMovie
+//this can be used to instantiate a library symbol OR a movie
 
-- (id) initWithMovie:(SwiffMovie *)movie
+//  without a movie, we don't get a renderer (need a renderer!)
+//  wihtout a movie, we don't get a playhead (shouldn't need a playhead!)
+//
+- (id) initWithMovie:(SwiffSpriteDefinition *)movie
 {
+   
     if ((self = [super init])) {
-        if (!movie) {
-            SwiffWarn(@"View", @"-[SwiffLayer initWithMovie:] called with nil movie)");
-        }
-
+        
+//        if (!movie) {
+//            SwiffWarn(@"View", @"-[SwiffLayer initWithMovie:] called with nil movie)");
+//        }
+        
         _movie = movie;
-
-        _renderer = movie ? [[SwiffRenderer alloc] initWithMovie:movie] : nil;
         
         _contentLayer = [[CALayer alloc] init];
         [_contentLayer setDelegate:self];
         [self addSublayer:_contentLayer];
-
-        _playhead = movie ? [[SwiffPlayhead alloc] initWithMovie:movie delegate:self] : nil;
-        [_playhead gotoFrameWithIndex:0 play:NO];
+        
+        if(movie)
+        {
+            _renderer = [[SwiffRenderer alloc] initWithMovie:[movie movie]];
+            _playhead = [[SwiffPlayhead alloc] initWithMovie:movie delegate:self];
+            [_playhead gotoFrameWithIndex:0 play:NO];
+        }else{
+            _renderer = [[SwiffRenderer alloc] initWithMovie:nil];
+            _playhead = nil;
+        }
+        
+        _graphics = [[SwiffGraphics alloc] init];
         
         [_contentLayer setNeedsDisplay];
     }
     
-    return self;
+    return self; 
 }
-
 
 - (void) dealloc
 {
-    [[SwiffSoundPlayer sharedInstance] stopAllSoundsForMovie:_movie];
-
-    [_playhead invalidateTimers];
-    [_playhead setDelegate:nil];
+    if(_movie)
+    {
+        [[SwiffSoundPlayer sharedInstance] stopAllSoundsForMovie:[_movie movie]];
+    }
+    
+    if(_playhead)
+    {
+        [_playhead invalidateTimers];
+        [_playhead setDelegate:nil];
+    }
 }
 
 
@@ -147,13 +169,23 @@ static BOOL sShouldUseSameLayer(SwiffPlacedObject *a, SwiffPlacedObject *b)
 }
 
 
+/*  Needed:
+ *      placedObject
+ *      movie with definition for placedObject
+ *      definition's renderbounds
+ */
 - (void) _calculateGeometryForPlacedObject: (SwiffPlacedObject *) placedObject 
                                scaleFactor: (CGFloat) scaleFactor
                                  outBounds: (CGRect *) outBounds
                               outTransform: (CGAffineTransform *) outTransform
                               outTranslate: (CGPoint *) outTranslate
 {
-    id<SwiffDefinition> definition = [_movie definitionWithLibraryID:[placedObject libraryID]];
+    //WCH: trying to track down why text doesn't display... it seems like this is called sometimes
+    //before the view calls for layout and sets the bounds, which just results in nothing. bailing
+    //out with scaleFactor==0 seems to make sense (0 width, 0 height) and doesn't seem to break anything
+    if(scaleFactor == 0) return;
+    
+    id<SwiffDefinition> definition = [[_movie movie] definitionWithLibraryID:[placedObject libraryID]];
 
     CGAffineTransform transform = CGAffineTransformIdentity;
     transform = CGAffineTransformConcat(transform, [placedObject affineTransform]);
@@ -342,7 +374,7 @@ static BOOL sShouldUseSameLayer(SwiffPlacedObject *a, SwiffPlacedObject *b)
 
     [CATransaction begin];
     if (_interpolateCurrentFrame || existingAnimation) {
-        [CATransaction setAnimationDuration:existingAnimation ? [existingAnimation duration] : (1.0 / [_movie frameRate])];
+        [CATransaction setAnimationDuration:existingAnimation ? [existingAnimation duration] : (1.0 / [[_movie movie] frameRate])];
         [CATransaction setAnimationTimingFunction:existingAnimation ? [existingAnimation timingFunction] : [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear]];
     } else {
         [CATransaction setDisableActions:YES];
@@ -374,9 +406,27 @@ static BOOL sShouldUseSameLayer(SwiffPlacedObject *a, SwiffPlacedObject *b)
         UInt16 depth = [placedObject depth];
         UInt16 libraryID = [placedObject libraryID];
         
-        id<SwiffDefinition> definition = [_movie definitionWithLibraryID:libraryID];
+        id<SwiffDefinition> definition = [[_movie movie] definitionWithLibraryID:libraryID];
         CALayer *sublayer = [CALayer layer];
+        
+//        if(_shouldPlayChildren && [definition isKindOfClass:[SwiffSpriteDefinition class]])
+//        {
+//            SwiffSpriteDefinition* sprite = (SwiffSpriteDefinition*) definition;
+//            if([[sprite frames] count] > 1)
+//            {                
+//                SwiffLayer* spriteLayer = [[SwiffLayer alloc] initWithMovie:definition];
+//                [[spriteLayer playhead] play];
+//                
+//                [spriteLayer setShouldDrawDebugColors:YES];
+//                sublayer = spriteLayer;
+//            }else{
+//                sublayer = [CALayer layer];
+//            }
+//        }else{
+//            sublayer = [CALayer layer];
+//        }
 
+        //Not sure if I want to run all this on spriteLayer...
         CGRect bounds = [definition renderBounds];
 
         [sublayer setBounds:bounds];
@@ -425,7 +475,6 @@ static BOOL sShouldUseSameLayer(SwiffPlacedObject *a, SwiffPlacedObject *b)
     }
 }
 
-
 - (void) _updateSublayersForPlacedObjects:(NSArray *)placedObjects
 {
     for (SwiffPlacedObject *placedObject in placedObjects) {
@@ -445,7 +494,7 @@ static BOOL sShouldUseSameLayer(SwiffPlacedObject *a, SwiffPlacedObject *b)
 
     for (SwiffPlacedObject *placedObject in placedObjects) {
         UInt16 libraryID = [placedObject libraryID];
-        id<SwiffDefinition> definition = [_movie definitionWithLibraryID:libraryID];
+        id<SwiffDefinition> definition = [[_movie movie] definitionWithLibraryID:libraryID];
         
         CGRect bounds = [definition renderBounds];
         bounds = CGRectApplyAffineTransform(bounds, [placedObject affineTransform]);
@@ -467,6 +516,15 @@ static BOOL sShouldUseSameLayer(SwiffPlacedObject *a, SwiffPlacedObject *b)
 - (void) _transitionToFrame:(SwiffFrame *)newFrame fromFrame:(SwiffFrame *)oldFrame
 {
     SwiffLog(@"View", @"%@ -> %@", oldFrame, newFrame);
+    
+    for (SwiffPlacedObject *placedObject in [oldFrame placedObjects]) {
+        if([placedObject isKindOfClass:[SwiffPlacedSprite class]])
+        {
+            SwiffPlacedSprite* sprite = (SwiffPlacedSprite*) placedObject;
+            [sprite setFrameFromParent:[newFrame indexInMovie]];
+        }
+    }
+    
 
     NSEnumerator *oldEnumerator = [[oldFrame placedObjects] objectEnumerator];
     NSEnumerator *newEnumerator = [[newFrame placedObjects] objectEnumerator];
@@ -576,7 +634,7 @@ static BOOL sShouldUseSameLayer(SwiffPlacedObject *a, SwiffPlacedObject *b)
 
     [super setBounds:bounds];
 
-    CGSize movieSize = [_movie stageRect].size;
+    CGSize movieSize = [[_movie movie] stageRect].size;
 
     CGFloat sx = bounds.size.width /  movieSize.width;
     CGFloat sy = bounds.size.height / movieSize.height;
@@ -603,24 +661,30 @@ static BOOL sShouldUseSameLayer(SwiffPlacedObject *a, SwiffPlacedObject *b)
 - (void) drawLayer:(CALayer *)layer inContext:(CGContextRef)context
 {
     if (layer == _contentLayer) {
-        if (!_currentFrame) return;
+        
 
-        SwiffFrame *frame = _currentFrame;
-
-#if WARN_ON_DROPPED_FRAMES        
+#if WARN_ON_DROPPED_FRAMES
         clock_t c = clock();
 #endif
-
-        NSArray *placedObjects = [frame placedObjects];
-        NSMutableArray *filteredObjects = nil;
         
-        if (_sublayerCount) {
-            filteredObjects = [[NSMutableArray alloc] initWithCapacity:[placedObjects count]];
+        NSMutableArray *filteredObjects = nil;
+        SwiffFrame *frame = nil;
+        NSArray *placedObjects = nil;
+        
+        if (_currentFrame)
+        {
+            frame = _currentFrame;
+
+            placedObjects = [frame placedObjects];
             
-            for (SwiffPlacedObject *object in placedObjects) {
-                UInt16 depth = object->_depth;
-                if (!SwiffSparseArrayGetObjectAtIndex(_sublayers, depth)) {
-                    [filteredObjects addObject:object];
+            if (_sublayerCount) {
+                filteredObjects = [[NSMutableArray alloc] initWithCapacity:[placedObjects count]];
+                
+                for (SwiffPlacedObject *object in placedObjects) {
+                    UInt16 depth = object->_depth;
+                    if (!SwiffSparseArrayGetObjectAtIndex(_sublayers, depth)) {
+                        [filteredObjects addObject:object];
+                    }
                 }
             }
         }
@@ -639,7 +703,7 @@ static BOOL sShouldUseSameLayer(SwiffPlacedObject *a, SwiffPlacedObject *b)
 
         [_renderer setScaleFactorHint:[self contentsScale]];
         [_renderer setBaseAffineTransform:&_scaledAffineTransform];
-        [_renderer renderPlacedObjects:(filteredObjects ? filteredObjects : placedObjects) inContext:context];
+        [_renderer renderPlacedObjects:(filteredObjects ? filteredObjects : placedObjects) withGraphics:_graphics inContext:context];
 
         CGContextRestoreGState(context);
         
@@ -655,7 +719,7 @@ static BOOL sShouldUseSameLayer(SwiffPlacedObject *a, SwiffPlacedObject *b)
     } else {
         SwiffPlacedObject *layerPlacedObject = [layer valueForKey:SwiffPlacedObjectKey];
 
-        SwiffPlacedObject *rendererPlacedObject = SwiffPlacedObjectCreate(_movie, [layerPlacedObject libraryID], layerPlacedObject);
+        SwiffPlacedObject *rendererPlacedObject = SwiffPlacedObjectCreate([_movie movie], [layerPlacedObject libraryID], layerPlacedObject);
 
         [rendererPlacedObject setAffineTransform:CGAffineTransformIdentity];
         
@@ -689,7 +753,7 @@ static BOOL sShouldUseSameLayer(SwiffPlacedObject *a, SwiffPlacedObject *b)
         CGAffineTransform orig = base;
 
 //      CGContextSetCTM() is private, so immitate it with concatenation
-        CGContextConcatCTM(context, CGAffineTransformInvert(base)); // CGContextSetCTM(context, CGAffineTransformIdentity)
+        CGContextConcatCTM(context, CGAffineTransformInvert(base)); // CGContextSetCTM(context, CGAffineTransformIdentity)       
         
         CGFloat renderTranslationX = [[layer valueForKey:SwiffRenderTranslationXKey] doubleValue];
         CGFloat renderTranslationY = [[layer valueForKey:SwiffRenderTranslationYKey] doubleValue];
@@ -718,7 +782,7 @@ static BOOL sShouldUseSameLayer(SwiffPlacedObject *a, SwiffPlacedObject *b)
         [_renderer setScaleFactorHint:1.0];
         [_renderer setBaseAffineTransform:&base];
 
-        [_renderer renderPlacedObjects:placedObjects inContext:context];
+        [_renderer renderPlacedObjects:placedObjects withGraphics:nil inContext:context];
 
         [_renderer setHairlineWidth:hairlineWidth];
         [_renderer setFillHairlineWidth:fillHairlineWidth];
@@ -759,7 +823,7 @@ static BOOL sShouldUseSameLayer(SwiffPlacedObject *a, SwiffPlacedObject *b)
             [basicAnimation setTimingFunction:[existingAnimation timingFunction]];
 
         } else {
-            [basicAnimation setDuration:(1.0 / [_movie frameRate])];
+            [basicAnimation setDuration:(1.0 / [[_movie movie] frameRate])];
         }
 
         return basicAnimation;
@@ -782,7 +846,8 @@ static BOOL sShouldUseSameLayer(SwiffPlacedObject *a, SwiffPlacedObject *b)
     }
 
     if ([playhead isPlaying]) {
-        [[SwiffSoundPlayer sharedInstance] processMovie:_movie frame:frame];
+        //TODO: figure out how to work classname into here as well
+        [[SwiffSoundPlayer sharedInstance] processMovie:[_movie movie] frame:frame];
     }
 
     if (frame != _currentFrame) {
@@ -842,7 +907,7 @@ static BOOL sShouldUseSameLayer(SwiffPlacedObject *a, SwiffPlacedObject *b)
 {
     if (_drawsBackground != drawsBackground) {
         if (drawsBackground) {
-            SwiffColor *backgroundColorPointer = [[self movie] backgroundColorPointer];
+            SwiffColor *backgroundColorPointer = [[[self movie] movie] backgroundColorPointer];
 
             CGColorSpaceRef rgb = CGColorSpaceCreateDeviceRGB();
             CGColorRef color = CGColorCreate(rgb, (CGFloat *)backgroundColorPointer); 
@@ -922,13 +987,46 @@ static BOOL sShouldUseSameLayer(SwiffPlacedObject *a, SwiffPlacedObject *b)
     }
 }
 
-
 - (void) setShouldFlattenSublayers:(BOOL)shouldFlattenSublayers
 {
     if (shouldFlattenSublayers != _shouldFlattenSublayers) {
         _shouldFlattenSublayers  = shouldFlattenSublayers;
         [self _setNeedsRedisplay];
     }
+}
+
+- (void) setShouldPlayChildren:(BOOL)yn
+{
+    _shouldPlayChildren = yn;
+    
+    for(SwiffFrame *frame in [_movie frames])
+    {
+        for(SwiffPlacedObject *object in [frame placedObjects])
+        {
+            if([object isKindOfClass:[SwiffPlacedSprite class]])
+            {
+                SwiffPlacedSprite* sprite = (SwiffPlacedSprite*)object;
+                [self playChildren:sprite playOnAdded:yn];
+            }
+        }
+    }
+}
+
+- (void) playChildren:(SwiffPlacedSprite*)placedSprite playOnAdded:(BOOL)play
+{
+    placedSprite.playing = play;
+    
+    for(SwiffFrame *frame in [[placedSprite definition] frames])
+    {
+        for (SwiffPlacedObject *object in [frame placedObjects]) {
+            if([object isKindOfClass:[SwiffPlacedSprite class]])
+            {
+                SwiffPlacedSprite* sprite = (SwiffPlacedSprite*)object;
+                [self playChildren:sprite playOnAdded:play];
+            }
+        }
+    }
+    
 }
 
 

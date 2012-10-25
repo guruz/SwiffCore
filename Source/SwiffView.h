@@ -43,20 +43,21 @@
 #endif
 
 
-@class SwiffLayer, SwiffMovie, SwiffFrame, SwiffPlayhead;
+@class SwiffLayer, SwiffMovie, SwiffFrame, SwiffPlayhead, SwiffSpriteDefinition, SwiffGraphics;
 
 @protocol SwiffViewDelegate;
 
 @interface SwiffView : SwiffViewSuperclass
 
-- (id) initWithFrame:(SwiffViewRect)frame movie:(SwiffMovie *)movie;
+- (id) initWithFrame:(SwiffViewRect)frame movie:(SwiffSpriteDefinition *)movie;
 
 - (void) redisplay;
 
 @property (nonatomic, weak) id<SwiffViewDelegate> delegate;
 
-@property (nonatomic, strong, readonly) SwiffMovie *movie;
+@property (nonatomic, strong, readonly) SwiffSpriteDefinition *movie;
 @property (nonatomic, strong, readonly) SwiffPlayhead *playhead;
+@property (nonatomic, strong, readonly) SwiffGraphics *graphics;
 
 @property (nonatomic, assign) BOOL drawsBackground;
 
@@ -70,6 +71,7 @@
 @property (nonatomic, assign) BOOL shouldSubpixelQuantizeFonts;
 @property (nonatomic, assign) BOOL shouldFlattenSublayers;
 @property (nonatomic, assign) BOOL shouldDrawDebugColors;
+@property (nonatomic, assign) BOOL shouldPlayChildren;
 
 @end
 

@@ -30,21 +30,23 @@
 #import <QuartzCore/QuartzCore.h>
 
 
-@class SwiffMovie, SwiffFrame, SwiffPlacedObject, SwiffPlayhead, SwiffRenderer, SwiffSparseArray;
+@class SwiffMovie, SwiffFrame, SwiffPlacedObject, SwiffPlayhead, SwiffRenderer, SwiffSparseArray, SwiffSpriteDefinition, SwiffGraphics;
 @protocol SwiffLayerDelegate;
 
 
 @interface SwiffLayer : CALayer
 
-- (id) initWithMovie:(SwiffMovie *)movie;
+- (id) initWithMovie:(SwiffSpriteDefinition *)movie;
+
 
 - (void) clearWeakReferences;
 - (void) redisplay;
 
 @property (nonatomic, weak) id<SwiffLayerDelegate> swiffLayerDelegate;
 
-@property (nonatomic, strong, readonly) SwiffMovie *movie;
+@property (nonatomic, strong, readonly) SwiffSpriteDefinition *movie;
 @property (nonatomic, strong, readonly) SwiffPlayhead *playhead;
+@property (nonatomic, strong, readonly) SwiffGraphics *graphics;
 
 @property (nonatomic, strong, readonly) SwiffFrame *currentFrame;
 
@@ -60,6 +62,8 @@
 @property (nonatomic, assign) BOOL shouldSubpixelQuantizeFonts;
 @property (nonatomic, assign) BOOL shouldFlattenSublayers;
 @property (nonatomic, assign) BOOL shouldDrawDebugColors;
+
+@property (nonatomic, assign) BOOL shouldPlayChildren;
 
 @end
 

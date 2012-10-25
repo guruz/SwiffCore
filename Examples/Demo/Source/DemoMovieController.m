@@ -63,10 +63,11 @@ static NSData *sGetCachedData(NSURL *url)
 
 @implementation DemoMovieController
 
-- (id) initWithURL:(NSURL *)url
+- (id) initWithURL:(NSURL *)url andSymbol:(NSString *)classname
 {
     if ((self = [super init])) {
         m_movieURL = url;
+        m_classname = classname;
     }
     
     return self;
@@ -146,21 +147,30 @@ static NSData *sGetCachedData(NSURL *url)
 - (void) _loadMovie
 {
     m_movie = [[SwiffMovie alloc] initWithData:m_movieData];
-
-    [m_timelineSlider setMaximumValue:([[m_movie frames] count] - 1)];
     
     CGRect movieFrame = [[self view] bounds];
     movieFrame.size.height -= 44;
+    
+    SwiffSpriteDefinition *clip = m_movie;
+    
+    if(m_classname != NULL)
+    {
+        clip = [m_movie definitionWithExportedName:m_classname];  
+    } 
 
+    [m_timelineSlider setMaximumValue:([[clip frames] count] - 1)];
+    
 #if PROMOTE_ALL_PLACED_OBJECTS_TO_LAYERS
-    for (SwiffFrame *frame in [m_movie frames]) {
+    for (SwiffFrame *frame in [clip frames]) {
         for (SwiffPlacedObject *object in [frame placedObjects]) {
             [object setWantsLayer:YES];
         }
     }
 #endif
+    
+    m_movieView = [[SwiffView alloc] initWithFrame:movieFrame movie:clip];
+    
 
-    m_movieView = [[SwiffView alloc] initWithFrame:movieFrame movie:m_movie];
     [m_movieView setDelegate:self];
     [m_movieView setBackgroundColor:[UIColor whiteColor]];   
     [m_movieView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];

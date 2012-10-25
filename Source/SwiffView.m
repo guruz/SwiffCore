@@ -62,21 +62,21 @@
     return [self initWithFrame:frame movie:nil];
 }
 
-
-- (id) initWithFrame:(CGRect)frame movie:(SwiffMovie *)movie
+- (id) initWithFrame:(CGRect)frame movie:(SwiffSpriteDefinition *)movie
 {
-    if (!movie) {
-        SwiffWarn(@"View", @"-[SwiffView initWithFrame:movie:] called with nil movie");
-    }
-
+//    if (!movie) {
+//        SwiffWarn(@"View", @"-[SwiffView initWithFrame:movie:] called with nil movie");
+//    }
+    
     if ((self = [super initWithFrame:frame])) {
+        
         _layer = [[SwiffLayer alloc] initWithMovie:movie];
         [_layer setContentsScale:[[UIScreen mainScreen] scale]];
         [[self layer] addSublayer:_layer];
         [self _layoutMovieLayer];
     }
     
-    return self;
+    return self; 
 }
 
 
@@ -115,7 +115,7 @@
 - (id) initWithFrame:(NSRect)frame movie:(SwiffMovie *)movie
 {
     if (!movie) {
-        SwiffWarn(@"View", @"-[SwiffView initWithFrame:movie:] called with nil movie");
+        SwiffWarn(@"View", @"-[SwiffView initWithFrame:movie:] called with NIL movie");
     }
 
 
@@ -174,11 +174,17 @@
 
 - (void) _layoutMovieLayer
 {
-    SwiffMovie *movie = [self movie];
-    if (!movie) return;
-
+    SwiffMovie *movie = [[self movie] movie];
+    
     CGFloat w = [self bounds].size.width;
     CGFloat h = [self bounds].size.height;
+    
+    if (!movie){
+        CGRect fullFrame = CGRectMake(0,0,w,h);
+        [_layer setFrame:fullFrame];
+        return;
+    }
+    
     CGSize  stageSize   = [movie stageRect].size;
     CGFloat aspectRatio = stageSize.width / stageSize.height;
     
@@ -253,8 +259,10 @@
 - (void) setShouldSubpixelQuantizeFonts:(BOOL)yn      { [_layer setShouldSubpixelQuantizeFonts:yn];  }
 - (void) setShouldFlattenSublayers:(BOOL)yn           { [_layer setShouldFlattenSublayers:yn];       }
 - (void) setShouldDrawDebugColors:(BOOL)yn            { [_layer setShouldDrawDebugColors:yn];        }
+- (void) setShouldPlayChildren:(BOOL)yn               { [_layer setShouldPlayChildren:yn];           }
 
-- (SwiffMovie    *) movie                             { return [_layer movie];                       }
+- (SwiffSpriteDefinition *) movie                             { return [_layer movie];               }
+- (SwiffGraphics *) graphics                          { return [_layer graphics];                    }
 - (SwiffPlayhead *) playhead                          { return [_layer playhead];                    }
 - (BOOL)            drawsBackground                   { return [_layer drawsBackground];             }
 - (SwiffColor    *) multiplyColor                     { return [_layer multiplyColor];               }
@@ -266,5 +274,6 @@
 - (BOOL)            shouldSubpixelQuantizeFonts       { return [_layer shouldSubpixelQuantizeFonts]; }
 - (BOOL)            shouldFlattenSublayers            { return [_layer shouldFlattenSublayers];      }
 - (BOOL)            shouldDrawDebugColors             { return [_layer shouldDrawDebugColors];       }
+- (BOOL)            setShouldPlayChildren             { return [_layer shouldPlayChildren];          }
 
 @end

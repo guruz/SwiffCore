@@ -22,6 +22,25 @@
 		</dict>
 		<dict>
 			<key>url</key>
+			<string>bundle:TestSuiteAS3.swf</string>
+			<key>classname</key>
+			<string>export_test</string>
+			<key>name</key>
+			<string>Test Suite w/Export</string>
+			<key>author</key>
+			<string>SwiffCore</string>
+		</dict>
+		<dict>
+			<key>New item</key>
+			<dict>
+				<key>url</key>
+				<string>bundle:TestSuite.swf</string>
+				<key>name</key>
+				<string>Test Suite</string>
+				<key>author</key>
+				<string>SwiffCore</string>
+			</dict>
+			<key>url</key>
 			<string>bundle:TestSuite.swf</string>
 			<key>name</key>
 			<string>Test Suite</string>
@@ -75,6 +94,30 @@
 			<string>Beer Animation Demo</string>
 			<key>author</key>
 			<string>maxim.gavrilov</string>
+		</dict>
+		<dict>
+                        <key>url</key>
+			<string>controller:DynamicTextController</string>
+			<key>name</key>
+			<string>Dynamic Text Controller</string>
+			<key>author</key>
+			<string>Will H</string>
+		</dict>
+		<dict>
+			<key>url</key>
+			<string>controller:DemoGraphicsController</string>
+			<key>name</key>
+			<string>Demo Graphics Controller</string>
+			<key>author</key>
+			<string>Will H</string>
+		</dict>
+		<dict>
+			<key>url</key>
+			<string>controller:SubAnimatedController</string>
+			<key>name</key>
+			<string>Sub Animation Controller</string>
+			<key>author</key>
+			<string>Will H</string>
 		</dict>
 	</array>
 </dict>

@@ -72,6 +72,23 @@
     return array;
 }
 
+- (id) initWithColor:(SwiffColor*)fill_color
+{
+    if ((self = [super init])) {
+        //initialize the color
+        _color = (SwiffColor){0,0,0,1};
+
+        //copy the fill_color... is this neccessary? can we just directly assign?
+        _color.red      = fill_color->red;
+        _color.green    = fill_color->green;
+        _color.blue     = fill_color->blue;
+        _color.alpha    = fill_color->alpha;
+        
+        _type = SwiffFillStyleTypeColor;
+    }
+    
+    return self;
+}
 
 - (id) initWithParser:(SwiffParser *)parser
 {

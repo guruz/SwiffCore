@@ -142,7 +142,7 @@
         UInt32 frameNumber = [key unsignedIntValue];
         
         if (frameNumber < count) {
-            [[frames objectAtIndex:frameNumber] _updateLabel:[_offsetToSceneNameMap objectForKey:key]];
+            [[frames objectAtIndex:frameNumber] updateLabel:[_offsetToSceneNameMap objectForKey:key]];
         }
     }
 }

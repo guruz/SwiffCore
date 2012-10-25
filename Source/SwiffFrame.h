@@ -36,6 +36,7 @@
 - (void) clearWeakReferences;
 
 - (SwiffPlacedObject *) placedObjectWithName:(NSString *)name;
+- (void) updateLabel:(NSString *)label;
 
 @property (nonatomic, copy, readonly) NSString *label;
 
