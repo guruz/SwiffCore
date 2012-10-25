@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		50CA785F1638731800216FBB /* Beer.swf in Resources */ = {isa = PBXBuildFile; fileRef = 50CA785E1638731800216FBB /* Beer.swf */; };
 		55038DE9144E5C5C00EA5841 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 55038DE8144E5C5C00EA5841 /* libxml2.dylib */; };
 		55038DEB144E5C6400EA5841 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 55038DEA144E5C6400EA5841 /* libz.dylib */; };
 		55038DF4144ECBD400EA5841 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55038DF3144ECBD300EA5841 /* CoreText.framework */; };
@@ -50,6 +51,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		50CA785E1638731800216FBB /* Beer.swf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Beer.swf; path = ../../Tests/Beer.swf; sourceTree = "<group>"; };
 		55038DE8144E5C5C00EA5841 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		55038DEA144E5C6400EA5841 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		55038DF3144ECBD300EA5841 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
@@ -161,6 +163,7 @@
 				553135B2153ED0D90028EFF7 /* Bitmaps.swf */,
 				553135B3153ED0D90028EFF7 /* DynamicText.swf */,
 				553135B4153ED0D90028EFF7 /* TestSuite.swf */,
+				50CA785E1638731800216FBB /* Beer.swf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -243,6 +246,7 @@
 				553135B6153ED1C00028EFF7 /* DynamicText.swf in Resources */,
 				553135B7153ED1C00028EFF7 /* TestSuite.swf in Resources */,
 				55BA68E9144B9C4B00D83AA8 /* DemoMovies.plist in Resources */,
+				50CA785F1638731800216FBB /* Beer.swf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

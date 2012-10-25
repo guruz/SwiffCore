@@ -68,6 +68,14 @@
 			<key>author</key>
 			<string>musictheory.net</string>
 		</dict>
+		<dict>
+			<key>url</key>
+			<string>bundle:Beer.swf</string>
+			<key>name</key>
+			<string>Beer Animation Demo</string>
+			<key>author</key>
+			<string>maxim.gavrilov</string>
+		</dict>
 	</array>
 </dict>
 </plist>
