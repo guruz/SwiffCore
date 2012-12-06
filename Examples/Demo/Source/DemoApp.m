@@ -52,6 +52,8 @@ static NSString *sCurrentClassnameKey = @"CurrentClassnameKey";
         m_moviesPlist = [NSPropertyListSerialization propertyListWithData:plistData options:NSPropertyListImmutable format:NULL error:&error];
 
         [self setTitle:@"Movies"];
+        
+        [self handleURL:@"bundle:Beer.swf" andClassname:nil animated:YES];
     }
     
     return self;

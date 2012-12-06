@@ -118,6 +118,8 @@ static NSData *sGetCachedData(NSURL *url)
     } else {
         [self _loadMovieData];
     }
+    
+    [self _handlePlayButtonTapped:nil];
 }
 
 
