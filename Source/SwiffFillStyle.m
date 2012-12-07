@@ -28,49 +28,26 @@
 #import "SwiffFillStyle.h"
 #import "SwiffParser.h"
 #import "SwiffGradient.h"
-
-#define IS_COLOR_TYPE    (_type == SwiffFillStyleTypeColor)
-
-#define IS_GRADIENT_TYPE ((_type == SwiffFillStyleTypeLinearGradient) || \
-                          (_type == SwiffFillStyleTypeRadialGradient) || \
-                          (_type == SwiffFillStyleTypeFocalRadialGradient))
-
-#define IS_BITMAP_TYPE   ((_type >= SwiffFillStyleTypeRepeatingBitmap) && (_type <= SwiffFillStyleTypeNonSmoothedClippedBitmap))
-
-@implementation SwiffFillStyle {
-    CGAffineTransform  _transform;
-}
+#import "SwiffUtils.h"
 
 
-+ (NSArray *) fillStyleArrayWithParser:(SwiffParser *)parser
-{
-    UInt8 count8;
-    NSInteger count;
+#define IS_COLOR_TYPE(type)    (type == SwiffFillStyleTypeColor)
 
-    SwiffParserReadUInt8(parser, &count8);
-    if (count8 == 0xFF) {
-        UInt16 count16;
-        SwiffParserReadUInt16(parser, &count16);
-        count = count16;
+#define IS_GRADIENT_TYPE(type) ((type == SwiffFillStyleTypeLinearGradient) || \
+                          (type == SwiffFillStyleTypeRadialGradient) || \
+                          (type == SwiffFillStyleTypeFocalRadialGradient))
 
-    } else {
-        count = count8;
-    }
-    
-    NSMutableArray *array = [NSMutableArray arrayWithCapacity:count];
+#define IS_BITMAP_TYPE(type)   ((type >= SwiffFillStyleTypeRepeatingBitmap) && (type <= SwiffFillStyleTypeNonSmoothedClippedBitmap))
 
-    for (NSInteger i = 0; i < count; i++) {
-        SwiffFillStyle *fillStyle = [[self alloc] initWithParser:parser];
+@interface SwiffFillStyle()
+@property (nonatomic, assign) SwiffFillStyleType type;
+@property (nonatomic, assign) SwiffColor color;
+@property (nonatomic, strong) SwiffGradient *gradient;
+@property (nonatomic, assign) CGAffineTransform transform;
+@property (nonatomic, assign) UInt16 bitmapID;
+@end
 
-        if (fillStyle) {
-            [array addObject:fillStyle];
-        } else {
-            return nil;
-        }
-    }
-
-    return array;
-}
+@implementation SwiffFillStyle
 
 - (id) initWithColor:(SwiffColor*)fill_color
 {
@@ -95,7 +72,7 @@
     if ((self = [super init])) {
         SwiffParserReadUInt8(parser, &_type);
 
-        if (IS_COLOR_TYPE) {
+        if (IS_COLOR_TYPE(_type)) {
             SwiffTag  tag     = SwiffParserGetCurrentTag(parser);
             NSInteger version = SwiffParserGetCurrentTagVersion(parser);
         
@@ -105,13 +82,13 @@
                 SwiffParserReadColorRGB(parser, &_color);
             }
 
-        } else if (IS_GRADIENT_TYPE) {
+        } else if (IS_GRADIENT_TYPE(_type)) {
             SwiffParserReadMatrix(parser, &_transform);
             BOOL isFocalGradient = (_type == SwiffFillStyleTypeFocalRadialGradient);
 
             _gradient = [[SwiffGradient alloc] initWithParser:parser isFocalGradient:isFocalGradient];
 
-        } else if (IS_BITMAP_TYPE) {
+        } else if (IS_BITMAP_TYPE(_type)) {
             SwiffParserReadUInt16(parser, &_bitmapID);
             SwiffParserReadMatrix(parser, &_transform);
 
@@ -169,19 +146,111 @@
 
 - (SwiffColor *) colorPointer
 {
-    return IS_COLOR_TYPE ? &_color : NULL;
+    return IS_COLOR_TYPE(_type) ? &_color : NULL;
 }
 
 
 - (CGAffineTransform) gradientTransform
 {
-    return IS_GRADIENT_TYPE ? _transform : CGAffineTransformIdentity;
+    return IS_GRADIENT_TYPE(_type) ? _transform : CGAffineTransformIdentity;
 }
 
 
 - (CGAffineTransform) bitmapTransform
 {
-    return IS_BITMAP_TYPE ? _transform : CGAffineTransformIdentity;
+    return IS_BITMAP_TYPE(_type) ? _transform : CGAffineTransformIdentity;
 }
 
+@end
+
+@implementation SwiffMorphFillStyle {
+    SwiffColor _startColor;
+    SwiffColor _endColor;
+    CGAffineTransform  _startTransform;
+    CGAffineTransform  _endTransform;
+}
+
+
+- (id) initWithParser:(SwiffParser *)parser
+{
+    if ((self = [super init])) {
+        UInt8 type;
+        SwiffParserReadUInt8(parser, &type);
+        self.type = type;
+        
+        if (IS_COLOR_TYPE(type)) {
+            SwiffParserReadColorRGBA(parser, &_startColor);
+            SwiffParserReadColorRGBA(parser, &_endColor);
+        } else if (IS_GRADIENT_TYPE(type)) {
+            SwiffParserReadMatrix(parser, &_startTransform);
+            SwiffParserReadMatrix(parser, &_endTransform);
+            self.gradient = [[SwiffMorphGradient alloc] initWithParser:parser];
+        } else if (IS_BITMAP_TYPE(type)) {
+            UInt16 bitmapID;
+            SwiffParserReadUInt16(parser, &bitmapID);
+            self.bitmapID = bitmapID;
+            SwiffParserReadMatrix(parser, &_startTransform);
+            _startTransform.a = SwiffGetCGFloatFromTwips(_startTransform.a);
+            _startTransform.d = SwiffGetCGFloatFromTwips(_startTransform.d);
+            
+            SwiffParserReadMatrix(parser, &_endTransform);
+            _endTransform.a = SwiffGetCGFloatFromTwips(_endTransform.a);
+            _endTransform.d = SwiffGetCGFloatFromTwips(_endTransform.d);
+            
+        } else {
+            return nil;
+        }
+        
+        if (!SwiffParserIsValid(parser)) {
+            return nil;
+        }
+    }
+    
+    return self;
+}
+
+
+- (NSString *) description
+{
+    NSString *typeString = nil;
+    UInt8 type = self.type;
+    
+    if (type == SwiffFillStyleTypeColor) {
+        
+        typeString = [NSString stringWithFormat:@"%@ -> %@",
+                      SwiffStringFromColor(_startColor), SwiffStringFromColor(_endColor)];        
+    } else if (type == SwiffFillStyleTypeLinearGradient) {
+        typeString = @"MorphLinearGradient";
+    } else if (type == SwiffFillStyleTypeRadialGradient) {
+        typeString = @"MorphRadialGradient";
+    } else if (type == SwiffFillStyleTypeFocalRadialGradient) {
+        typeString = @"MorphFocalRadialGradient";
+    } else if (type == SwiffFillStyleTypeRepeatingBitmap) {
+        typeString = @"MorphRepeatingBitmap";
+    } else if (type == SwiffFillStyleTypeClippedBitmap) {
+        typeString = @"MorphClippedBitmap";
+    } else if (type == SwiffFillStyleTypeNonSmoothedRepeatingBitmap) {
+        typeString = @"MorphNonSmoothedRepeatingBitmap";
+    } else if (type == SwiffFillStyleTypeNonSmoothedClippedBitmap) {
+        typeString = @"MorphNonSmoothedClippedBitmap";
+    }
+    
+    return [NSString stringWithFormat:@"<%@: %p; %@>", [self class], self, typeString];
+}
+
+- (void)setRatio:(CGFloat)ratio
+{
+    _ratio = ratio;
+    self.color = SwiffColorInterpolate(_startColor, _endColor, ratio);
+    self.transform = CGAffineTransformMake(_startTransform.a + (_endTransform.a - _startTransform.a) * ratio,
+                                           _startTransform.b + (_endTransform.b - _startTransform.b) * ratio,
+                                           _startTransform.c + (_endTransform.c - _startTransform.c) * ratio,
+                                           _startTransform.d + (_endTransform.d - _startTransform.d) * ratio,
+                                           _startTransform.tx + (_endTransform.tx - _startTransform.tx) * ratio,
+                                           _startTransform.ty + (_endTransform.ty - _startTransform.ty) * ratio);
+
+    if ([self.gradient isKindOfClass:[SwiffMorphGradient class]]) {
+        ((SwiffMorphGradient *)self.gradient).ratio = ratio;
+    }
+}
 @end

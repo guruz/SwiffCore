@@ -220,6 +220,19 @@ typedef NS_ENUM(NSInteger, SwiffMPEGError) {
     SwiffMPEGErrorReservedEmphasis     =  4
 };
 
+typedef NS_ENUM(UInt8, SwiffFillStyleType) {
+    SwiffFillStyleTypeColor = 0,
+    
+    SwiffFillStyleTypeLinearGradient             = 0x10,
+    SwiffFillStyleTypeRadialGradient             = 0x12,
+    SwiffFillStyleTypeFocalRadialGradient        = 0x13,
+    
+    SwiffFillStyleTypeRepeatingBitmap            = 0x40,
+    SwiffFillStyleTypeClippedBitmap              = 0x41,
+    SwiffFillStyleTypeNonSmoothedRepeatingBitmap = 0x42,
+    SwiffFillStyleTypeNonSmoothedClippedBitmap   = 0x43
+};
+
 
 typedef struct SwiffMPEGHeader {
     SwiffMPEGVersion     version;

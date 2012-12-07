@@ -284,11 +284,11 @@ static NSString * const SwiffSpriteDefinitionStreamBlockKey = @"SwiffSpriteDefin
         [placedObject setPlacesImage:YES];
         [placedObject setClassName:className];
     }
-
+    NSLog(@"read ratio: %d", ratio);
     if (hasClassName)      [placedObject setClassName:className];
     if (hasClipDepth)      [placedObject setClipDepth:clipDepth];
     if (hasName)           [placedObject setName:name];
-    if (hasRatio)          [placedObject setRatio:ratio];
+    if (hasRatio)          [placedObject setRatio:(CGFloat)ratio/65535.0];
     if (hasColorTransform) [placedObject setColorTransform:colorTransform];
     if (hasBlendMode)      [placedObject setBlendMode:blendMode];
     if (hasFilterList)     [placedObject setFilters:filterList];

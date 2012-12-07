@@ -43,6 +43,7 @@
 #import "SwiffPlacedDynamicText.h"
 #import "SwiffPlacedSprite.h"
 #import "SwiffShapeDefinition.h"
+#import "SwiffMorphShapeDefinition.h"
 #import "SwiffStaticTextRecord.h"
 #import "SwiffStaticTextDefinition.h"
 #import "SwiffUtils.h"
@@ -611,7 +612,7 @@ static void sDrawPlacedSprite(SwiffRenderState *state, SwiffPlacedSprite* placed
     
     if([placedSprite frame] >= [frames count])
     {
-        NSLog(@"CALLED FOR INVALID FRAME IN PLACEDSPRITE  (%i/%i)", [placedSprite frame], [frames count]);
+        NSLog(@"CALLED FOR INVALID FRAME IN PLACEDSPRITE %@ (%i/%i)", spriteDefinition, [placedSprite frame], [frames count]);
         return;
     }
     
@@ -828,6 +829,11 @@ static void sDrawPlacedObject(SwiffRenderState *state, SwiffPlacedObject *placed
         sPushColorTransform(state, [placedObject colorTransformPointer]);
     }
 
+    if (placedObject.ratio > 0) {
+        NSLog(@"ratio: %f %d %@", placedObject.ratio, placedObject.libraryID, definition);
+    }
+    
+
     //!issue7: non-CG blend modes
     if (blendMode != kCGBlendModeNormal) {
         CGContextSaveGState(state->context);
@@ -842,6 +848,10 @@ static void sDrawPlacedObject(SwiffRenderState *state, SwiffPlacedObject *placed
     } else if ([definition isKindOfClass:[SwiffShapeDefinition class]]) {
         sDrawShapeDefinition(state, (SwiffShapeDefinition *)definition);
 
+    } else if ([definition isKindOfClass:[SwiffMorphShapeDefinition class]]) {
+        SwiffShapeDefinition *shape = [((SwiffMorphShapeDefinition *)definition) shapeWithRatio:placedObject.ratio];
+        sDrawShapeDefinition(state, shape);
+        
     } else if ([definition isKindOfClass:[SwiffSpriteDefinition class]]) {
         if ([placedObject isKindOfClass:[SwiffPlacedSprite class]]) {
             sDrawPlacedSprite(state, (SwiffPlacedSprite *)placedObject);

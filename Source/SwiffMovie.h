@@ -31,7 +31,7 @@
 
 @class SwiffBitmapDefinition, SwiffDynamicTextDefinition, SwiffFontDefinition,
        SwiffShapeDefinition, SwiffStaticTextDefinition, SwiffSoundDefinition,
-       SwiffSparseArray;
+       SwiffSparseArray, SwiffMorphShapeDefinitio;
 
 @protocol SwiffMovieDecoder;
 
@@ -47,6 +47,7 @@
 - (SwiffDynamicTextDefinition *) dynamicTextDefinitionWithLibraryID:(UInt16)libraryID;
 - (SwiffFontDefinition        *) fontDefinitionWithLibraryID:(UInt16)libraryID;
 - (SwiffShapeDefinition       *) shapeDefinitionWithLibraryID:(UInt16)libraryID;
+- (SwiffMorphShapeDefinitio   *) morphShapeDefinitionWithLibraryID:(UInt16)libraryID;
 - (SwiffSoundDefinition       *) soundDefinitionWithLibraryID:(UInt16)libraryID;
 - (SwiffSpriteDefinition      *) spriteDefinitionWithLibraryID:(UInt16)libraryID;
 - (SwiffStaticTextDefinition  *) staticTextDefinitionWithLibraryID:(UInt16)libraryID;

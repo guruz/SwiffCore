@@ -39,7 +39,7 @@ typedef struct SwiffPlacedObjectAdditionalStorage
     SwiffColorTransform colorTransform;
     SwiffBlendMode blendMode;
     UInt16 clipDepth;
-    UInt16 ratio;
+    CGFloat ratio;
     BOOL   hasColorTransform;
     BOOL   hidden;
     BOOL   wantsLayer;
@@ -217,13 +217,13 @@ SwiffPlacedObject *SwiffPlacedObjectCreate(SwiffMovie *movie, UInt16 libraryID, 
 - (void) setRatio:(CGFloat)ratio
 {
     MAKE_ADDITIONAL;
-    ADDITIONAL->ratio = SwiffRound(ratio * 65535.0);
+    ADDITIONAL->ratio = SwiffRound(ratio);
 }
 
 
 - (CGFloat) ratio
 {
-    return _additional ? (ADDITIONAL->ratio / 65535.0) : 0;
+    return _additional ? ADDITIONAL->ratio : 0;
 }
 
 

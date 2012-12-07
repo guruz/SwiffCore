@@ -189,6 +189,16 @@ NSString *SwiffStringFromColor(SwiffColor color)
         alphaString];
 }
 
+SwiffColor SwiffColorInterpolate(SwiffColor s, SwiffColor f, CGFloat ratio)
+{
+    SwiffColor result;
+    result.alpha = s.alpha + (f.alpha - s.alpha) * ratio;
+    result.red = s.red + (f.red - s.red) * ratio;
+    result.green = s.green + (f.green - s.green) * ratio;
+    result.blue = s.blue + (f.blue - s.blue) * ratio;
+    return result;
+}
+
 
 SwiffColor SwiffColorApplyColorTransform(SwiffColor color, const SwiffColorTransform *transform)
 {

@@ -116,6 +116,7 @@ extern CGColorRef SwiffColorCopyCGColor(SwiffColor color) CF_RETURNS_RETAINED;
 
 extern NSString *SwiffStringFromColor(SwiffColor color);
 
+extern SwiffColor SwiffColorInterpolate(SwiffColor s, SwiffColor f, CGFloat ratio);
 extern SwiffColor SwiffColorApplyColorTransform(SwiffColor color, const SwiffColorTransform *transform);
 
 extern BOOL SwiffColorTransformIsIdentity(const SwiffColorTransform *transform);

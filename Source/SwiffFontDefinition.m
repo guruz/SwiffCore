@@ -33,131 +33,6 @@
 
 const CGFloat SwiffFontEmSquareHeight = 1024;
 
-
-static CGPathRef sCreatePathFromShapeRecord(SwiffParser *parser)
-{
-    CGMutablePathRef path = CGPathCreateMutable();
-    CGPathMoveToPoint(path, NULL, 0, 0);
-
-    CGAffineTransform transform = CGAffineTransformMakeScale(1 / 20.0, 1 / 20.0);
-    const CGAffineTransform *m = NULL;
-    
-    if ((SwiffParserGetCurrentTag(parser) == SwiffTagDefineFont) && (SwiffParserGetCurrentTagVersion(parser) == 3)) {
-        m = &transform;
-    }
-
-    SwiffPoint position = { 0, 0 };
-
-    UInt32 fillBits, lineBits;
-    SwiffParserReadUBits(parser, 4, &fillBits);
-    SwiffParserReadUBits(parser, 4, &lineBits);
-
-    BOOL foundEndRecord = NO;
-    while (!foundEndRecord) {
-        UInt32 typeFlag;
-        SwiffParserReadUBits(parser, 1, &typeFlag);
-
-        if (typeFlag == 0) {
-            UInt32 newStyles, changeLineStyle, changeFillStyle0, changeFillStyle1, moveTo, unused;
-            SwiffParserReadUBits(parser, 1, &newStyles);
-            SwiffParserReadUBits(parser, 1, &changeLineStyle);
-            SwiffParserReadUBits(parser, 1, &changeFillStyle1);
-            SwiffParserReadUBits(parser, 1, &changeFillStyle0);
-            SwiffParserReadUBits(parser, 1, &moveTo);
-            
-            // ENDSHAPERECORD
-            if ((newStyles + changeLineStyle + changeFillStyle1 + changeFillStyle0 + moveTo) == 0) {
-                foundEndRecord = YES;
-
-            // STYLECHANGERECORD
-            } else {
-                if (moveTo) {
-                    UInt32 moveBits;
-                    SwiffParserReadUBits(parser, 5, &moveBits);
-                    
-                    SInt32 x, y;
-                    SwiffParserReadSBits(parser, moveBits, &x);
-                    SwiffParserReadSBits(parser, moveBits, &y);
-
-                    position.x = x;
-                    position.y = y;
-                    
-                    CGPathMoveToPoint(path, m, position.x, position.y);
-                }
-                
-                if (changeFillStyle0) SwiffParserReadUBits(parser, fillBits, &unused);
-                if (changeFillStyle1) SwiffParserReadUBits(parser, fillBits, &unused);
-                if (changeLineStyle)  SwiffParserReadUBits(parser, lineBits, &unused);
-
-                if (newStyles) {
-                    SwiffWarn(@"Font", @"STYLECHANGERECORD.newStyles = YES for a DefineFont tag");
-                }
-            }
-            
-        } else {
-            UInt32 straightFlag, numBits;
-            SwiffParserReadUBits(parser, 1, &straightFlag);
-            SwiffParserReadUBits(parser, 4, &numBits);
-            
-            // STRAIGHTEDGERECORD
-            if (straightFlag) {
-                UInt32 generalLineFlag;
-                SInt32 vertLineFlag = 0, deltaX = 0, deltaY = 0;
-
-                SwiffParserReadUBits(parser, 1, &generalLineFlag);
-
-                if (generalLineFlag == 0) {
-                    SwiffParserReadSBits(parser, 1, &vertLineFlag);
-                }
-
-                if (generalLineFlag || !vertLineFlag) {
-                    SwiffParserReadSBits(parser, numBits + 2, &deltaX);
-                }
-
-                if (generalLineFlag || vertLineFlag) {
-                    SwiffParserReadSBits(parser, numBits + 2, &deltaY);
-                }
-
-                position.x += deltaX;
-                position.y += deltaY;
-
-                CGPathAddLineToPoint(path, m, position.x, position.y);
-            
-            // CURVEDEDGERECORD
-            } else {
-                SInt32 controlDeltaX = 0, controlDeltaY = 0, anchorDeltaX = 0, anchorDeltaY = 0;
-                       
-                SwiffParserReadSBits(parser, numBits + 2, &controlDeltaX);
-                SwiffParserReadSBits(parser, numBits + 2, &controlDeltaY);
-                SwiffParserReadSBits(parser, numBits + 2, &anchorDeltaX);
-                SwiffParserReadSBits(parser, numBits + 2, &anchorDeltaY);
-
-                SwiffPoint control = {
-                    position.x + controlDeltaX,
-                    position.y + controlDeltaY,
-                };
-
-                position.x = control.x + anchorDeltaX;
-                position.y = control.y + anchorDeltaY;
-
-                CGPathAddQuadCurveToPoint(path, m, control.x, control.y, position.x, position.y);
-            }
-        }
-        
-        //!spec: "Each individual shape record is byte-aligned within
-        //        an array of shape records" (page 134)
-        //
-        // In practice, this is not the case.  Hence, leave the next line commented:
-        // SwiffParserByteAlign(parser);
-    }
-
-    SwiffParserByteAlign(parser);
-    CGPathCloseSubpath(path);
-
-    return path;
-}
-
-
 @implementation SwiffFontDefinition
 
 @synthesize movie     = _movie,
@@ -207,7 +82,7 @@ static CGPathRef sCreatePathFromShapeRecord(SwiffParser *parser)
     _glyphPaths = calloc(sizeof(CGPathRef), _glyphCount);
 
     for (NSInteger i = 0; i < _glyphCount; i++) {
-        _glyphPaths[i] = sCreatePathFromShapeRecord(parser);
+        _glyphPaths[i] = SwiffParserReadPathFromShapeRecord(parser);
     }
 }
 

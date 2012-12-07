@@ -31,24 +31,7 @@
 
 @class SwiffGradient;
 
-typedef NS_ENUM(UInt8, SwiffFillStyleType) {
-    SwiffFillStyleTypeColor = 0,
-
-    SwiffFillStyleTypeLinearGradient             = 0x10,
-    SwiffFillStyleTypeRadialGradient             = 0x12,
-    SwiffFillStyleTypeFocalRadialGradient        = 0x13,
-
-    SwiffFillStyleTypeRepeatingBitmap            = 0x40,
-    SwiffFillStyleTypeClippedBitmap              = 0x41,
-    SwiffFillStyleTypeNonSmoothedRepeatingBitmap = 0x42,
-    SwiffFillStyleTypeNonSmoothedClippedBitmap   = 0x43
-};
-
-
 @interface SwiffFillStyle : NSObject
-
-// Reads a FILLSTYLEARRAY from the parser
-+ (NSArray *) fillStyleArrayWithParser:(SwiffParser *)parser;
 
 //initialize a fill with a color
 - (id) initWithColor:(SwiffColor*)fill_color;
@@ -70,4 +53,10 @@ typedef NS_ENUM(UInt8, SwiffFillStyleType) {
 @property (nonatomic, readonly, assign) UInt16 bitmapID;
 @property (nonatomic, readonly, assign) CGAffineTransform bitmapTransform;
 
+@end
+
+@interface SwiffMorphFillStyle : SwiffFillStyle
+- (id) initWithParser:(SwiffParser *)parser;
+
+@property (nonatomic, assign) CGFloat ratio;
 @end

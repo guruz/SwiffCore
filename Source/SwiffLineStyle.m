@@ -32,73 +32,60 @@
 
 const CGFloat SwiffLineStyleHairlineWidth = CGFLOAT_MIN;
 
+@interface SwiffLineStyle()
+@property (nonatomic, strong) SwiffFillStyle *fillStyle;
+
+@property (nonatomic, assign) CGLineCap startLineCap;
+@property (nonatomic, assign) CGLineCap endLineCap;
+@property (nonatomic, assign) CGLineJoin lineJoin;
+@property (nonatomic, assign) CGFloat miterLimit;
+
+@property (nonatomic, assign, getter=isPixelAligned) BOOL pixelAligned;
+@property (nonatomic, assign) BOOL scalesHorizontally;
+@property (nonatomic, assign) BOOL scalesVertically;
+@property (nonatomic, assign) BOOL closesStroke;
+@end
+
 @implementation SwiffLineStyle
 
-+ (NSArray *) lineStyleArrayWithParser:(SwiffParser *)parser
-{
-    UInt8 count8;
-    NSInteger count;
-
-    SwiffParserReadUInt8(parser, &count8);
-    if (count8 == 0xFF) {
-        UInt16 count16;
-        SwiffParserReadUInt16(parser, &count16);
-        count = count16;
-
-    } else {
-        count = count8;
+static inline CGFloat getLineWidth(UInt32 width) {
+    CGFloat result = SwiffLineStyleHairlineWidth;
+    if (width > 1) {
+        result = SwiffGetCGFloatFromTwips(width);
     }
-    
-    NSMutableArray *array = [NSMutableArray arrayWithCapacity:count];
-
-    for (NSInteger i = 0; i < count; i++) {
-        SwiffLineStyle *lineStyle = [[self alloc] initWithParser:parser];
-
-        if (lineStyle) {
-            [array addObject:lineStyle];
-        } else {
-            return nil;
-        }
-    }
-
-    return array;
+    return result;
 }
 
+static inline CGLineCap getLineCap(UInt32 capStyle) {
+    CGLineCap result = kCGLineCapRound;
+    
+    if (capStyle == 1) {
+        result = kCGLineCapButt;
+    } else if (capStyle == 2) {
+        result = kCGLineCapSquare;
+    }
+    
+    return result;
+};
+
+static inline CGLineJoin getLineJoin(UInt32 joinStyle) {
+    CGLineJoin result = kCGLineJoinRound;
+    
+    if (joinStyle == 1) {
+        result = kCGLineJoinBevel;
+    } else if (joinStyle == 2) {
+        result = kCGLineJoinMiter;
+    }
+    
+    return result;
+};
 
 - (id) initWithParser:(SwiffParser *)parser
 {
     if ((self = [super init])) {
         UInt16 width;
         SwiffParserReadUInt16(parser, &width);
-        if (width == 1) {
-            _width = SwiffLineStyleHairlineWidth;
-        } else {
-            _width = SwiffGetCGFloatFromTwips(width);
-        }
-
-        CGLineCap (^getLineCap)(UInt32) = ^(UInt32 capStyle) {
-            CGLineCap result = kCGLineCapRound;
-
-            if (capStyle == 1) {
-                result = kCGLineCapButt;
-            } else if (capStyle == 2) {
-                result = kCGLineCapSquare;
-            }
-
-            return result;
-        };
-
-        CGLineJoin (^getLineJoin)(UInt32) = ^(UInt32 joinStyle) {
-            CGLineJoin result = kCGLineJoinRound;
-
-            if (joinStyle == 1) {
-                result = kCGLineJoinBevel;
-            } else if (joinStyle == 2) {
-                result = kCGLineJoinMiter;
-            }
-
-            return result;
-        };
+        _width = getLineWidth(width);
 
         NSInteger version = SwiffParserGetCurrentTagVersion(parser);
 
@@ -164,3 +151,78 @@ const CGFloat SwiffLineStyleHairlineWidth = CGFLOAT_MIN;
 
 
 @end
+
+
+@implementation SwiffMorphLineStyle {
+    CGFloat _startWidth;
+    CGFloat _endWidth;
+    SwiffColor _startColor;
+    SwiffColor _endColor;
+}
+
+- (id)initWithParser:(SwiffParser *)parser
+{
+    if ((self = [super init])) {
+        UInt16 width;
+        SwiffParserReadUInt16(parser, &width);
+        _startWidth = getLineWidth(width);
+
+        SwiffParserReadUInt16(parser, &width);
+        _endWidth = getLineWidth(width);
+        
+        NSInteger version = SwiffParserGetCurrentTagVersion(parser);
+        
+        if (version == 1) {
+            SwiffParserReadColorRGBA(parser, &_startColor);
+            SwiffParserReadColorRGBA(parser, &_endColor);
+        } else if (version == 2) {
+            UInt32 startCapStyle, joinStyle, hasFillFlag, noHScaleFlag, noVScaleFlag, pixelHintingFlag, reserved, noClose, endCapStyle;
+            
+            SwiffParserReadUBits(parser, 2, &startCapStyle);
+            SwiffParserReadUBits(parser, 2, &joinStyle);
+            SwiffParserReadUBits(parser, 1, &hasFillFlag);
+            SwiffParserReadUBits(parser, 1, &noHScaleFlag);
+            SwiffParserReadUBits(parser, 1, &noVScaleFlag);
+            SwiffParserReadUBits(parser, 1, &pixelHintingFlag);
+            SwiffParserReadUBits(parser, 5, &reserved);
+            SwiffParserReadUBits(parser, 1, &noClose);
+            SwiffParserReadUBits(parser, 2, &endCapStyle);
+            
+            self.startLineCap       =  getLineCap(startCapStyle);
+            self.endLineCap         =  getLineCap(endCapStyle);
+            self.lineJoin           =  getLineJoin(joinStyle);
+            self.scalesHorizontally = !noHScaleFlag;
+            self.scalesVertically   = !noVScaleFlag;
+            self.pixelAligned       =  pixelHintingFlag;
+            self.closesStroke       = !noClose;
+            
+            if (self.lineJoin == kCGLineJoinMiter) {
+                CGFloat miterLimit;
+                SwiffParserReadFixed8(parser, &miterLimit);
+                self.miterLimit = miterLimit;
+            }
+            
+            if (!hasFillFlag) {
+                SwiffParserReadColorRGBA(parser, &_startColor);
+                SwiffParserReadColorRGBA(parser, &_endColor);                
+            } else {
+                _startColor.red   = 0;
+                _startColor.green = 0;
+                _startColor.blue  = 0;
+                _startColor.alpha = 255;
+                
+                _endColor = _startColor;
+                
+                self.fillStyle = [[SwiffMorphFillStyle alloc] initWithParser:parser];
+            }
+        }
+        
+        if (!SwiffParserIsValid(parser)) {
+            return nil;
+        }
+    }
+    
+    return self;
+}
+@end
+

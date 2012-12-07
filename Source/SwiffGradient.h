@@ -57,3 +57,9 @@ typedef NS_ENUM(NSInteger, SwiffGradientInterpolationMode) {
 @property (nonatomic, readonly, assign) CGFloat focalPoint;
 
 @end
+
+@interface SwiffMorphGradient : SwiffGradient
+@property (nonatomic, assign) CGFloat ratio;
+
+- (id) initWithParser:(SwiffParser *)parser;
+@end

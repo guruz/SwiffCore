@@ -104,3 +104,8 @@ extern void SwiffParserReadData(SwiffParser *parser, UInt32 length, NSData **out
 
 extern void SwiffParserReadString(SwiffParser *parser, NSString **outValue);
 extern void SwiffParserReadLengthPrefixedString(SwiffParser *parser, NSString **outValue);
+
+// Array
+//
+extern NSArray *SwiffParserReadArrayOfObjects(SwiffParser *parser, Class cls);
+extern CGPathRef SwiffParserReadPathFromShapeRecord(SwiffParser *parser);

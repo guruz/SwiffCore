@@ -154,8 +154,8 @@ static void sPathAddShapeOperation(SwiffPath *path, SwiffShapeOperation *op, Swi
             fillStyleOffset = [_fillStyles count];
             lineStyleOffset = [_lineStyles count];
 
-            NSArray *moreFillStyles = [SwiffFillStyle fillStyleArrayWithParser:parser];
-            NSArray *moreLineStyles = [SwiffLineStyle lineStyleArrayWithParser:parser];
+            NSArray *moreFillStyles = SwiffParserReadArrayOfObjects(parser, [SwiffFillStyle class]);
+            NSArray *moreLineStyles = SwiffParserReadArrayOfObjects(parser, [SwiffLineStyle class]);
 
             for (SwiffLineStyle *lineStyle in moreLineStyles) {
                 CGFloat width = [lineStyle width];

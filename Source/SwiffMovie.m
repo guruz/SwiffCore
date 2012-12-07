@@ -31,8 +31,10 @@
 #import "SwiffBitmapDefinition.h"
 #import "SwiffDynamicTextDefinition.h"
 #import "SwiffFontDefinition.h"
+#import "SwiffMorphShapeDefinition.h"
 #import "SwiffParser.h"
 #import "SwiffShapeDefinition.h"
+#import "SwiffMorphShapeDefinition.h"
 #import "SwiffSoundDefinition.h"
 #import "SwiffSparseArray.h"
 #import "SwiffSpriteDefinition.h"
@@ -173,7 +175,8 @@ static NSString * const SwiffMovieNeedsJPEGTablesDataKey = @"SwiffMovieNeedsJPEG
     
     } else if (tag == SwiffTagDefineMorphShape) {
         //!issue1: MorphShape Support
-
+        definitionToAdd = [[SwiffMorphShapeDefinition alloc] initWithParser:parser movie:self];
+    
     } else if (tag == SwiffTagJPEGTables) {
         UInt32 remaining = SwiffParserGetBytesRemainingInCurrentTag(parser);
 
@@ -296,6 +299,9 @@ id<SwiffDefinition> SwiffMovieGetDefinition(SwiffMovie *movie, UInt16 libraryID)
 
 - (SwiffShapeDefinition *) shapeDefinitionWithLibraryID:(UInt16)libraryID
     { return [self _definitionWithLibraryID:libraryID ofClass:[SwiffShapeDefinition class]]; }
+
+- (SwiffMorphShapeDefinitio *) morphShapeDefinitionWithLibraryID:(UInt16)libraryID
+    { return [self _definitionWithLibraryID:libraryID ofClass:[SwiffMorphShapeDefinition class]]; }
 
 - (SwiffSoundDefinition *) soundDefinitionWithLibraryID:(UInt16)libraryID
     { return [self _definitionWithLibraryID:libraryID ofClass:[SwiffSoundDefinition class]]; }

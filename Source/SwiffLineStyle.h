@@ -36,9 +36,6 @@ extern const CGFloat SwiffLineStyleHairlineWidth;
 
 @interface SwiffLineStyle : NSObject
 
-// Reads a LINESTYLEARRAY from the parser
-+ (NSArray *) lineStyleArrayWithParser:(SwiffParser *)parser;
-
 // Reads a LINESTYLE from the parser
 - (id) initWithParser:(SwiffParser *)parser;
 
@@ -59,4 +56,8 @@ extern const CGFloat SwiffLineStyleHairlineWidth;
 @property (nonatomic, readonly, assign) BOOL scalesVertically;
 @property (nonatomic, readonly, assign) BOOL closesStroke;
 
+@end
+
+@interface SwiffMorphLineStyle : SwiffLineStyle
+- (id)initWithParser:(SwiffParser *)parser;
 @end
