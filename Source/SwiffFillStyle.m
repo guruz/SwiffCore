@@ -163,13 +163,18 @@
 
 @end
 
-@implementation SwiffMorphFillStyle {
-    SwiffColor _startColor;
-    SwiffColor _endColor;
-    CGAffineTransform  _startTransform;
-    CGAffineTransform  _endTransform;
-}
 
+@interface SwiffMorphFillStyle ()
+@property (nonatomic, assign) SwiffFillStyleType type;
+@property (nonatomic, assign) UInt16 bitmapID;
+@property (nonatomic, assign) SwiffColor startColor;
+@property (nonatomic, assign) SwiffColor endColor;
+@property (nonatomic, assign) CGAffineTransform startTransform;
+@property (nonatomic, assign) CGAffineTransform endTransform;
+@property (nonatomic, strong) SwiffMorphGradient *gradient;
+@end
+
+@implementation SwiffMorphFillStyle
 
 - (id) initWithParser:(SwiffParser *)parser
 {
@@ -184,7 +189,7 @@
         } else if (IS_GRADIENT_TYPE(type)) {
             SwiffParserReadMatrix(parser, &_startTransform);
             SwiffParserReadMatrix(parser, &_endTransform);
-            self.gradient = [[SwiffMorphGradient alloc] initWithParser:parser];
+            _gradient = [[SwiffMorphGradient alloc] initWithParser:parser];
         } else if (IS_BITMAP_TYPE(type)) {
             UInt16 bitmapID;
             SwiffParserReadUInt16(parser, &bitmapID);
@@ -238,19 +243,19 @@
     return [NSString stringWithFormat:@"<%@: %p; %@>", [self class], self, typeString];
 }
 
-- (void)setRatio:(CGFloat)ratio
+- (SwiffFillStyle *)fillStyleWithRatio:(CGFloat)ratio
 {
-    _ratio = ratio;
-    self.color = SwiffColorInterpolate(_startColor, _endColor, ratio);
-    self.transform = CGAffineTransformMake(_startTransform.a + (_endTransform.a - _startTransform.a) * ratio,
+    SwiffFillStyle *result = [[SwiffFillStyle alloc] init];
+    result.type = _type;
+    result.color = SwiffColorInterpolate(_startColor, _endColor, ratio);
+    result.transform = CGAffineTransformMake(_startTransform.a + (_endTransform.a - _startTransform.a) * ratio,
                                            _startTransform.b + (_endTransform.b - _startTransform.b) * ratio,
                                            _startTransform.c + (_endTransform.c - _startTransform.c) * ratio,
                                            _startTransform.d + (_endTransform.d - _startTransform.d) * ratio,
                                            _startTransform.tx + (_endTransform.tx - _startTransform.tx) * ratio,
                                            _startTransform.ty + (_endTransform.ty - _startTransform.ty) * ratio);
-
-    if ([self.gradient isKindOfClass:[SwiffMorphGradient class]]) {
-        ((SwiffMorphGradient *)self.gradient).ratio = ratio;
-    }
+    result.bitmapID = _bitmapID;
+    result.gradient = [_gradient gradientWithRatio:ratio];
+    return result;
 }
 @end

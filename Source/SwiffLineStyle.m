@@ -33,6 +33,8 @@
 const CGFloat SwiffLineStyleHairlineWidth = CGFLOAT_MIN;
 
 @interface SwiffLineStyle()
+@property (nonatomic, assign) CGFloat width;
+@property (nonatomic, assign) SwiffColor color;
 @property (nonatomic, strong) SwiffFillStyle *fillStyle;
 
 @property (nonatomic, assign) CGLineCap startLineCap;
@@ -153,12 +155,25 @@ static inline CGLineJoin getLineJoin(UInt32 joinStyle) {
 @end
 
 
-@implementation SwiffMorphLineStyle {
-    CGFloat _startWidth;
-    CGFloat _endWidth;
-    SwiffColor _startColor;
-    SwiffColor _endColor;
-}
+@interface SwiffMorphLineStyle ()
+@property (nonatomic, assign) CGLineCap startLineCap;
+@property (nonatomic, assign) CGLineCap endLineCap;
+@property (nonatomic, assign) CGLineJoin lineJoin;
+@property (nonatomic, assign) CGFloat miterLimit;
+
+@property (nonatomic, assign, getter=isPixelAligned) BOOL pixelAligned;
+@property (nonatomic, assign) BOOL scalesHorizontally;
+@property (nonatomic, assign) BOOL scalesVertically;
+@property (nonatomic, assign) BOOL closesStroke;
+
+@property (nonatomic, strong) SwiffMorphFillStyle *fillStyle;
+@property (nonatomic, assign) CGFloat startWidth;
+@property (nonatomic, assign) CGFloat endWidth;
+@property (nonatomic, assign) SwiffColor startColor;
+@property (nonatomic, assign) SwiffColor endColor;
+@end
+
+@implementation SwiffMorphLineStyle
 
 - (id)initWithParser:(SwiffParser *)parser
 {
@@ -223,6 +238,25 @@ static inline CGLineJoin getLineJoin(UInt32 joinStyle) {
     }
     
     return self;
+}
+
+- (SwiffLineStyle *)lineStyleWithRatio:(CGFloat)ratio
+{
+    SwiffLineStyle *result = [[SwiffLineStyle alloc] init];
+    result.width = _startWidth + (_endWidth - _startWidth) * ratio;
+    result.color = SwiffColorInterpolate(_startColor, _endColor, ratio);
+    result.fillStyle = [self.fillStyle fillStyleWithRatio:ratio];
+    
+    result.startLineCap = self.startLineCap;
+    result.endLineCap = self.endLineCap;
+    result.lineJoin = self.lineJoin;
+    result.miterLimit = self.miterLimit;
+    
+    result.pixelAligned = self.pixelAligned;
+    result.scalesHorizontally = self.scalesHorizontally;
+    result.scalesVertically = self.scalesVertically;
+    result.closesStroke = self.closesStroke;
+    return result;
 }
 @end
 

@@ -7,9 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		509D44FA1670ACAA00774C53 /* SwiffMorphShapeDefinition.h in Headers */ = {isa = PBXBuildFile; fileRef = 509D44F81670ACAA00774C53 /* SwiffMorphShapeDefinition.h */; };
-		509D44FB1670ACAA00774C53 /* SwiffMorphShapeDefinition.m in Sources */ = {isa = PBXBuildFile; fileRef = 509D44F91670ACAA00774C53 /* SwiffMorphShapeDefinition.m */; };
-		509D44FC1670ACAA00774C53 /* SwiffMorphShapeDefinition.m in Sources */ = {isa = PBXBuildFile; fileRef = 509D44F91670ACAA00774C53 /* SwiffMorphShapeDefinition.m */; };
 		55038DE0144CDA4900EA5841 /* SwiffPlayhead.m in Sources */ = {isa = PBXBuildFile; fileRef = 55038DDF144CDA4900EA5841 /* SwiffPlayhead.m */; };
 		55038DE7144E489F00EA5841 /* SwiffHTMLToCoreTextConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 55038DE6144E489E00EA5841 /* SwiffHTMLToCoreTextConverter.m */; };
 		550C99B6145A03F200836C62 /* SwiffSoundPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 550C99B5145A03F200836C62 /* SwiffSoundPlayer.m */; };
@@ -87,8 +84,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		509D44F81670ACAA00774C53 /* SwiffMorphShapeDefinition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SwiffMorphShapeDefinition.h; path = Source/SwiffMorphShapeDefinition.h; sourceTree = "<group>"; };
-		509D44F91670ACAA00774C53 /* SwiffMorphShapeDefinition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SwiffMorphShapeDefinition.m; path = Source/SwiffMorphShapeDefinition.m; sourceTree = "<group>"; };
 		55038DDE144CDA4900EA5841 /* SwiffPlayhead.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SwiffPlayhead.h; path = Source/SwiffPlayhead.h; sourceTree = "<group>"; };
 		55038DDF144CDA4900EA5841 /* SwiffPlayhead.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SwiffPlayhead.m; path = Source/SwiffPlayhead.m; sourceTree = "<group>"; };
 		55038DE5144E489D00EA5841 /* SwiffHTMLToCoreTextConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SwiffHTMLToCoreTextConverter.h; path = Source/SwiffHTMLToCoreTextConverter.h; sourceTree = "<group>"; };
@@ -212,8 +207,6 @@
 				55F65A6014429C9E00E12C27 /* SwiffDynamicTextDefinition.m */,
 				55F65A6314429C9E00E12C27 /* SwiffFontDefinition.h */,
 				55F65A6414429C9E00E12C27 /* SwiffFontDefinition.m */,
-				509D44F81670ACAA00774C53 /* SwiffMorphShapeDefinition.h */,
-				509D44F91670ACAA00774C53 /* SwiffMorphShapeDefinition.m */,
 				55F65A7914429C9E00E12C27 /* SwiffShapeDefinition.h */,
 				55F65A7A14429C9E00E12C27 /* SwiffShapeDefinition.m */,
 				5545A6AF1458B70A001428F6 /* SwiffSoundDefinition.h */,
@@ -425,7 +418,6 @@
 				55F65C8A14AFC61B00DA2DDB /* SwiffFilter.h in Headers */,
 				557082DF14B7B3410072C19A /* SwiffUtils.h in Headers */,
 				BE678E9516161BEB006F827C /* SwiffGraphics.h in Headers */,
-				509D44FA1670ACAA00774C53 /* SwiffMorphShapeDefinition.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -548,7 +540,6 @@
 				557082E214B7B67D0072C19A /* SwiffTypes.m in Sources */,
 				55FE9B5814D413B600CF505B /* SwiffSparseArray.m in Sources */,
 				BE678E9716161BEB006F827C /* SwiffGraphics.m in Sources */,
-				509D44FC1670ACAA00774C53 /* SwiffMorphShapeDefinition.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -591,7 +582,6 @@
 				BE678E9616161BEB006F827C /* SwiffGraphics.m in Sources */,
 				5566707515E1BACF001E9BA7 /* SwiffView.m in Sources */,
 				BE027E52162E29AD0011BF6C /* SwiffPlacedSprite.m in Sources */,
-				509D44FB1670ACAA00774C53 /* SwiffMorphShapeDefinition.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

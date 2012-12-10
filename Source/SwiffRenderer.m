@@ -43,7 +43,6 @@
 #import "SwiffPlacedDynamicText.h"
 #import "SwiffPlacedSprite.h"
 #import "SwiffShapeDefinition.h"
-#import "SwiffMorphShapeDefinition.h"
 #import "SwiffStaticTextRecord.h"
 #import "SwiffStaticTextDefinition.h"
 #import "SwiffUtils.h"

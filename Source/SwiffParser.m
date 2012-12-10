@@ -777,12 +777,12 @@ void SwiffParserReadLengthPrefixedString(SwiffParser *parser, NSString **outValu
 
 NSArray *SwiffParserReadArrayOfObjects(SwiffParser *parser, Class cls)
 {
-    UInt8 count8;
+    UInt8 count8 = 0;
     NSInteger count;
     
     SwiffParserReadUInt8(parser, &count8);
     if (count8 == 0xFF) {
-        UInt16 count16;
+        UInt16 count16 = 0;
         SwiffParserReadUInt16(parser, &count16);
         count = count16;
         
@@ -808,7 +808,7 @@ NSArray *SwiffParserReadArrayOfObjects(SwiffParser *parser, Class cls)
     return array;
 }
 
-CGPathRef SwiffParserReadPathFromShapeRecord(SwiffParser *parser)
+CGPathRef SwiffParserCreatePathFromShapeRecord(SwiffParser *parser)
 {
     CGMutablePathRef path = CGPathCreateMutable();
     CGPathMoveToPoint(path, NULL, 0, 0);

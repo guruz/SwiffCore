@@ -48,3 +48,8 @@
 @property (nonatomic, assign, readonly) BOOL hasEdgeBounds;
 
 @end
+
+@interface SwiffMorphShapeDefinition : NSObject <SwiffDefinition>
+- (id) initWithParser:(SwiffParser *)parser movie:(SwiffMovie *)movie;
+- (SwiffShapeDefinition *)shapeWithRatio:(CGFloat)ratio;
+@end

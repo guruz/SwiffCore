@@ -79,10 +79,17 @@ static void sPathAddShapeOperation(SwiffPath *path, SwiffShapeOperation *op, Swi
 }
  
 
+@interface SwiffShapeDefinition ()
+@property (nonatomic, weak) SwiffMovie *movie;
+@property (nonatomic, assign) UInt16 libraryID;
+@property (nonatomic, assign) CGRect bounds;
+
+@property (nonatomic, assign) CFArrayRef groups;
+@property (nonatomic, strong) NSArray *fillStyles;
+@property (nonatomic, strong) NSArray *lineStyles;
+@end
+
 @implementation SwiffShapeDefinition {
-    CFArrayRef  _groups;
-    NSArray    *_fillStyles;
-    NSArray    *_lineStyles;
     NSArray    *_paths;
 }
 
@@ -353,6 +360,21 @@ static void sPathAddShapeOperation(SwiffPath *path, SwiffShapeOperation *op, Swi
 }
 
 
+- (void)setGroups:(CFArrayRef)groups
+{
+    if (_groups) {
+        CFIndex length = CFArrayGetCount(_groups);
+        for (CFIndex i = 0; i < length; i++) {
+            free((void *)CFArrayGetValueAtIndex(_groups, i));
+        }
+        
+        CFRelease(_groups);
+        _groups = NULL;
+    }
+
+    _groups = groups;
+}
+
 - (void) dealloc
 {
     if (_groups) {
@@ -523,7 +545,7 @@ static void sPathAddShapeOperation(SwiffPath *path, SwiffShapeOperation *op, Swi
         }
         
         jCount = CFArrayGetCount(sortedOperations);
-        if (jCount > 0) {
+        if (jCount > 0 && _fillStyles.count >= fillStyleIndex && _fillStyles.count > 0 && fillStyleIndex > 0) {
             SwiffFillStyle *fillStyle = [_fillStyles objectAtIndex:(fillStyleIndex - 1)];
             
             if (fillStyle) {
@@ -590,3 +612,127 @@ static void sPathAddShapeOperation(SwiffPath *path, SwiffShapeOperation *op, Swi
 
 @end
 
+
+@interface SwiffMorphShapeDefinition ()
+@property(nonatomic, assign) CGRect startBounds;
+@property(nonatomic, assign) CGRect endBounds;
+@property(nonatomic, strong) NSArray *fillStyles;
+@property(nonatomic, strong) NSArray *lineStyles;
+@property(nonatomic, strong) SwiffShapeDefinition *startShape;
+@property(nonatomic, strong) SwiffShapeDefinition *endShape;
+@end
+
+@implementation SwiffMorphShapeDefinition
+
+@synthesize movie        = _movie,
+            libraryID    = _libraryID,
+            bounds       = _bounds,
+            renderBounds = _renderBounds;
+
+- (id) initWithParser:(SwiffParser *)parser movie:(SwiffMovie *)movie
+{
+    SwiffLogSetCategoryEnabled(@"MorphShape", YES);
+    
+    if ((self = [super init])) {
+        SwiffParserByteAlign(parser);
+        
+        _movie = movie;
+        
+        SwiffTag  tag     = SwiffParserGetCurrentTag(parser);
+        NSInteger version = SwiffParserGetCurrentTagVersion(parser);
+        
+        if (tag != SwiffTagDefineMorphShape || version > 2) {
+            return nil;
+        }
+        
+        SwiffParserReadUInt16(parser, &_libraryID);
+        
+        SwiffLog(@"MorphShape", @"DEFINEMORPHSHAPE defines id %ld", (long)_libraryID);
+        
+        SwiffParserReadRect(parser, &_startBounds);
+        SwiffParserReadRect(parser, &_endBounds);
+        
+        if (version == 2) {
+            SwiffLog(@"MorphShape", @"morph need read additional params");
+            return nil;
+        }
+        
+        UInt32 offset;
+        SwiffParserReadUInt32(parser, &offset);
+        
+        _fillStyles = SwiffParserReadArrayOfObjects(parser, [SwiffMorphFillStyle class]);
+        _lineStyles = SwiffParserReadArrayOfObjects(parser, [SwiffMorphLineStyle class]);
+        _startShape = [[SwiffShapeDefinition alloc] initWithParser:parser movie:movie];
+        _endShape = [[SwiffShapeDefinition alloc] initWithParser:parser movie:movie];
+        
+        NSAssert(CFArrayGetCount(_startShape.groups) == CFArrayGetCount(_endShape.groups), @"diferent number of shapes in morph");
+        
+        if (!SwiffParserIsValid(parser)) {
+            return nil;
+        }
+    }
+    return self;
+}
+
+- (void)clearWeakReferences
+{
+    
+}
+
+- (SwiffShapeDefinition *)shapeWithRatio:(CGFloat)ratio
+{    
+    NSMutableArray *fillStyles = [NSMutableArray arrayWithCapacity:_fillStyles.count];
+    for (SwiffMorphFillStyle *fillStyle in fillStyles) {
+        [fillStyles addObject:[fillStyle fillStyleWithRatio:ratio]];
+    }
+
+    NSMutableArray *lineStyles = [NSMutableArray arrayWithCapacity:_lineStyles.count];
+    for (SwiffMorphLineStyle *lineStyle in _lineStyles) {
+        [lineStyles addObject:[lineStyle lineStyleWithRatio:ratio]];
+    }
+
+    CFIndex length = CFArrayGetCount(_startShape.groups);
+    CFMutableArrayRef groups = CFArrayCreateMutable(NULL, 0, NULL);    
+    for (CFIndex i = 0; i < length; i++) {
+        const SwiffShapeOperation *startOps = CFArrayGetValueAtIndex(_startShape.groups, i);
+        const SwiffShapeOperation *endOps = CFArrayGetValueAtIndex(_endShape.groups, i);
+
+        const SwiffShapeOperation *lenOps = startOps;
+        while (lenOps->type != SwiffShapeOperationTypeEnd) {
+            lenOps++;
+        }
+        int numOps = lenOps - startOps + 1;
+        
+        SwiffShapeOperation *ops = malloc(numOps * sizeof(SwiffShapeOperation));
+        CFArrayAppendValue(groups, ops);
+        for (int j = 0; j < numOps; j++) {
+            ops->type = startOps->type;
+            ops->lineStyleIndex = startOps->type;
+            ops->fillStyleIndex = startOps->fillStyleIndex;
+            ops->duplicate = startOps->duplicate;
+            ops->fromPoint.x = startOps->fromPoint.x + (endOps->fromPoint.x - startOps->fromPoint.x) * ratio;
+            ops->fromPoint.y = startOps->fromPoint.y + (endOps->fromPoint.y - startOps->fromPoint.y) * ratio;
+            ops->controlPoint.x = startOps->controlPoint.x + (endOps->controlPoint.x - startOps->controlPoint.x) * ratio;
+            ops->controlPoint.y = startOps->controlPoint.y + (endOps->controlPoint.y - startOps->controlPoint.y) * ratio;
+            ops->toPoint.x = startOps->toPoint.x + (endOps->toPoint.x - startOps->toPoint.x) * ratio;
+            ops->toPoint.y = startOps->toPoint.y + (endOps->toPoint.y - startOps->toPoint.y) * ratio;
+            ops++;
+            startOps++;
+            endOps++;
+        }
+    }
+
+
+    SwiffShapeDefinition *result = [[SwiffShapeDefinition alloc] init];
+    result.movie = _movie;
+    result.libraryID = _libraryID;
+    result.bounds = CGRectMake(_startBounds.origin.x + (_endBounds.origin.x - _startBounds.origin.x) * ratio,
+                               _startBounds.origin.y + (_endBounds.origin.y - _startBounds.origin.y) * ratio,
+                               _startBounds.size.width + (_endBounds.size.width - _startBounds.size.width) * ratio,
+                               _startBounds.size.height + (_endBounds.size.height - _startBounds.size.height) * ratio);
+    result.fillStyles = fillStyles;
+    result.lineStyles = lineStyles;
+    result.groups = groups;
+    return result;
+}
+@end

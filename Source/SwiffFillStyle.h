@@ -55,8 +55,7 @@
 
 @end
 
-@interface SwiffMorphFillStyle : SwiffFillStyle
+@interface SwiffMorphFillStyle : NSObject
 - (id) initWithParser:(SwiffParser *)parser;
-
-@property (nonatomic, assign) CGFloat ratio;
+- (SwiffFillStyle *)fillStyleWithRatio:(CGFloat)ratio;
 @end

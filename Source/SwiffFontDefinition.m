@@ -82,7 +82,7 @@ const CGFloat SwiffFontEmSquareHeight = 1024;
     _glyphPaths = calloc(sizeof(CGPathRef), _glyphCount);
 
     for (NSInteger i = 0; i < _glyphCount; i++) {
-        _glyphPaths[i] = SwiffParserReadPathFromShapeRecord(parser);
+        _glyphPaths[i] = SwiffParserCreatePathFromShapeRecord(parser);
     }
 }
 

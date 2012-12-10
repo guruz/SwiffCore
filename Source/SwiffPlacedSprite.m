@@ -26,7 +26,7 @@ static int instanceID;
     if ((self = [super initWithPlacedObject:placedObject])) {
         
         if ([placedObject isKindOfClass:[SwiffPlacedSprite class]]) {
-            SwiffPlacedSprite *sprite = (SwiffPlacedSprite *)sprite;
+            SwiffPlacedSprite *sprite = (SwiffPlacedSprite *)placedObject;
             
             _frame = sprite.frame;
             _instanceID = instanceID++;

@@ -58,6 +58,7 @@ extern const CGFloat SwiffLineStyleHairlineWidth;
 
 @end
 
-@interface SwiffMorphLineStyle : SwiffLineStyle
+@interface SwiffMorphLineStyle : NSObject
 - (id)initWithParser:(SwiffParser *)parser;
+- (SwiffLineStyle *)lineStyleWithRatio:(CGFloat)ratio;
 @end

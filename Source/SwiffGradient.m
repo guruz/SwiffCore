@@ -29,15 +29,21 @@
 #import "SwiffParser.h"
 #import <SwiffUtils.h>
 
+typedef struct GradientParams {
+    CGFloat       ratios[15];
+    SwiffColor    colors[15];
+} GradientParams;
+
 @interface SwiffGradient()
 @property (nonatomic, assign) NSInteger recordCount;
+@property (nonatomic, assign) SwiffGradientSpreadMode spreadMode;
+@property (nonatomic, assign) SwiffGradientInterpolationMode interpolationMode;
+@property (nonatomic, assign) CGFloat focalPoint;
+
+@property (nonatomic, assign) GradientParams params;
 @end
 
-@implementation SwiffGradient {
-    CGFloat       _ratios[15];
-    SwiffColor    _colors[15];
-}
-
+@implementation SwiffGradient
 - (id) initWithParser:(SwiffParser *)parser isFocalGradient:(BOOL)isFocalGradient
 {
     if ((self = [super init])) {
@@ -57,13 +63,13 @@
             if (count > 16) count = 16;
 
             for (i = 0; i < count; i++) {
-                SwiffParserReadColorRGBA(parser, &_colors[i]);
+                SwiffParserReadColorRGBA(parser, _params.colors + i);
             }
             
             for (i = 0; i < count; i++) {
                 UInt8 ratio;
                 SwiffParserReadUInt8(parser, &ratio);
-                _ratios[i] = ratio / 255.0;
+                _params.ratios[i] = ratio / 255.0;
             }
 
         } else {
@@ -78,12 +84,12 @@
             for (i = 0; i < count; i++) {
                 UInt8 ratio;
                 SwiffParserReadUInt8(parser, &ratio);
-                _ratios[i] = ratio / 255.0;
+                _params.ratios[i] = ratio / 255.0;
                 
                 if (usesAlphaColors) {
-                    SwiffParserReadColorRGBA(parser, &_colors[i]);
+                    SwiffParserReadColorRGBA(parser, _params.colors + i);
                 } else {
-                    SwiffParserReadColorRGB(parser,  &_colors[i]);
+                    SwiffParserReadColorRGB(parser,  _params.colors + i);
                 }
             }
             
@@ -128,17 +134,22 @@ static CGGradientRef createGradient(CFArrayRef stack, int num, SwiffColor *color
 
 - (CGGradientRef) copyCGGradientWithColorTransformStack:(CFArrayRef)stack;
 {
-    return createGradient(stack, _recordCount, _colors, _ratios);
+    return createGradient(stack, _recordCount, _params.colors, _params.ratios);
 }
 
 - (void) getColor:(SwiffColor *)outColor ratio:(CGFloat *)outRatio forRecord:(NSUInteger)index
 {
     if (index < _recordCount) {
-        if (outColor) *outColor = _colors[index];
-        if (outRatio) *outRatio = _ratios[index];
+        if (outColor) *outColor = _params.colors[index];
+        if (outRatio) *outRatio = _params.ratios[index];
     }
 }
 
+@end
+
+
+@interface SwiffMorphGradient()
+@property (nonatomic, assign) NSInteger recordCount;
 @end
 
 @implementation SwiffMorphGradient {
@@ -174,14 +185,17 @@ static CGGradientRef createGradient(CFArrayRef stack, int num, SwiffColor *color
     return self;
 }
 
-- (CGGradientRef) copyCGGradientWithColorTransformStack:(CFArrayRef)stack;
+- (SwiffGradient *)gradientWithRatio:(CGFloat)ratio
 {
-    CGFloat ratios[self.recordCount];
-    SwiffColor colors[self.recordCount];
+    SwiffGradient *result = [[SwiffGradient alloc] init];
+    result.recordCount = self.recordCount;
+    
+    GradientParams params;
     for (int i = 0; i < self.recordCount; i++) {
-        ratios[i] = _startRatios[i] + (_endRatios[i] - _startRatios[i]) * _ratio;
-        colors[i] = SwiffColorInterpolate(_startColors[i], _endColors[i], _ratio);
+        params.ratios[i] = _startRatios[i] + (_endRatios[i] - _startRatios[i]) * ratio;
+        params.colors[i] = SwiffColorInterpolate(_startColors[i], _endColors[i], ratio);
     }
-    return createGradient(stack, self.recordCount, colors, ratios);
+    result.params = params;
+    return result;
 }
 @end
