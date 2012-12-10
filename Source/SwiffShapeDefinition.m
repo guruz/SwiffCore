@@ -545,7 +545,7 @@ static void sPathAddShapeOperation(SwiffPath *path, SwiffShapeOperation *op, Swi
         }
         
         jCount = CFArrayGetCount(sortedOperations);
-        if (jCount > 0 && _fillStyles.count >= fillStyleIndex && _fillStyles.count > 0 && fillStyleIndex > 0) {
+        if (jCount > 0) {
             SwiffFillStyle *fillStyle = [_fillStyles objectAtIndex:(fillStyleIndex - 1)];
             
             if (fillStyle) {
@@ -682,7 +682,7 @@ static void sPathAddShapeOperation(SwiffPath *path, SwiffShapeOperation *op, Swi
 - (SwiffShapeDefinition *)shapeWithRatio:(CGFloat)ratio
 {    
     NSMutableArray *fillStyles = [NSMutableArray arrayWithCapacity:_fillStyles.count];
-    for (SwiffMorphFillStyle *fillStyle in fillStyles) {
+    for (SwiffMorphFillStyle *fillStyle in _fillStyles) {
         [fillStyles addObject:[fillStyle fillStyleWithRatio:ratio]];
     }
 
