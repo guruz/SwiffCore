@@ -120,6 +120,10 @@ SwiffPlacedObject *SwiffPlacedObjectCreate(SwiffMovie *movie, UInt16 libraryID, 
     return self;
 }
 
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"SwiffPlacedObject(%d, %d, ratio=%f)", _libraryID, _depth, self.ratio];
+}
 
 - (void) dealloc
 {
@@ -217,7 +221,7 @@ SwiffPlacedObject *SwiffPlacedObjectCreate(SwiffMovie *movie, UInt16 libraryID, 
 - (void) setRatio:(CGFloat)ratio
 {
     MAKE_ADDITIONAL;
-    ADDITIONAL->ratio = SwiffRound(ratio);
+    ADDITIONAL->ratio = ratio;
 }
 
 

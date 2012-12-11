@@ -62,6 +62,10 @@
     return self;
 }
 
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"SwiffPlacedDynamicText(%d, %d, %@)", _libraryID, _depth, _text];
+}
 
 - (void) dealloc
 {

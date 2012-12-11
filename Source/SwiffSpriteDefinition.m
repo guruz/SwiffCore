@@ -180,7 +180,7 @@ static NSString * const SwiffSpriteDefinitionStreamBlockKey = @"SwiffSpriteDefin
     BOOL      hasImage = NO, hasClassName = NO, hasCacheAsBitmap = NO, hasBlendMode = NO, hasFilterList = NO;
     UInt16    depth;
     UInt16    libraryID;
-    UInt16    ratio;
+    UInt16    ratio = 0;
     UInt16    clipDepth;
 
     CGAffineTransform matrix     = CGAffineTransformIdentity;
@@ -284,7 +284,6 @@ static NSString * const SwiffSpriteDefinitionStreamBlockKey = @"SwiffSpriteDefin
         [placedObject setPlacesImage:YES];
         [placedObject setClassName:className];
     }
-    NSLog(@"read ratio: %d", ratio);
     if (hasClassName)      [placedObject setClassName:className];
     if (hasClipDepth)      [placedObject setClipDepth:clipDepth];
     if (hasName)           [placedObject setName:name];
@@ -307,7 +306,9 @@ static NSString * const SwiffSpriteDefinitionStreamBlockKey = @"SwiffSpriteDefin
     }
 
     SwiffSparseArraySetObjectAtIndex(_placedObjects, depth, placedObject);
-
+    if (hasRatio) {
+        NSLog(@"read ratio: %d (%lf) for %d %@", ratio, placedObject.ratio, placedObject.libraryID, [placedObject isKindOfClass:[SwiffPlacedSprite class]] ? @"YES" : @"NO");
+    }
     _lastFrame = nil;
 }
 

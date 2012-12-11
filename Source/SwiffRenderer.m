@@ -815,10 +815,12 @@ static void sDrawPlacedObject(SwiffRenderState *state, SwiffPlacedObject *placed
 
     CGAffineTransform newTransform = CGAffineTransformConcat([placedObject affineTransform], state->affineTransform);
 
-    // Bail out if renderBounds is not in the clipBoundingBox
-    CGRect renderBounds = CGRectApplyAffineTransform([definition renderBounds], newTransform);
-    if (!CGRectIntersectsRect(renderBounds, state->clipBoundingBox)) {
-        return;
+    if (![definition isKindOfClass:[SwiffMorphShapeDefinition class]]) {
+        // Bail out if renderBounds is not in the clipBoundingBox
+        CGRect renderBounds = CGRectApplyAffineTransform([definition renderBounds], newTransform);
+        if (!CGRectIntersectsRect(renderBounds, state->clipBoundingBox)) {
+            return;
+        }
     }
 
     CGAffineTransform savedTransform = state->affineTransform;
@@ -827,11 +829,6 @@ static void sDrawPlacedObject(SwiffRenderState *state, SwiffPlacedObject *placed
     if (hasColorTransform) {
         sPushColorTransform(state, [placedObject colorTransformPointer]);
     }
-
-    if (placedObject.ratio > 0) {
-        NSLog(@"ratio: %f %d %@", placedObject.ratio, placedObject.libraryID, definition);
-    }
-    
 
     //!issue7: non-CG blend modes
     if (blendMode != kCGBlendModeNormal) {

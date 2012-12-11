@@ -59,6 +59,11 @@ static int instanceID;
     }
 }
 
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"SwiffPlacedSprite(%d, %d, instance=%d, frame=%d, ratio=%lf)", _libraryID, _depth, _instanceID, _frame, self.ratio];
+}
+
 - (void) dealloc
 {
     
