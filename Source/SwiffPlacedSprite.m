@@ -30,6 +30,7 @@ static int instanceID;
             
             _frame = sprite.frame;
             _instanceID = instanceID++;
+            _definition = sprite.definition;
         }
     }
     
