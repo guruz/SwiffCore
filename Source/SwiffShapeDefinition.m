@@ -662,7 +662,9 @@ static void sPathAddShapeOperation(SwiffPath *path, SwiffShapeOperation *op, Swi
         
         SwiffParserReadRect(parser, &_startBounds);
         SwiffParserReadRect(parser, &_endBounds);
-        
+
+        _renderBounds = CGRectUnion(_startBounds, _endBounds); // !issue: may be more accurate ?
+      
         if (version == 2) {
             SwiffLog(@"MorphShape", @"MorphShape2 is not yet supported");
             return nil;
