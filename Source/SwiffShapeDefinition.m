@@ -631,8 +631,6 @@ static void sPathAddShapeOperation(SwiffPath *path, SwiffShapeOperation *op, Swi
 
 - (id) initWithParser:(SwiffParser *)parser movie:(SwiffMovie *)movie
 {
-    SwiffLogSetCategoryEnabled(@"MorphShape", YES);
-    
     if ((self = [super init])) {
         SwiffParserByteAlign(parser);
         
@@ -653,7 +651,7 @@ static void sPathAddShapeOperation(SwiffPath *path, SwiffShapeOperation *op, Swi
         SwiffParserReadRect(parser, &_endBounds);
         
         if (version == 2) {
-            SwiffLog(@"MorphShape", @"morph need read additional params");
+            SwiffLog(@"MorphShape", @"MorphShape2 not yet supported");
             return nil;
         }
         

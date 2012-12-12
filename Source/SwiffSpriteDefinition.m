@@ -276,8 +276,6 @@ static NSString * const SwiffSpriteDefinitionStreamBlockKey = @"SwiffSpriteDefin
     {
         SwiffPlacedSprite* placedSprite = (SwiffPlacedSprite*)placedObject;
         placedSprite.placedFrame = [_frames count] - 1;
-        
-        NSLog(@"PlacedSprite [%i] added at frame %i", placedSprite.instanceID, [_frames count] - 1);
     }
 
     if (hasImage) {
@@ -306,9 +304,6 @@ static NSString * const SwiffSpriteDefinitionStreamBlockKey = @"SwiffSpriteDefin
     }
 
     SwiffSparseArraySetObjectAtIndex(_placedObjects, depth, placedObject);
-    if (hasRatio) {
-        NSLog(@"read ratio: %d (%lf) for %d %@", ratio, placedObject.ratio, placedObject.libraryID, [placedObject isKindOfClass:[SwiffPlacedSprite class]] ? @"YES" : @"NO");
-    }
     _lastFrame = nil;
 }
 

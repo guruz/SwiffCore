@@ -815,6 +815,7 @@ static void sDrawPlacedObject(SwiffRenderState *state, SwiffPlacedObject *placed
 
     CGAffineTransform newTransform = CGAffineTransformConcat([placedObject affineTransform], state->affineTransform);
 
+    // !issue: calc morph shape renderBounds
     if (![definition isKindOfClass:[SwiffMorphShapeDefinition class]]) {
         // Bail out if renderBounds is not in the clipBoundingBox
         CGRect renderBounds = CGRectApplyAffineTransform([definition renderBounds], newTransform);

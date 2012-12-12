@@ -249,7 +249,6 @@ static NSString * const SwiffMovieNeedsJPEGTablesDataKey = @"SwiffMovieNeedsJPEG
 
     if (definitionToAdd) {
         UInt16 libraryID = [definitionToAdd libraryID];
-        NSLog(@"ADDING LIBRARY ID %i", libraryID);        
         SwiffSparseArraySetObjectAtIndex(_definitions, libraryID, definitionToAdd);
     }
 }
