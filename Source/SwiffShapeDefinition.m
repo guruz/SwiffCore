@@ -651,7 +651,7 @@ static void sPathAddShapeOperation(SwiffPath *path, SwiffShapeOperation *op, Swi
         SwiffParserReadRect(parser, &_endBounds);
         
         if (version == 2) {
-            SwiffLog(@"MorphShape", @"MorphShape2 not yet supported");
+            SwiffLog(@"MorphShape", @"MorphShape2 is not yet supported");
             return nil;
         }
         
@@ -663,7 +663,10 @@ static void sPathAddShapeOperation(SwiffPath *path, SwiffShapeOperation *op, Swi
         _startShape = [[SwiffShapeDefinition alloc] initWithParser:parser movie:movie];
         _endShape = [[SwiffShapeDefinition alloc] initWithParser:parser movie:movie];
         
-        NSAssert(CFArrayGetCount(_startShape.groups) == CFArrayGetCount(_endShape.groups), @"diferent number of shapes in morph");
+        if (CFArrayGetCount(_startShape.groups) != CFArrayGetCount(_endShape.groups)) {
+            NSLog(@"DIFFERENT NUMBER OF SHAPES IN MORPH");
+            return nil;
+        }
         
         if (!SwiffParserIsValid(parser)) {
             return nil;
