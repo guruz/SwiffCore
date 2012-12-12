@@ -550,11 +550,10 @@ static void sFillPath(SwiffRenderState *state, SwiffPath *path)
 
         } else {
             CGAffineTransform t = [style gradientTransform];
-
-            CGFloat radius = 819.2 * t.a;
-            CGPoint centerPoint = CGPointMake(t.tx, t.ty);
-
-            CGContextDrawRadialGradient(context, gradient, centerPoint, 0, centerPoint, radius, options);
+            CGPoint centerPoint = CGPointApplyAffineTransform(CGPointZero, t);
+            CGContextConcatCTM(context, t);
+            CGContextScaleCTM(context, 1, -1);
+            CGContextDrawRadialGradient(context, gradient, centerPoint, 0, centerPoint, 819.2, options);
         }
         
         CGGradientRelease(gradient);
