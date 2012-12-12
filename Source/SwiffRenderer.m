@@ -532,6 +532,9 @@ static void sFillPath(SwiffRenderState *state, SwiffPath *path)
 
         CGGradientDrawingOptions options = (kCGGradientDrawsBeforeStartLocation | kCGGradientDrawsAfterEndLocation);
 
+        CGAffineTransform t = [style gradientTransform];
+        CGContextConcatCTM(context, t);
+        CGContextScaleCTM(context, 1, -1);
         if (type == SwiffFillStyleTypeLinearGradient) {
             // "All gradients are defined in a standard space called the gradient square. The gradient square is
             //  centered at (0,0), and extends from (-16384,-16384) to (16384,16384)." (Page 144)
@@ -540,18 +543,8 @@ static void sFillPath(SwiffRenderState *state, SwiffPath *path)
             //
             CGPoint point1 = CGPointMake(-819.2,  819.2);
             CGPoint point2 = CGPointMake( 819.2,  819.2);
-            
-            CGAffineTransform t = [style gradientTransform];
-
-            point1 = CGPointApplyAffineTransform(point1, t);
-            point2 = CGPointApplyAffineTransform(point2, t);
-        
             CGContextDrawLinearGradient(context, gradient, point1, point2, options);
-
         } else {
-            CGAffineTransform t = [style gradientTransform];
-            CGContextConcatCTM(context, t);
-            CGContextScaleCTM(context, 1, -1);
             CGContextDrawRadialGradient(context, gradient, CGPointZero, 0, CGPointZero, 819.2, options);
         }
         
