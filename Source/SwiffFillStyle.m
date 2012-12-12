@@ -30,6 +30,11 @@
 #import "SwiffGradient.h"
 #import "SwiffUtils.h"
 
+#if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
+#import <UIKit/UIKit.h>
+#else
+#import <AppKit/AppKit.h>
+#endif
 
 #define IS_COLOR_TYPE(type)    (type == SwiffFillStyleTypeColor)
 
@@ -137,7 +142,7 @@
         typeString = @"NonSmoothedClippedBitmap";
     }
 
-    return [NSString stringWithFormat:@"<%@: %p; %@>", [self class], self, typeString];
+    return [NSString stringWithFormat:@"<%@: %p; %@; %@>", [self class], self, typeString, NSStringFromCGAffineTransform(_transform)];
 }
 
 

@@ -144,6 +144,10 @@ void SwiffPathAddOperationEnd(SwiffPath *path)
     return self;
 }
 
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"<SwiffPath: %d; %@; %@>", self.operationsCount, _lineStyle, _fillStyle];
+}
 
 - (void) dealloc
 {

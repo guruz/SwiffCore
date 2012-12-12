@@ -476,3 +476,10 @@ extern UInt32 SwiffMPEGGetFrameSize(SwiffMPEGVersion version, SwiffMPEGLayer lay
         return 0;
     }
 }
+
+#pragma mark -
+#pragma mark String conversions
+NSString *SwiffStringFromPoint(SwiffPoint pt)
+{
+    return [NSString stringWithFormat:@"SwiffPoint(%.2f, %.2f)", SwiffGetCGFloatFromTwips(pt.x), SwiffGetCGFloatFromTwips(pt.y)];
+}

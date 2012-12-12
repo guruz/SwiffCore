@@ -150,3 +150,6 @@ extern NSInteger SwiffMPEGGetSlotSize(SwiffMPEGLayer layer);
 
 extern UInt32 SwiffMPEGGetFrameSize(SwiffMPEGVersion version, SwiffMPEGLayer layer, NSInteger bitrate, NSInteger samplingRate, BOOL hasPadding);
 
+#pragma mark -
+#pragma mark String conversions
+extern NSString *SwiffStringFromPoint(SwiffPoint pt);
