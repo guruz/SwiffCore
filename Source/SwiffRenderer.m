@@ -802,7 +802,7 @@ static void sDrawPlacedObject(SwiffRenderState *state, SwiffPlacedObject *placed
     }
 
     __unsafe_unretained // Workaround for <rdar://11044357> clang 3.1 crashes in ObjCARCOpt::runOnFunction()
-    id<SwiffDefinition> definition = SwiffMovieGetDefinition(state->movie, [placedObject libraryID]);
+    id<SwiffDefinition> definition = [state->movie definitionWithPlacedObject:placedObject];
 
     CGAffineTransform newTransform = CGAffineTransformConcat([placedObject affineTransform], state->affineTransform);
 
@@ -833,10 +833,6 @@ static void sDrawPlacedObject(SwiffRenderState *state, SwiffPlacedObject *placed
     } else if ([definition isKindOfClass:[SwiffShapeDefinition class]]) {
         sDrawShapeDefinition(state, (SwiffShapeDefinition *)definition);
 
-    } else if ([definition isKindOfClass:[SwiffMorphShapeDefinition class]]) {
-        SwiffShapeDefinition *shape = [((SwiffMorphShapeDefinition *)definition) shapeWithRatio:placedObject.ratio];
-        sDrawShapeDefinition(state, shape);
-        
     } else if ([definition isKindOfClass:[SwiffSpriteDefinition class]]) {
         if ([placedObject isKindOfClass:[SwiffPlacedSprite class]]) {
             sDrawPlacedSprite(state, (SwiffPlacedSprite *)placedObject);

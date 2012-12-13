@@ -33,7 +33,9 @@
 #import "SwiffFontDefinition.h"
 #import "SwiffShapeDefinition.h"
 #import "SwiffParser.h"
+#import "SwiffPlacedObject.h"
 #import "SwiffSoundDefinition.h"
+#import "SwiffShapeDefinition.h"
 #import "SwiffSparseArray.h"
 #import "SwiffSpriteDefinition.h"
 #import "SwiffStaticTextDefinition.h"
@@ -273,6 +275,15 @@ id<SwiffDefinition> SwiffMovieGetDefinition(SwiffMovie *movie, UInt16 libraryID)
 - (id<SwiffDefinition>) definitionWithLibraryID:(UInt16)libraryID
 {
     return SwiffMovieGetDefinition(self, libraryID);
+}
+
+- (id<SwiffDefinition>) definitionWithPlacedObject:(SwiffPlacedObject *)placedObject
+{
+    id<SwiffDefinition> definition = [self definitionWithLibraryID:placedObject.libraryID];
+    if ([definition isKindOfClass:[SwiffMorphShapeDefinition class]]) {
+        definition = [(SwiffMorphShapeDefinition *)definition shapeWithRatio:placedObject.ratio];
+    }
+    return definition;
 }
 
 

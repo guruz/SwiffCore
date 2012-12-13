@@ -588,6 +588,76 @@ static void sPathAddShapeOperation(SwiffPath *path, SwiffShapeOperation *op, Swi
     return results;
 }
 
+static inline CGFloat quad(CGFloat t, SwiffTwips p0, SwiffTwips p1, SwiffTwips p2)
+{
+    return (1 - t) * (1 - t) * p0 + 2 * (1 - t) * t * p1 + t * t * p2;
+}
+
+- (void)calculateBounds
+{
+    
+    CGFloat maxWidth = 0.0;
+    for (SwiffLineStyle *lineStyle in _lineStyles) {
+        CGFloat width = [lineStyle width];
+        if (width > maxWidth) maxWidth = width;
+    }
+    
+    __block SwiffPoint topLeft = {INT_MAX, INT_MAX};
+    __block SwiffPoint bottomRight = {-INT_MAX, -INT_MAX};
+    void (^addPointToBounds)(SwiffPoint pt) = ^(SwiffPoint pt){
+        if (pt.x < topLeft.x) {
+            topLeft.x = pt.x;
+        }
+        if (pt.x > bottomRight.x) {
+            bottomRight.x = pt.x;
+        }
+        
+        if (pt.y < topLeft.y) {
+            topLeft.y = pt.y;
+        }
+        if (pt.y > bottomRight.y) {
+            bottomRight.y = pt.y;
+        }
+    };
+    
+    CFIndex length = CFArrayGetCount(_groups);
+    for (CFIndex i = 0; i < length; i++) {
+        const SwiffShapeOperation *ops = CFArrayGetValueAtIndex(_groups, i);
+        while (ops->type != SwiffShapeOperationTypeEnd) {
+            addPointToBounds(ops->fromPoint);
+            addPointToBounds(ops->toPoint);
+            if (ops->type == SwiffShapeOperationTypeCurve) {
+                CGFloat tx = (CGFloat)(ops->fromPoint.x - ops->controlPoint.x) / (ops->fromPoint.x - 2 * ops->controlPoint.x + ops->toPoint.x);
+                if (tx >= 0 && tx <= 1) {
+                    SwiffPoint pt = {
+                        quad(tx, ops->fromPoint.x, ops->controlPoint.x, ops->toPoint.x),
+                        quad(tx, ops->fromPoint.y, ops->controlPoint.y, ops->toPoint.y)
+                    };
+                    addPointToBounds(pt);
+                }
+                CGFloat ty = (CGFloat)(ops->fromPoint.y - ops->controlPoint.y) / (ops->fromPoint.y - 2 * ops->controlPoint.y + ops->toPoint.y);
+                if (ty >= 0 && ty <= 1) {
+                    SwiffPoint pt = {
+                        quad(ty, ops->fromPoint.x, ops->controlPoint.x, ops->toPoint.x),
+                        quad(ty, ops->fromPoint.y, ops->controlPoint.y, ops->toPoint.y)
+                    };
+                    addPointToBounds(pt);
+                }
+            }
+            ops++;
+        }
+    }
+    
+    if (topLeft.x < bottomRight.x && topLeft.y < bottomRight.y) {
+        _bounds = CGRectMake(SwiffGetCGFloatFromTwips(topLeft.x), SwiffGetCGFloatFromTwips(topLeft.y),
+                             SwiffGetCGFloatFromTwips(bottomRight.x - topLeft.x), SwiffGetCGFloatFromTwips(bottomRight.y - topLeft.y));
+    } else {
+        _bounds = CGRectZero;
+    }
+
+    CGFloat padding = SwiffCeil(maxWidth / 2.0) + 1;
+    _renderBounds = CGRectInset(_bounds, -padding, -padding);    
+}
 
 - (void) _makePaths
 {
@@ -622,7 +692,6 @@ static void sPathAddShapeOperation(SwiffPath *path, SwiffShapeOperation *op, Swi
     }
     return _paths;
 }
-
 @end
 
 
@@ -663,8 +732,6 @@ static void sPathAddShapeOperation(SwiffPath *path, SwiffShapeOperation *op, Swi
         SwiffParserReadRect(parser, &_startBounds);
         SwiffParserReadRect(parser, &_endBounds);
 
-        _renderBounds = CGRectUnion(_startBounds, _endBounds); // !issue: may be more accurate ?
-      
         if (version == 2) {
             SwiffLog(@"MorphShape", @"MorphShape2 is not yet supported");
             return nil;
@@ -742,13 +809,10 @@ static void sPathAddShapeOperation(SwiffPath *path, SwiffShapeOperation *op, Swi
     SwiffShapeDefinition *result = [[SwiffShapeDefinition alloc] init];
     result.movie = _movie;
     result.libraryID = _libraryID;
-    result.bounds = CGRectMake(_startBounds.origin.x + (_endBounds.origin.x - _startBounds.origin.x) * ratio,
-                               _startBounds.origin.y + (_endBounds.origin.y - _startBounds.origin.y) * ratio,
-                               _startBounds.size.width + (_endBounds.size.width - _startBounds.size.width) * ratio,
-                               _startBounds.size.height + (_endBounds.size.height - _startBounds.size.height) * ratio);
     result.fillStyles = fillStyles;
     result.lineStyles = lineStyles;
     result.groups = groups;
+    [result calculateBounds];
     return result;
 }
 @end

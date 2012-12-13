@@ -185,7 +185,7 @@ static BOOL sShouldUseSameLayer(SwiffPlacedObject *a, SwiffPlacedObject *b)
     //out with scaleFactor==0 seems to make sense (0 width, 0 height) and doesn't seem to break anything
     if(scaleFactor == 0) return;
     
-    id<SwiffDefinition> definition = [[_movie movie] definitionWithLibraryID:[placedObject libraryID]];
+    id<SwiffDefinition> definition = [[_movie movie] definitionWithPlacedObject:placedObject];
 
     CGAffineTransform transform = CGAffineTransformIdentity;
     transform = CGAffineTransformConcat(transform, [placedObject affineTransform]);
@@ -404,9 +404,8 @@ static BOOL sShouldUseSameLayer(SwiffPlacedObject *a, SwiffPlacedObject *b)
 {
     for (SwiffPlacedObject *placedObject in placedObjects) {
         UInt16 depth = [placedObject depth];
-        UInt16 libraryID = [placedObject libraryID];
         
-        id<SwiffDefinition> definition = [[_movie movie] definitionWithLibraryID:libraryID];
+        id<SwiffDefinition> definition = [[_movie movie] definitionWithPlacedObject:placedObject];
         CALayer *sublayer = [CALayer layer];
         
 //        if(_shouldPlayChildren && [definition isKindOfClass:[SwiffSpriteDefinition class]])
@@ -493,8 +492,7 @@ static BOOL sShouldUseSameLayer(SwiffPlacedObject *a, SwiffPlacedObject *b)
     CGRect invalidRect = CGRectZero;
 
     for (SwiffPlacedObject *placedObject in placedObjects) {
-        UInt16 libraryID = [placedObject libraryID];
-        id<SwiffDefinition> definition = [[_movie movie] definitionWithLibraryID:libraryID];
+        id<SwiffDefinition> definition = [[_movie movie] definitionWithPlacedObject:placedObject];
         
         CGRect bounds = [definition renderBounds];
         bounds = CGRectApplyAffineTransform(bounds, [placedObject affineTransform]);

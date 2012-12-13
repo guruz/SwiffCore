@@ -42,6 +42,7 @@
 
 - (id<SwiffDefinition>) definitionWithExportedName:(NSString*)classname;
 - (id<SwiffDefinition>) definitionWithLibraryID:(UInt16)libraryID;
+- (id<SwiffDefinition>) definitionWithPlacedObject:(SwiffPlacedObject *)placedObject;
 
 - (SwiffBitmapDefinition      *) bitmapDefinitionWithLibraryID:(UInt16)libraryID;
 - (SwiffDynamicTextDefinition *) dynamicTextDefinitionWithLibraryID:(UInt16)libraryID;
