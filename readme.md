@@ -72,13 +72,13 @@ For more information, read the [SwiffCore Overview wiki article](https://github.
 * Event sounds (MP3 only)
 * Stream sounds (MP3 only)
 * Basic layer blend modes ([#7](https://github.com/musictheory/SwiffCore/issues/7))
-
+* Morph Shapes (version 1 only)
 
 ## What's not supported?
 
 * Any kind of scripting or interaction ([#2](https://github.com/musictheory/SwiffCore/issues/2), [#4](https://github.com/musictheory/SwiffCore/issues/4), [#5](https://github.com/musictheory/SwiffCore/issues/5))
 * Filters ([#13](https://github.com/musictheory/SwiffCore/issues/13))
-* Morph Shapes ([#1](https://github.com/musictheory/SwiffCore/issues/1))
+* Morph Shapes (version >=2) [#1](https://github.com/musictheory/SwiffCore/issues/1))
 * Video ([#3](https://github.com/musictheory/SwiffCore/issues/3))
 
 
