@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		50E04E62167B2F0200EA8C9D /* SwiffView.h in Headers */ = {isa = PBXBuildFile; fileRef = 50E04E61167B2F0200EA8C9D /* SwiffView.h */; };
 		55038DE0144CDA4900EA5841 /* SwiffPlayhead.m in Sources */ = {isa = PBXBuildFile; fileRef = 55038DDF144CDA4900EA5841 /* SwiffPlayhead.m */; };
 		55038DE7144E489F00EA5841 /* SwiffHTMLToCoreTextConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 55038DE6144E489E00EA5841 /* SwiffHTMLToCoreTextConverter.m */; };
 		550C99B6145A03F200836C62 /* SwiffSoundPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 550C99B5145A03F200836C62 /* SwiffSoundPlayer.m */; };
@@ -84,6 +85,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		50E04E61167B2F0200EA8C9D /* SwiffView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SwiffView.h; path = Source/SwiffView.h; sourceTree = "<group>"; };
 		55038DDE144CDA4900EA5841 /* SwiffPlayhead.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SwiffPlayhead.h; path = Source/SwiffPlayhead.h; sourceTree = "<group>"; };
 		55038DDF144CDA4900EA5841 /* SwiffPlayhead.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SwiffPlayhead.m; path = Source/SwiffPlayhead.m; sourceTree = "<group>"; };
 		55038DE5144E489D00EA5841 /* SwiffHTMLToCoreTextConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SwiffHTMLToCoreTextConverter.h; path = Source/SwiffHTMLToCoreTextConverter.h; sourceTree = "<group>"; };
@@ -286,6 +288,7 @@
 		557A58AA15A2745A0063591B /* View Wrapper */ = {
 			isa = PBXGroup;
 			children = (
+				50E04E61167B2F0200EA8C9D /* SwiffView.h */,
 				BEEF80AE1628EBA40049A93D /* SwiffView.m */,
 			);
 			name = "View Wrapper";
@@ -418,6 +421,7 @@
 				55F65C8A14AFC61B00DA2DDB /* SwiffFilter.h in Headers */,
 				557082DF14B7B3410072C19A /* SwiffUtils.h in Headers */,
 				BE678E9516161BEB006F827C /* SwiffGraphics.h in Headers */,
+				50E04E62167B2F0200EA8C9D /* SwiffView.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

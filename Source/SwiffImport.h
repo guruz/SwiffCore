@@ -30,6 +30,7 @@
 #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
 #import <CoreGraphics/CoreGraphics.h>
 #import <CoreText/CoreText.h>
+#import <UIKit/UIKit.h>
 #else
 #import <ApplicationServices/ApplicationServices.h>
 #endif

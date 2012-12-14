@@ -193,7 +193,7 @@ static NSString *sCurrentClassnameKey = @"CurrentClassnameKey";
 - (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     m_window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-
+    m_window.contentScaleFactor = [UIScreen mainScreen].scale;
     DemoTableViewController *vc = [[DemoTableViewController alloc] initWithStyle:UITableViewStylePlain];
     UINavigationController  *nc = [[UINavigationController  alloc] initWithRootViewController:vc];
 

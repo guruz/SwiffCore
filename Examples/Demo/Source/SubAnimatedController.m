@@ -56,8 +56,8 @@
 //    }
     
     
-    [movieView playhead].loopsMovie = TRUE;
-    [[movieView playhead] play];
+    movieView.playhead.loopsMovie = TRUE;
+    [movieView.playhead play];
     
     
 }

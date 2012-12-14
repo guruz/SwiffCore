@@ -149,17 +149,17 @@ static NSData *sGetCachedData(NSURL *url)
 - (void) _loadMovie
 {
     m_movie = [[SwiffMovie alloc] initWithData:m_movieData];
-    
+
     CGRect movieFrame = [[self view] bounds];
     movieFrame.size.height -= 44;
     
     SwiffSpriteDefinition *clip = m_movie;
-    
+    m_classname = @"Beer_fla.BeerAnimation_333";
     if(m_classname != NULL)
     {
         clip = [m_movie definitionWithExportedName:m_classname];  
     } 
-
+    
     [m_timelineSlider setMaximumValue:([[clip frames] count] - 1)];
     
 #if PROMOTE_ALL_PLACED_OBJECTS_TO_LAYERS
@@ -169,13 +169,13 @@ static NSData *sGetCachedData(NSURL *url)
         }
     }
 #endif
-    
     m_movieView = [[SwiffView alloc] initWithFrame:movieFrame movie:clip];
-    
 
     [m_movieView setDelegate:self];
-    [m_movieView setBackgroundColor:[UIColor whiteColor]];   
+//    [m_movieView setBackgroundColor:[UIColor whiteColor]];   
     [m_movieView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
+    m_movieView.playhead.loopsMovie = YES;
+    //m_movieView.shouldDrawDebugColors = YES;
     [[self view] addSubview:m_movieView];
 }
 

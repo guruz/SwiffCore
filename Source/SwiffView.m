@@ -25,6 +25,9 @@
     SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+#import "SwiffDefinition.h"
+#import "SwiffFrame.h"
+#import "SwiffPlacedObject.h"
 #import "SwiffView.h"
 #import "SwiffMovie.h"
 #import "SwiffUtils.h"
@@ -174,6 +177,19 @@
 
 - (void) _layoutMovieLayer
 {
+    CGRect bounds = CGRectZero;
+    for (SwiffFrame *frame in self.movie.frames) {
+        for (SwiffPlacedObject *po in frame.placedObjects) {
+            id<SwiffDefinition> def = [self.movie.movie definitionWithPlacedObject:po];
+            if (def) {
+                bounds = CGRectUnion(bounds, def.renderBounds);
+            }
+        }
+    }
+    [_layer setFrame:CGRectMake(0, 0, bounds.size.width, bounds.size.height)];
+    _layer.offset = CGPointMake(-bounds.origin.x, -bounds.origin.y);
+    return;
+    
     SwiffMovie *movie = [[self movie] movie];
     
     CGFloat w = [self bounds].size.width;

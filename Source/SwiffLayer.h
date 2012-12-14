@@ -44,6 +44,7 @@
 
 @property (nonatomic, weak) id<SwiffLayerDelegate> swiffLayerDelegate;
 
+@property (nonatomic, assign) CGPoint offset;
 @property (nonatomic, strong, readonly) SwiffSpriteDefinition *movie;
 @property (nonatomic, strong, readonly) SwiffPlayhead *playhead;
 @property (nonatomic, strong, readonly) SwiffGraphics *graphics;
