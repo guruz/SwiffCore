@@ -58,6 +58,7 @@
 @property (nonatomic, strong, readonly) SwiffSpriteDefinition *movie;
 @property (nonatomic, strong, readonly) SwiffPlayhead *playhead;
 @property (nonatomic, strong, readonly) SwiffGraphics *graphics;
+@property (nonatomic, assign, readonly) CGRect renderBounds;
 
 @property (nonatomic, assign) BOOL drawsBackground;
 
@@ -72,6 +73,7 @@
 @property (nonatomic, assign) BOOL shouldFlattenSublayers;
 @property (nonatomic, assign) BOOL shouldDrawDebugColors;
 @property (nonatomic, assign) BOOL shouldPlayChildren;
+@property (nonatomic, assign) BOOL shouldAlignToRenderBounds;
 
 @end
 

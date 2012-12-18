@@ -79,7 +79,6 @@ static NSString * const SwiffRenderTranslationYKey = @"SwiffRenderTranslationY";
 //
 - (id) initWithMovie:(SwiffSpriteDefinition *)movie
 {
-//    SwiffLogSetCategoryEnabled(@"View", YES);
     if ((self = [super init])) {
         
 //        if (!movie) {
@@ -87,6 +86,7 @@ static NSString * const SwiffRenderTranslationYKey = @"SwiffRenderTranslationY";
 //        }
         
         _movie = movie;
+        _renderBounds = _movie.movie.stageRect;
         
         _contentLayer = [[CALayer alloc] init];
         [_contentLayer setDelegate:self];
@@ -505,7 +505,7 @@ static BOOL sShouldUseSameLayer(SwiffPlacedObject *a, SwiffPlacedObject *b)
     }
 
     invalidRect = CGRectApplyAffineTransform(invalidRect, _scaledAffineTransform);
-    invalidRect = CGRectApplyAffineTransform(invalidRect, CGAffineTransformMakeTranslation(self.offset.x, self.offset.y));
+    invalidRect = CGRectApplyAffineTransform(invalidRect, CGAffineTransformMakeTranslation(-_renderBounds.origin.x, -_renderBounds.origin.y));
     if (!CGRectIsEmpty(invalidRect)) {
         [_contentLayer setNeedsDisplayInRect:invalidRect];
     }
@@ -633,13 +633,11 @@ static BOOL sShouldUseSameLayer(SwiffPlacedObject *a, SwiffPlacedObject *b)
 
     [super setBounds:bounds];
 
-    CGSize movieSize = [[_movie movie] stageRect].size;
-
-    CGFloat sx = bounds.size.width /  movieSize.width;
-    CGFloat sy = bounds.size.height / movieSize.height;
+    CGFloat sx = bounds.size.width /  _renderBounds.size.width;
+    CGFloat sy = bounds.size.height / _renderBounds.size.height;
 
     _scaleFactor = sx > sy ? sx : sy;
-    _scaledAffineTransform = CGAffineTransformIdentity;// CGAffineTransformMakeScale(sx, sy);
+    _scaledAffineTransform = CGAffineTransformMakeScale(sx, sy);
 
     [_contentLayer setContentsScale:[self contentsScale]];
     [_contentLayer setFrame:bounds];
@@ -656,10 +654,33 @@ static BOOL sShouldUseSameLayer(SwiffPlacedObject *a, SwiffPlacedObject *b)
     }
 }
 
+- (void)setRenderBounds:(CGRect)renderBounds
+{
+    if (CGRectEqualToRect(_renderBounds, renderBounds)) {
+        return;
+    }
+    
+    _renderBounds = renderBounds;
+    
+    CGRect bounds = CGRectMake(0, 0, renderBounds.size.width, renderBounds.size.height);
+    [super setBounds:bounds];
+    
+    _scaledAffineTransform = CGAffineTransformIdentity;
+    
+    [_contentLayer setContentsScale:[self contentsScale]];
+    [_contentLayer setFrame:bounds];
+    [_contentLayer setNeedsDisplay];
+    
+    for (CALayer *sublayer in _sublayers) {
+        SwiffPlacedObject *placedObject = [sublayer valueForKey:SwiffPlacedObjectKey];
+        if (placedObject) {
+            [self _updateGeometryForSublayer:sublayer withPlacedObject:placedObject];
+        }
+    };
+}
 
 - (void) drawLayer:(CALayer *)layer inContext:(CGContextRef)context
 {
-    NSLog(@"bounds: %@ %@", NSStringFromCGRect(_movie.bounds), NSStringFromCGRect(_movie.renderBounds));
     if (layer == _contentLayer) {
         
 
@@ -690,7 +711,7 @@ static BOOL sShouldUseSameLayer(SwiffPlacedObject *a, SwiffPlacedObject *b)
         }
 
         CGContextSaveGState(context);
-        CGContextTranslateCTM(context, self.offset.x, self.offset.y);
+        CGContextTranslateCTM(context, -_renderBounds.origin.x, -_renderBounds.origin.y);
 
         if (_shouldDrawDebugColors) {
             static int sCounter = 0;
@@ -731,7 +752,7 @@ static BOOL sShouldUseSameLayer(SwiffPlacedObject *a, SwiffPlacedObject *b)
         NSArray *placedObjects = [[NSArray alloc] initWithObjects:rendererPlacedObject, nil];
 
         CGContextSaveGState(context);
-        CGContextTranslateCTM(context, self.offset.x, self.offset.y);
+        CGContextTranslateCTM(context, -_renderBounds.origin.x, -_renderBounds.origin.y);
 
         if (_shouldDrawDebugColors) {
             static int sCounter = 0;

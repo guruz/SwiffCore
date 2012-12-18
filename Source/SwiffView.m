@@ -76,6 +76,7 @@
         _layer = [[SwiffLayer alloc] initWithMovie:movie];
         [_layer setContentsScale:[[UIScreen mainScreen] scale]];
         [[self layer] addSublayer:_layer];
+        [self _calcRenderBounds];
         [self _layoutMovieLayer];
     }
     
@@ -136,7 +137,7 @@
         [[self layer] setDelegate:self];
 
         [[self layer] addSublayer:_layer];
-
+        [self _calcRenderBounds];
         [self _layoutMovieLayer];
     }
     
@@ -168,49 +169,54 @@
     [self _layoutMovieLayer];
 }
 
-
 #endif
 
 
 #pragma mark -
 #pragma mark Private Methods
-
-- (void) _layoutMovieLayer
+- (void) _calcRenderBounds
 {
-    CGRect bounds = CGRectZero;
+    CGRect renderBounds = CGRectZero;
     for (SwiffFrame *frame in self.movie.frames) {
         for (SwiffPlacedObject *po in frame.placedObjects) {
             id<SwiffDefinition> def = [self.movie.movie definitionWithPlacedObject:po];
             if (def) {
-                bounds = CGRectUnion(bounds, def.renderBounds);
+                renderBounds = CGRectUnion(renderBounds, def.renderBounds);
             }
         }
     }
-    [_layer setFrame:CGRectMake(0, 0, bounds.size.width, bounds.size.height)];
-    _layer.offset = CGPointMake(-bounds.origin.x, -bounds.origin.y);
-    return;
-    
-    SwiffMovie *movie = [[self movie] movie];
-    
-    CGFloat w = [self bounds].size.width;
-    CGFloat h = [self bounds].size.height;
-    
-    if (!movie){
-        CGRect fullFrame = CGRectMake(0,0,w,h);
-        [_layer setFrame:fullFrame];
-        return;
-    }
-    
-    CGSize  stageSize   = [movie stageRect].size;
-    CGFloat aspectRatio = stageSize.width / stageSize.height;
-    
-    CGSize size = CGSizeMake(w, SwiffFloor(w  / aspectRatio));
-    if (size.height > h) {
-        size = CGSizeMake(SwiffFloor(h * aspectRatio), h);
-    }
+    _renderBounds = renderBounds;
+}
 
-    CGRect movieFrame = CGRectMake(SwiffFloor((w - size.width) / 2.0), SwiffFloor((h - size.height) / 2.0), size.width, size.height);
-    [_layer setFrame:movieFrame];
+- (void) _layoutMovieLayer
+{
+    if (_shouldAlignToRenderBounds) {
+        [_layer setFrame:_renderBounds];
+        _layer.renderBounds = _renderBounds;
+    } else {
+        SwiffMovie *movie = [[self movie] movie];
+        
+        CGFloat w = [self bounds].size.width;
+        CGFloat h = [self bounds].size.height;
+        
+        if (!movie){
+            CGRect fullFrame = CGRectMake(0,0,w,h);
+            [_layer setFrame:fullFrame];
+            return;
+        }
+
+        CGSize  stageSize   = [movie stageRect].size;
+        CGFloat aspectRatio = stageSize.width / stageSize.height;
+        
+        CGSize size = CGSizeMake(w, SwiffFloor(w  / aspectRatio));
+        if (size.height > h) {
+            size = CGSizeMake(SwiffFloor(h * aspectRatio), h);
+        }
+        
+        CGRect movieFrame = CGRectMake(SwiffFloor((w - size.width) / 2.0), SwiffFloor((h - size.height) / 2.0), size.width, size.height);
+        [_layer setFrame:movieFrame];
+        _layer.renderBounds = movie.stageRect;
+    }
 }
 
 
@@ -264,6 +270,29 @@
     } else {
         [[self layer] setBackgroundColor:NULL];
     }
+}
+
+- (void) setShouldAlignToRenderBounds:(BOOL)shouldAlignToRenderBounds
+{
+    _shouldAlignToRenderBounds = shouldAlignToRenderBounds;
+    [self _layoutMovieLayer];
+}
+
+- (void)setCenter:(CGPoint)center
+{
+    if (_shouldAlignToRenderBounds) {
+        self.frame = CGRectMake(center.x, center.y, self.frame.size.width, self.frame.size.height);
+    } else {
+        [super setCenter:center];
+    }
+}
+
+- (CGPoint)center
+{
+    if (_shouldAlignToRenderBounds) {
+        return self.frame.origin;
+    }
+    return [super center];
 }
 
 - (void) setMultiplyColor:(SwiffColor *)color         { [_layer setMultiplyColor:color];             }
