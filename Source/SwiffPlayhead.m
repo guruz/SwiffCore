@@ -321,10 +321,11 @@ void SwiffPlayheadWarnForInvalidGotoArguments()
     if (lastScene != currentScene) {
         if (_loopsScene) {
             _frameIndex = [lastScene indexInMovie];
-        }
+        }    
+    }
 
     // If frame is now nil, we hit the end of the movie
-    } else if (![self frame]) {
+    if (![self frame]) {
         if (_loopsMovie) {
             _frameIndex = 0;
         } else {
