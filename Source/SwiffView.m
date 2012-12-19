@@ -76,7 +76,6 @@
         _layer = [[SwiffLayer alloc] initWithMovie:movie];
         [_layer setContentsScale:[[UIScreen mainScreen] scale]];
         [[self layer] addSublayer:_layer];
-        [self _calcRenderBounds];
         [self _layoutMovieLayer];
     }
     
@@ -137,7 +136,6 @@
         [[self layer] setDelegate:self];
 
         [[self layer] addSublayer:_layer];
-        [self _calcRenderBounds];
         [self _layoutMovieLayer];
     }
     
@@ -174,25 +172,16 @@
 
 #pragma mark -
 #pragma mark Private Methods
-- (void) _calcRenderBounds
+- (CGRect) renderBounds
 {
-    CGRect renderBounds = CGRectZero;
-    for (SwiffFrame *frame in self.movie.frames) {
-        for (SwiffPlacedObject *po in frame.placedObjects) {
-            id<SwiffDefinition> def = [self.movie.movie definitionWithPlacedObject:po];
-            if (def) {
-                renderBounds = CGRectUnion(renderBounds, def.renderBounds);
-            }
-        }
-    }
-    _renderBounds = renderBounds;
+    return self.movie.renderBounds;
 }
 
 - (void) _layoutMovieLayer
 {
     if (_shouldAlignToRenderBounds) {
-        [_layer setFrame:_renderBounds];
-        _layer.renderBounds = _renderBounds;
+        [_layer setFrame:self.renderBounds];
+        _layer.renderBounds = self.renderBounds;
     } else {
         SwiffMovie *movie = [[self movie] movie];
         

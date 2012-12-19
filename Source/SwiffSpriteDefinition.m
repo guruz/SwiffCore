@@ -550,7 +550,7 @@ static NSString * const SwiffSpriteDefinitionStreamBlockKey = @"SwiffSpriteDefin
     SwiffPlacedObject* placedObject = [self getChildByName:pieces[0]];
     for(int i = 1; i < [pieces count]; i++)
     {
-        id<SwiffDefinition> definition = SwiffMovieGetDefinition(selfMovie, placedObject->_libraryID);
+        id<SwiffDefinition> definition = [selfMovie definitionWithPlacedObject:placedObject];
 
         //for now only SwiffSpriteDefinitions can be containers, so this will be deterministic enough
         if ([definition isKindOfClass:[SwiffSpriteDefinition class]]) {
@@ -568,9 +568,10 @@ static NSString * const SwiffSpriteDefinitionStreamBlockKey = @"SwiffSpriteDefin
 
 - (void) _makeBounds
 {
+    // !issue: crop bounds to mask
     for (SwiffFrame *frame in _frames) {
         for (SwiffPlacedObject *placedObject in [frame placedObjects]) {
-            id<SwiffDefinition> definition = SwiffMovieGetDefinition(_movie, placedObject->_libraryID);
+            id<SwiffDefinition> definition = [_movie definitionWithPlacedObject:placedObject];
             
             CGRect bounds       = CGRectApplyAffineTransform([definition bounds],       placedObject->_affineTransform);
             CGRect renderBounds = CGRectApplyAffineTransform([definition renderBounds], placedObject->_affineTransform);
