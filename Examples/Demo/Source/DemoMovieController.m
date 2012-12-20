@@ -151,10 +151,11 @@ static NSData *sGetCachedData(NSURL *url)
     m_movie = [[SwiffMovie alloc] initWithData:m_movieData];
 
     CGRect movieFrame = [[self view] bounds];
-    movieFrame.size.height -= 44;
+    movieFrame.origin.y += 50;
     
     SwiffSpriteDefinition *clip = m_movie;
-    m_classname = @"Beer_fla.BeerAnimation_333";
+//    m_classname = @"Beer_fla.BeerAnimation_2";
+    m_classname = @"BeerGift";
     if(m_classname != NULL)
     {
         clip = [m_movie definitionWithExportedName:m_classname];  
@@ -173,10 +174,45 @@ static NSData *sGetCachedData(NSURL *url)
 
     [m_movieView setDelegate:self];
 //    [m_movieView setBackgroundColor:[UIColor whiteColor]];   
-    [m_movieView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
+//    [m_movieView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
     m_movieView.playhead.loopsMovie = YES;
+//    m_movieView.shouldPlayChildren = YES;
+    m_movieView.shouldAlignToRenderBounds = YES;
+
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(m_movieView.renderBounds.origin.x + 150,
+                                                            m_movieView.renderBounds.origin.y + 150,
+                                                            m_movieView.renderBounds.size.width,
+                                                            m_movieView.renderBounds.size.height)];
+    view.backgroundColor = [UIColor orangeColor];
+    [self.view addSubview:view];
+    
+    
     //m_movieView.shouldDrawDebugColors = YES;
     [[self view] addSubview:m_movieView];
+
+    m_movieView.center = CGPointMake(150, 150);
+    return;
+    
+    [UIView animateWithDuration:3.0 animations:^{
+        view.frame = CGRectMake(400, 100, 20, 20);
+    }];
+    
+    m_movieView.center = CGPointMake(100, 100);
+    [UIView animateWithDuration:3.0 animations:^{
+        m_movieView.center = CGPointMake(400, 100);
+    } completion:^(BOOL finished) {
+        [UIView animateWithDuration:3.0 animations:^{
+            view.frame = CGRectMake(100, 100, 20, 20);
+        }];
+        [UIView animateWithDuration:3.0 animations:^{
+            m_movieView.center = CGPointMake(100, 100);
+        }];
+    }];
+//    [UIView animateWithDuration:3.0 animations:^{
+//        CGRect f = movieFrame;
+//        f.origin.x += 300;
+//        m_movieView.frame = f;
+//    }];
 }
 
 
