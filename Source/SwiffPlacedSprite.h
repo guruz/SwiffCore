@@ -6,9 +6,9 @@
 //
 //
 
-#import <SwiffImport.h>
-#import <SwiffPlacedObject.h>
-#import <SwiffSpriteDefinition.h>
+#import "SwiffImport.h"
+#import "SwiffPlacedObject.h"
+#import "SwiffSpriteDefinition.h"
 
 @class SwiffMovie;
 

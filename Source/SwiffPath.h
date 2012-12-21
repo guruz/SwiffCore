@@ -25,7 +25,7 @@
     SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#import <SwiffImport.h>
+#import "SwiffImport.h"
 
 @class SwiffLineStyle, SwiffFillStyle;
 

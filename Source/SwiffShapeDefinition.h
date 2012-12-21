@@ -25,9 +25,9 @@
     SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#import <SwiffImport.h>
-#import <SwiffDefinition.h>
-#import <SwiffParser.h>
+#import "SwiffImport.h"
+#import "SwiffDefinition.h"
+#import "SwiffParser.h"
 
 @class SwiffMovie;
 

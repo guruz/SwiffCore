@@ -25,33 +25,33 @@
     SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#import <SwiffTypes.h>
-#import <SwiffUtils.h>
+#import "SwiffTypes.h"
+#import "SwiffUtils.h"
 
-#import <SwiffDefinition.h>
+#import "SwiffDefinition.h"
 
-#import <SwiffBitmapDefinition.h>
-#import <SwiffDynamicTextDefinition.h>
-#import <SwiffFontDefinition.h>
-#import <SwiffShapeDefinition.h>
-#import <SwiffSpriteDefinition.h>
-#import <SwiffStaticTextDefinition.h>
+#import "SwiffBitmapDefinition.h"
+#import "SwiffDynamicTextDefinition.h"
+#import "SwiffFontDefinition.h"
+#import "SwiffShapeDefinition.h"
+#import "SwiffSpriteDefinition.h"
+#import "SwiffStaticTextDefinition.h"
 
-#import <SwiffFillStyle.h>
-#import <SwiffFrame.h>
-#import <SwiffGradient.h>
-#import <SwiffHTMLToCoreTextConverter.h>
-#import <SwiffLineStyle.h>
-#import <SwiffParser.h>
-#import <SwiffPath.h>
-#import <SwiffPlacedDynamicText.h>
-#import <SwiffPlacedObject.h>
-#import <SwiffPlayhead.h>
-#import <SwiffRenderer.h>
-#import <SwiffStaticTextRecord.h>
-#import <SwiffWriter.h>
+#import "SwiffFillStyle.h"
+#import "SwiffFrame.h"
+#import "SwiffGradient.h"
+#import "SwiffHTMLToCoreTextConverter.h"
+#import "SwiffLineStyle.h"
+#import "SwiffParser.h"
+#import "SwiffPath.h"
+#import "SwiffPlacedDynamicText.h"
+#import "SwiffPlacedObject.h"
+#import "SwiffPlayhead.h"
+#import "SwiffRenderer.h"
+#import "SwiffStaticTextRecord.h"
+#import "SwiffWriter.h"
 
-#import <SwiffMovie.h>
+#import "SwiffMovie.h"
 
-#import <SwiffLayer.h>
-#import <SwiffView.h>
+#import "SwiffLayer.h"
+#import "SwiffView.h"

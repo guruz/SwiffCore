@@ -25,9 +25,9 @@
     SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#import <SwiffImport.h>
-#import <SwiffTypes.h>
-#import <SwiffSpriteDefinition.h>
+#import "SwiffImport.h"
+#import "SwiffTypes.h"
+#import "SwiffSpriteDefinition.h"
 
 @class SwiffBitmapDefinition, SwiffDynamicTextDefinition, SwiffFontDefinition,
        SwiffShapeDefinition, SwiffStaticTextDefinition, SwiffSoundDefinition,

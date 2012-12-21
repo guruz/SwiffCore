@@ -26,9 +26,9 @@
 */
 
 
-#import <SwiffImport.h>
-#import <SwiffDefinition.h>
-#import <SwiffParser.h>
+#import "SwiffImport.h"
+#import "SwiffDefinition.h"
+#import "SwiffParser.h"
 
 typedef struct SwiffFontKerningRecord {
     UInt16 leftCharacterCode;

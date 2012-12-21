@@ -31,7 +31,7 @@
 #import "SwiffView.h"
 #import "SwiffMovie.h"
 #import "SwiffUtils.h"
-#import <SwiffLayer.h>
+#import "SwiffLayer.h"
 
 
 @interface SwiffView () <SwiffLayerDelegate>

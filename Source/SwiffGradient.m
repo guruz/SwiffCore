@@ -27,7 +27,7 @@
 
 #import "SwiffGradient.h"
 #import "SwiffParser.h"
-#import <SwiffUtils.h>
+#import "SwiffUtils.h"
 
 typedef struct GradientParams {
     CGFloat       ratios[15];

@@ -21,9 +21,9 @@
  */
 
 
-#import <SwiffImport.h>
-#import <SwiffTypes.h>
-#import <SwiffPath.h>
+#import "SwiffImport.h"
+#import "SwiffTypes.h"
+#import "SwiffPath.h"
 
 
 @class SwiffGraphics;

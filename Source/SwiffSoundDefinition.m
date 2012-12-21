@@ -28,8 +28,8 @@
 #import "SwiffSoundDefinition.h"
 
 
-#import <SwiffUtils.h>
-#import <SwiffSoundStreamBlock.h>
+#import "SwiffUtils.h"
+#import "SwiffSoundStreamBlock.h"
 
 
 @interface SwiffSoundDefinition ()

@@ -25,8 +25,8 @@
     SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#import <SwiffTypes.h>
-#import <SwiffImport.h>
+#import "SwiffTypes.h"
+#import "SwiffImport.h"
 #import <QuartzCore/QuartzCore.h>
 
 
