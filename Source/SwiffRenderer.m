@@ -690,6 +690,7 @@ static void sDrawStaticTextDefinition(SwiffRenderState *state, SwiffStaticTextDe
 
                 CGAffineTransform savedTransform = state->affineTransform;
 
+                state->affineTransform = CGAffineTransformConcat(state->affineTransform, staticTextDefinition.textTransform);
                 state->affineTransform = CGAffineTransformTranslate(state->affineTransform, offset.x + advance, offset.y);
                 state->affineTransform.a = aWithMultiplier;
                 state->affineTransform.d = dWithMultiplier;
